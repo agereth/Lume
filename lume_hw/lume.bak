@@ -1,5 +1,4 @@
 EESchema Schematic File Version 2
-LIBS:lume2-rescue
 LIBS:Connectors_kl
 LIBS:display_kl
 LIBS:pcb_details
@@ -7,7 +6,7 @@ LIBS:power
 LIBS:Power_kl
 LIBS:st_kl
 LIBS:Tittar_kl
-LIBS:lume2-cache
+LIBS:lume-cache
 EELAYER 25 0
 EELAYER END
 $Descr A3 16535 11693
