@@ -11,7 +11,9 @@
 #include "ch.h"
 #include "hal.h"
 #include "main.h"
-#include "uart.h"
+#include "interface.h"
+
+App_t App;
 
 int main(void) {
     // ==== Init clock system ====
@@ -28,17 +30,22 @@ int main(void) {
     Uart.Printf("\r%S %S", APP_NAME, APP_VERSION);
     Clk.PrintFreqs();
 
-//    Keys.Init(chThdSelf());
+    App.InitThread();
+    Lcd.Init();
+    // LCD brightness control: remap Timer15 to PB14 & PB15
+    AFIO->MAPR2 |= 0x00000001;
+    Interface.Reset();
 
     // ==== Main cycle ====
-    while(true) {
-        eventmask_t EvtMsk = chEvtWaitAny(ALL_EVENTS);
-        if(EvtMsk & EVTMSK_KEY) {
-//            if(LedIsOn) Led.SetSmoothly(0);
-//            else Led.SetSmoothly(LED_TOP_VALUE);
-//            LedIsOn = !LedIsOn;
-        }
-
-    } // while
+    App.ITask();
 }
 
+__attribute__ ((__noreturn__))
+void App_t::ITask() {
+    while(true) {
+        uint32_t EvtMsk = chEvtWaitAny(ALL_EVENTS);
+        if(EvtMsk & EVTMSK_KEY) {
+
+        }
+    } // while true
+}
