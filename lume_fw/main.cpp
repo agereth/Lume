@@ -25,8 +25,8 @@ int main(void) {
     // ==== Init Hard & Soft ====
     JtagDisable();
     Uart.Init(115200);
-    Uart.Printf("\r%S_%S", APP_NAME, APP_VERSION);
-
+    Uart.Printf("\r%S %S", APP_NAME, APP_VERSION);
+    Clk.PrintFreqs();
 
 //    Keys.Init(chThdSelf());
 

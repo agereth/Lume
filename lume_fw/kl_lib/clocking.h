@@ -369,6 +369,7 @@ public:
         while(!(RCC->CSR & RCC_CSR_LSIRDY));
     }
     void LsiDisable() { RCC->CSR &= RCC_CSR_LSION; }
+    void PrintFreqs();
 };
 
 extern Clk_t Clk;

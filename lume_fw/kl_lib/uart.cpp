@@ -57,16 +57,16 @@ void Uart_t::ISendViaDMA() {
     ITransSize = MIN(IFullSlotsCount, PartSz);
     if(ITransSize != 0) {
         IDmaIsIdle = false;
-//        dmaStreamSetMemory0(UART_DMA_TX, PRead);
-//        dmaStreamSetTransactionSize(UART_DMA_TX, ITransSize);
-//        dmaStreamSetMode(UART_DMA_TX, UART_DMA_TX_MODE);
-//        dmaStreamEnable(UART_DMA_TX);
+        dmaStreamSetMemory0(UART_DMA_TX, PRead);
+        dmaStreamSetTransactionSize(UART_DMA_TX, ITransSize);
+        dmaStreamSetMode(UART_DMA_TX, UART_DMA_TX_MODE);
+        dmaStreamEnable(UART_DMA_TX);
     }
 }
 
 #if 1 // ==== Print Now ====
 static inline void FPutCharNow(char c) {
-#if defined STM32L1XX_MD || defined STM32F2XX || defined STM32F4XX
+#if defined STM32L1XX_MD || defined STM32F2XX || defined STM32F4XX || defined STM32F10X_LD_VL
     while(!(UART->SR & USART_SR_TXE));
     UART_TX_REG = c;
     while(!(UART->SR & USART_SR_TXE));
@@ -137,16 +137,16 @@ void CmdUartTxIrq(void *p, uint32_t flags) { Uart.IRQDmaTxHandler(); }
 }
 
 void Uart_t::Init(uint32_t ABaudrate) {
-//    PinSetupAlterFunc(UART_GPIO, UART_TX_PIN, omPushPull, pudNone, UART_AF);
+    PinSetupAlterFunc(UART_GPIO, UART_TX_PIN, omPushPull, pudNone, UART_AF);
     IBaudrate = ABaudrate;
     // ==== USART configuration ====
     UART_RCC_ENABLE();
     OnAHBFreqChange();  // Setup baudrate
     UART->CR2 = 0;
     // ==== DMA ====
-//    dmaStreamAllocate     (UART_DMA_TX, IRQ_PRIO_HIGH, CmdUartTxIrq, NULL);
-//    dmaStreamSetPeripheral(UART_DMA_TX, &UART_TX_REG);
-//    dmaStreamSetMode      (UART_DMA_TX, UART_DMA_TX_MODE);
+    dmaStreamAllocate     (UART_DMA_TX, IRQ_PRIO_MEDIUM, CmdUartTxIrq, NULL);
+    dmaStreamSetPeripheral(UART_DMA_TX, &UART_TX_REG);
+    dmaStreamSetMode      (UART_DMA_TX, UART_DMA_TX_MODE);
 
 #if UART_RX_ENABLED
     UART->CR1 = USART_CR1_TE | USART_CR1_RE;        // TX & RX enable
@@ -170,7 +170,7 @@ void Uart_t::Init(uint32_t ABaudrate) {
 }
 
 void Uart_t::OnAHBFreqChange() {
-#if defined STM32L1XX_MD
+#if defined STM32L1XX_MD || defined STM32F100_MCUCONF
     if(UART == USART1) UART->BRR = Clk.APB2FreqHz / IBaudrate;
     else               UART->BRR = Clk.APB1FreqHz / IBaudrate;
 #elif defined STM32F030
@@ -185,7 +185,7 @@ void Uart_t::OnAHBFreqChange() {
 
 // ==== TX DMA IRQ ====
 void Uart_t::IRQDmaTxHandler() {
-//    dmaStreamDisable(UART_DMA_TX);    // Registers may be changed only when stream is disabled
+    dmaStreamDisable(UART_DMA_TX);    // Registers may be changed only when stream is disabled
     IFullSlotsCount -= ITransSize;
     PRead += ITransSize;
     if(PRead >= (TXBuf + UART_TXBUF_SZ)) PRead = TXBuf; // Circulate pointer

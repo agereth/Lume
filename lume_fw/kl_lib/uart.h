@@ -21,7 +21,7 @@
 #define UART_RCC_ENABLE()   rccEnableUSART1(FALSE)
 #define UART_RCC_DISABLE()  rccDisableUSART1(FALSE)
 
-#if defined STM32L1XX_MD
+#if defined STM32L1XX_MD || defined STM32F100_MCUCONF
 #define UART_AF             AF7 // for USART1 @ GPIOA
 #define UART_TX_REG         UART->DR
 #define UART_RX_REG         UART->DR
@@ -44,8 +44,8 @@
 
 // ==== TX ====
 #define UART_TXBUF_SZ       207
-#define UART_GPIO           GPIOB
-#define UART_TX_PIN         6
+#define UART_GPIO           GPIOA
+#define UART_TX_PIN         9
 
 #define UART_DMA_TX_MODE    STM32_DMA_CR_CHSEL(UART_DMA_CHNL) | \
                             DMA_PRIORITY_LOW | \

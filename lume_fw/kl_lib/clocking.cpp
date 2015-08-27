@@ -721,6 +721,12 @@ void Clk_t::SetupAdcClk(ADCDiv_t ADCDiv) {
     RCC->CFGR = tmp;
 }
 
+void Clk_t::PrintFreqs() {
+    Uart.Printf(
+        "\rAHBFreq=%uMHz; APB1Freq=%uMHz; APB2Freq=%uMHz",
+        Clk.AHBFreqHz/1000000, Clk.APB1FreqHz/1000000, Clk.APB2FreqHz/1000000);
+}
+
 /*
  * Early initialization code.
  * This initialization must be performed just after stack setup and before
