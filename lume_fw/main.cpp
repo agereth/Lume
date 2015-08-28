@@ -55,7 +55,7 @@ void App_t::ITask() {
         if(EvtMsk & EVTMSK_SECOND) {
 //            Uart.Printf("\rNewSecond");
             Time.GetDateTime();
-//            Time.PrintDatetime();
+            Time.dtNow.Print();
             Interface.DisplayTime();
         }
     } // while true

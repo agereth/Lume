@@ -25,10 +25,10 @@ public:
 //        Lcd.Symbols(0, 2, LineHorizDouble, 6, 0);
     }
     void DisplayTime() {
-        Lcd.Printf(7, 2, "%02u:%02u:%02u", Time.DateTime.H, Time.DateTime.M, Time.DateTime.S);
-        Lcd.Printf(7, 4, "%04u", Time.DateTime.Year);
-        Lcd.Printf(7, 5, "%02u", Time.DateTime.Month);
-        Lcd.Printf(7, 6, "%02u", Time.DateTime.Day);
+        Lcd.Printf(7, 2, "%02u:%02u:%02u", Time.dtNow.H, Time.dtNow.M, Time.dtNow.S);
+        Lcd.Printf(7, 4, "%04u", Time.dtNow.Year);
+        Lcd.Printf(7, 5, "%02u", Time.dtNow.Month);
+        Lcd.Printf(7, 6, "%02u", Time.dtNow.Day);
     }
 
     void Error(const char* msg) { Lcd.PrintfInverted(0, 2, "%S", msg); }

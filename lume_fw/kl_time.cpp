@@ -6,7 +6,6 @@
  */
 
 #include "kl_time.h"
-#include "uart.h"
 #include "interface.h"
 #include "main.h"
 
@@ -42,8 +41,8 @@ void TimeCounter_t::Init() {
             Interface.Error("32768 Fail");
         }
         // Set default datetime values
-        DateTime = (DateTime_t){0,0,0, 2000,1,1};
-        SetDateTime(&DateTime);
+        dtNow = (DateTime_t){0,0,0, 2000,1,1};
+        SetDateTime(&dtNow);
     }
     else { // Set
         Uart.Printf("\rSomething is stored");
@@ -67,9 +66,9 @@ void TimeCounter_t::GetDateTime() {
 
     // Calculate time
     dayclock = time % SECS_DAY;
-    DateTime.S = dayclock % 60;
-    DateTime.M = (dayclock % 3600) / 60;
-    DateTime.H = dayclock / 3600;
+    dtNow.S = dayclock % 60;
+    dtNow.M = (dayclock % 3600) / 60;
+    dtNow.H = dayclock / 3600;
 
     // Calculate year
     DayCount = time / SECS_DAY;
@@ -77,16 +76,16 @@ void TimeCounter_t::GetDateTime() {
         DayCount -= YEARSIZE(year);
         year++;
     }
-    DateTime.Year = year;
+    dtNow.Year = year;
     // Calculate month
-    DateTime.Month = 0;
+    dtNow.Month = 0;
     uint32_t Leap = LEAPYEAR(year)? 1 : 0;
-    while (DayCount >= MonthDays[Leap][DateTime.Month]) {
-        DayCount -= MonthDays[Leap][DateTime.Month];
-        DateTime.Month++;
+    while (DayCount >= MonthDays[Leap][dtNow.Month]) {
+        DayCount -= MonthDays[Leap][dtNow.Month];
+        dtNow.Month++;
     }
-    DateTime.Month++; // not in [0;11], but in [1;12]
-    DateTime.Day = DayCount + 1;
+    dtNow.Month++; // not in [0;11], but in [1;12]
+    dtNow.Day = DayCount + 1;
 }
 
 void TimeCounter_t::SetDateTime(DateTime_t *PDateTime) {
@@ -104,12 +103,6 @@ void TimeCounter_t::SetDateTime(DateTime_t *PDateTime) {
     Rtc::WaitForLastTask();
     Rtc::SetCounter(seconds);
     Rtc::WaitForLastTask();
-}
-
-void TimeCounter_t::PrintDatetime() {
-    Uart.Printf("\rYear: %u; Month: %u; Day: %u; H: %u; M: %u; S: %u",
-            DateTime.Year, DateTime.Month, DateTime.Day, DateTime.H, DateTime.M, DateTime.S
-    );
 }
 
 extern "C" {

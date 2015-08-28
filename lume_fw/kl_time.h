@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include "kl_lib.h"
+#include "uart.h"
 
 #define BKPREG_CHECK        BKP->DR1     // Register to store Time_is_set variable
 
@@ -29,16 +30,16 @@ struct DateTime_t {
     int32_t Year;
     int32_t Month;
     int32_t Day;
+    void Print() const { Uart.Printf("\r%04u/%02u/%02u %02u:%02u:%02u", Year, Month, Day, H, M, S); }
 };
 
 class TimeCounter_t {
 public:
-    DateTime_t DateTime;
+    DateTime_t dtNow, dtTemp;
     void GetDateTime();
     void SetDateTime(DateTime_t *PDateTime);
     void Init();
     bool IsSet() { return (BKPREG_CHECK == 0xA5A5); }
-    void PrintDatetime();
 };
 
 extern TimeCounter_t Time;
