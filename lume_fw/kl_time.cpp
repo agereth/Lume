@@ -6,51 +6,53 @@
  */
 
 #include "kl_time.h"
+#include "uart.h"
+#include "interface.h"
+#include "main.h"
 
 TimeCounter_t Time;
 
 //#define RTC_OUTPUT_ENABLE
 
 void TimeCounter_t::Init() {
-//    RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);    // Enable PWR and BKP clocks
-//    PWR_BackupAccessCmd(ENABLE);    // Allow access to BKP Domain
-//    // Check if time is set
-//    if (!IsSet()) {
-//        TimeIsSet = false;
-//        Uart.Printf("Nothing is set\r");
-//        // ==== Rtc config ====
-//        BKP_DeInit();                   // Reset Backup Domain
-//        RCC_LSEConfig(RCC_LSE_ON);      // Enable LSE
-//        uint32_t FTmr;
-//        Delay.Reset(&FTmr);
-//        while (RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET) {    // Wait till LSE is ready
-//            if (Delay.Elapsed(&FTmr, 2700)) break;
-//        }
-//        // Check if ok
-//        if (RCC_GetFlagStatus(RCC_FLAG_LSERDY)) {
-//            Uart.Printf("32768 clk started\r");
-//            RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);     // Select LSE as RTC Clock Source
-//            RCC_RTCCLKCmd(ENABLE);                      // Enable RTC Clock
-//            RTC_WaitForSynchro();                       // Wait for RTC registers synchronization
-//            RTC_WaitForLastTask();  // Wait until last write operation on RTC registers has finished
-//            // Set RTC prescaler: set RTC period to 1sec
-//            RTC_SetPrescaler(32767);// RTC period = RTCCLK/RTC_PR = (32.768 KHz)/(32767+1)
-//            RTC_WaitForLastTask();  // Wait until last write operation on RTC registers has finished
-//            //Lcd.Printf(0,1, "32768 Ok");
-//        }
-//        else {
-//            Uart.Printf("32768 Fail\r");
-//            Lcd.Printf(0,0, "32768 Fail");
-//        }
-//        // Set default datetime values
-//        SetDateTime((DateTime_t){0,0,0, 2000,1,1});
-//        BKP_WriteBackupRegister(BKPREG_CHECK, 0xA5A5);  // Signal is set
-//    }
-//    else {
-//        Uart.Printf("Something is stored\r");
-//        RTC_WaitForSynchro();
-//        RTC_WaitForLastTask();
-//    }
+    if (!IsSet()) { // Not set
+        Uart.Printf("\rNothing is set");
+        // ==== Rtc config ====
+        BackupSpc::Reset();     // Reset Backup Domain
+        Clk.StartLSE();         // Enable LSE
+        // Let it start
+        for(int i=0; i < 99; i++) {
+            chThdSleepMilliseconds(54);
+            if(Clk.IsLseOn()) break;
+        }
+        // Check if ok
+        if(Clk.IsLseOn()) {
+            Uart.Printf("\r32768 clk started");
+            Rtc::SetClkSrcLSE();    // Select LSE as RTC Clock Source
+            Rtc::EnableClk();       // Enable RTC Clock
+            Rtc::WaitForSync();     // Wait for RTC registers synchronization
+            Rtc::WaitForLastTask();
+            // Set RTC prescaler: set RTC period to 1sec
+            Rtc::SetPrescaler(32767);// RTC period = RTCCLK/RTC_PR = (32.768 KHz)/(32767+1)
+            //Lcd.Printf(0,1, "32768 Ok");
+            BKPREG_CHECK = 0xA5A5;  // Signal is set
+        }
+        else {
+            Uart.Printf("\r32768 Failure");
+            Interface.Error("32768 Fail");
+        }
+        // Set default datetime values
+        DateTime = (DateTime_t){0,0,0, 2000,1,1};
+        SetDateTime(&DateTime);
+    }
+    else { // Set
+        Uart.Printf("\rSomething is stored");
+        Rtc::WaitForSync();
+        Rtc::WaitForLastTask();
+    }
+    // Enable every-second-IRQ
+    Rtc::EnableSecondIRQ();
+    nvicEnableVector(RTC_IRQn, CORTEX_PRIORITY_MASK(IRQ_PRIO_LOW));
 
 #ifdef RTC_OUTPUT_ENABLE
     BKP_TamperPinCmd(DISABLE);      // To output RTCCLK/64 on Tamper pin, the tamper functionality must be disabled
@@ -58,50 +60,64 @@ void TimeCounter_t::Init() {
 #endif
 }
 
-void TimeCounter_t::GetDateTime(DateTime_t *PDateTime) {
-//    uint32_t time = RTC_GetCounter();
-//    uint32_t dayclock, DayCount;
-//    uint32_t year = YEAR_MIN;
-//
-//    // Calculate time
-//    dayclock = time % SECS_DAY;
-//    PDateTime->S = dayclock % 60;
-//    PDateTime->M = (dayclock % 3600) / 60;
-//    PDateTime->H = dayclock / 3600;
-//
-//    // Calculate year
-//    DayCount = time / SECS_DAY;
-//    while(DayCount >= YEARSIZE(year)) {
-//        DayCount -= YEARSIZE(year);
-//        year++;
-//    }
-//    PDateTime->Year = year;
-//    // Calculate month
-//    PDateTime->Month = 0;
-//    uint32_t Leap = LEAPYEAR(year)? 1 : 0;
-//    while (DayCount >= MonthDays[Leap][PDateTime->Month]) {
-//        DayCount -= MonthDays[Leap][PDateTime->Month];
-//        PDateTime->Month++;
-//    }
-//    PDateTime->Month++; // not in [0;11], but in [1;12]
-//    PDateTime->Day = DayCount + 1;
+void TimeCounter_t::GetDateTime() {
+    uint32_t time = ((uint32_t)RTC->CNTH << 16) | ((uint32_t)RTC->CNTL);
+    uint32_t dayclock, DayCount;
+    uint32_t year = YEAR_MIN;
+
+    // Calculate time
+    dayclock = time % SECS_DAY;
+    DateTime.S = dayclock % 60;
+    DateTime.M = (dayclock % 3600) / 60;
+    DateTime.H = dayclock / 3600;
+
+    // Calculate year
+    DayCount = time / SECS_DAY;
+    while(DayCount >= YEARSIZE(year)) {
+        DayCount -= YEARSIZE(year);
+        year++;
+    }
+    DateTime.Year = year;
+    // Calculate month
+    DateTime.Month = 0;
+    uint32_t Leap = LEAPYEAR(year)? 1 : 0;
+    while (DayCount >= MonthDays[Leap][DateTime.Month]) {
+        DayCount -= MonthDays[Leap][DateTime.Month];
+        DateTime.Month++;
+    }
+    DateTime.Month++; // not in [0;11], but in [1;12]
+    DateTime.Day = DayCount + 1;
 }
 
-void TimeCounter_t::SetDateTime(DateTime_t ADateTime) {
+void TimeCounter_t::SetDateTime(DateTime_t *PDateTime) {
     uint32_t DayCount=0, seconds=0;
     // Count days elapsed since YEAR_MIN
-    for(int32_t y=YEAR_MIN; y<ADateTime.Year; y++)
-        DayCount += YEARSIZE(y);
+    for(int32_t y=YEAR_MIN; y<PDateTime->Year; y++) DayCount += YEARSIZE(y);
     // Count days in monthes elapsed
-    uint32_t Leap = LEAPYEAR(ADateTime.Year)? 1 : 0;
-    for(int32_t m=0; m < ADateTime.Month-1; m++)
-        DayCount += MonthDays[Leap][m];
+    uint32_t Leap = LEAPYEAR(PDateTime->Year)? 1 : 0;
+    for(int32_t m=0; m < PDateTime->Month-1; m++) DayCount += MonthDays[Leap][m];
 
-    DayCount += ADateTime.Day-1;
-    seconds = ADateTime.H*3600 + ADateTime.M*60 + ADateTime.S;
+    DayCount += PDateTime->Day-1;
+    seconds = PDateTime->H*3600 + PDateTime->M*60 + PDateTime->S;
     seconds += DayCount * SECS_DAY;
 
-//    RTC_WaitForLastTask();
-//    RTC_SetCounter(seconds);
-//    RTC_WaitForLastTask();
+    Rtc::WaitForLastTask();
+    Rtc::SetCounter(seconds);
+    Rtc::WaitForLastTask();
 }
+
+void TimeCounter_t::PrintDatetime() {
+    Uart.Printf("\rYear: %u; Month: %u; Day: %u; H: %u; M: %u; S: %u",
+            DateTime.Year, DateTime.Month, DateTime.Day, DateTime.H, DateTime.M, DateTime.S
+    );
+}
+
+extern "C" {
+CH_IRQ_HANDLER(RTC_IRQHandler) {
+    CH_IRQ_PROLOGUE();
+    Rtc::ClearSecondIRQFlag();
+//    Uart.PrintfI("\rRtcIrq");
+    App.SignalEvtI(EVTMSK_SECOND);
+    CH_IRQ_EPILOGUE();
+}
+} // extern c

@@ -208,26 +208,70 @@ static inline void Delay_ms(uint32_t Ams) {
 #define REBOOT()                SCB_AIRCR = (AIRCR_VECTKEY | 0x04)
 
 #if defined STM32F2XX || defined STM32F4XX || defined STM32F10X_LD_VL
-static inline void EnableBackupAccess() {
+namespace BackupSpc {
+static inline void EnableAccess() {
     rccEnablePWRInterface(FALSE);
     rccEnableBKPInterface(FALSE);
     PWR->CR |= PWR_CR_DBP;
 }
-static inline void DisableBackupAccess() {
-    PWR->CR &= ~PWR_CR_DBP;
-}
+static inline void DisableAccess() { PWR->CR &= ~PWR_CR_DBP; }
 
-// RegN = 0...19
-static inline uint32_t ReadBackupRegister(uint32_t RegN) {
-    volatile uint32_t tmp = RTC_BASE + 0x50 + (RegN * 4);
-    return (*(volatile uint32_t *)tmp);
+static inline void Reset() {
+    RCC->BDCR |=  RCC_BDCR_BDRST;
+    RCC->BDCR &= ~RCC_BDCR_BDRST;
 }
-
-static inline void WriteBackupRegister(uint32_t RegN, uint32_t Data) {
-    volatile uint32_t tmp = RTC_BASE + 0x50 + (RegN * 4);
-    *(volatile uint32_t *)tmp = Data;
-}
+} // namespace
 #endif // STM32F2xx/F4xx
+#endif
+
+#if 1 // ============================= RTC =====================================
+namespace Rtc {
+#if defined STM32F10X_LD_VL
+// Wait until the RTC registers (RTC_CNT, RTC_ALR and RTC_PRL) are synchronized with RTC APB clock.
+// Required after an APB reset or an APB clock stop.
+static inline void WaitForSync() {
+    RTC->CRL &= (uint16_t)~RTC_CRL_RSF; //Clear RSF flag
+    while((RTC->CRL & RTC_CRL_RSF) == 0);
+}
+
+// Waits until last write operation on RTC registers has finished.
+// This function must be called before any write to RTC registers.
+static inline void WaitForLastTask() { while((RTC->CRL & RTC_CRL_RTOFF) == 0); }
+
+static inline void SetClkSrcLSE() {
+    RCC->BDCR &= ~RCC_BDCR_RTCSEL;  // Clear bits
+    RCC->BDCR |=  RCC_BDCR_RTCSEL_LSE;
+}
+static inline void EnableClk() { RCC->BDCR |= RCC_BDCR_RTCEN; }
+
+#define RTC_LSB_MASK     ((uint32_t)0x0000FFFF)  // RTC LSB Mask
+#define PRLH_MSB_MASK    ((uint32_t)0x000F0000)  // RTC Prescaler MSB Mask
+static inline void EnterConfigMode() { RTC->CRL |= RTC_CRL_CNF; }
+static inline void ExitConfigMode()  { RTC->CRL &= ~((uint16_t)RTC_CRL_CNF); }
+
+static inline void SetPrescaler(uint32_t PrescalerValue) {
+    EnterConfigMode();
+    RTC->PRLH = (PrescalerValue & PRLH_MSB_MASK) >> 16;
+    RTC->PRLL = (PrescalerValue & RTC_LSB_MASK);
+    ExitConfigMode();
+}
+
+static inline void SetCounter(uint32_t CounterValue) {
+    EnterConfigMode();
+    RTC->CNTH = CounterValue >> 16;
+    RTC->CNTL = (CounterValue & RTC_LSB_MASK);
+    ExitConfigMode();
+}
+
+static inline void EnableSecondIRQ() {
+    WaitForLastTask();
+    RTC->CRH |= RTC_CRH_SECIE;
+}
+static inline void ClearSecondIRQFlag() {
+    RTC->CRL &= ~RTC_CRL_SECF;
+}
+#endif
+} // namespace
 #endif
 
 #if 1 // =========================== HW Timers =================================

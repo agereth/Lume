@@ -13,7 +13,7 @@
 
 #define BKPREG_CHECK        BKP->DR1     // Register to store Time_is_set variable
 
-#define SECS_DAY            (24L * 60L * 60L)
+#define SECS_DAY            (24UL * 60UL * 60UL)
 #define YEAR_MIN            2000
 #define YEAR_MAX            2099
 #define LEAPYEAR(year)      (!((year) % 4) and (((year) % 100) or !((year) % 400)))
@@ -33,22 +33,12 @@ struct DateTime_t {
 
 class TimeCounter_t {
 public:
-    bool TimeIsSet;
-    void GetDateTime(DateTime_t *PDateTime);
-    void SetDateTime(DateTime_t ADateTime);
+    DateTime_t DateTime;
+    void GetDateTime();
+    void SetDateTime(DateTime_t *PDateTime);
     void Init();
-//    bool IsSet() {return (BKP_ReadBackupRegister(BKPREG_CHECK) == 0xA5A5); }
-    // Delay utils
-    bool SecElapsed(uint32_t *PTimer, uint32_t ASeconds) {
-//        uint32_t t = RTC_GetCounter();
-//        if ((t - *PTimer) >= ASeconds) {
-//            *PTimer = t; // Reset delay
-//            return true;
-//        }
-//        else
-            return false;
-    }
-//    void Bypass(uint32_t *AVar, const uint32_t ADelay) { *AVar = RTC_GetCounter() - ADelay; }
+    bool IsSet() { return (BKPREG_CHECK == 0xA5A5); }
+    void PrintDatetime();
 };
 
 extern TimeCounter_t Time;

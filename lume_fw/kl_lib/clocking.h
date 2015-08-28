@@ -370,6 +370,18 @@ public:
     }
     void LsiDisable() { RCC->CSR &= RCC_CSR_LSION; }
     void PrintFreqs();
+    // LSE
+    void StartLSE() {
+        RCC->APB1ENR |= RCC_APB1ENR_PWREN;
+        PWR->CR |= PWR_CR_DBP;
+        RCC->BDCR |= RCC_BDCR_LSEON;
+    }
+    bool IsLseOn() { return (RCC->BDCR & RCC_BDCR_LSERDY); }
+    void DisableLSE() {
+        RCC->APB1ENR |= RCC_APB1ENR_PWREN;
+        PWR->CR |= PWR_CR_DBP;
+        RCC->BDCR &= ~RCC_BDCR_LSEON;
+    }
 };
 
 extern Clk_t Clk;

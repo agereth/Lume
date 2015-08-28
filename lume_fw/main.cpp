@@ -12,6 +12,7 @@
 #include "hal.h"
 #include "main.h"
 #include "interface.h"
+#include "kl_time.h"
 
 App_t App;
 
@@ -34,8 +35,11 @@ int main(void) {
     Lcd.Init();
     // LCD brightness control: remap Timer15 to PB14 & PB15
     AFIO->MAPR2 |= 0x00000001;
-    Interface.Reset();
 
+    // Time and backup space
+    BackupSpc::EnableAccess();
+    Interface.Reset();
+    Time.Init();
     // ==== Main cycle ====
     App.ITask();
 }
@@ -46,6 +50,13 @@ void App_t::ITask() {
         uint32_t EvtMsk = chEvtWaitAny(ALL_EVENTS);
         if(EvtMsk & EVTMSK_KEY) {
 
+        }
+
+        if(EvtMsk & EVTMSK_SECOND) {
+//            Uart.Printf("\rNewSecond");
+            Time.GetDateTime();
+//            Time.PrintDatetime();
+            Interface.DisplayTime();
         }
     } // while true
 }

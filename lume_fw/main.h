@@ -12,7 +12,7 @@
 #include "evt_mask.h"
 
 #define APP_NAME        "Lume"
-#define APP_VERSION     "v2.0"
+#define APP_VERSION     __DATE__ " " __TIME__  //"v2.0"
 
 
 class App_t {

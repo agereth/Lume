@@ -10,6 +10,7 @@
 
 #include "lcd1200.h"
 #include "main.h"
+#include "kl_time.h"
 
 class Interface_t {
 public:
@@ -22,6 +23,12 @@ public:
 //        Lcd.Symbols(0, 5, LineHorizDouble, 6, LineHorizDoubleUp, 1, LineHorizDouble, 9, 0);
 //        for(int i=0; i<5; i++) Lcd.Symbols(6, i, ((i == 2)? LineVertDoubleLeft : LineVertDouble), 1,0);
 //        Lcd.Symbols(0, 2, LineHorizDouble, 6, 0);
+    }
+    void DisplayTime() {
+        Lcd.Printf(7, 2, "%02u:%02u:%02u", Time.DateTime.H, Time.DateTime.M, Time.DateTime.S);
+        Lcd.Printf(7, 4, "%04u", Time.DateTime.Year);
+        Lcd.Printf(7, 5, "%02u", Time.DateTime.Month);
+        Lcd.Printf(7, 6, "%02u", Time.DateTime.Day);
     }
 
     void Error(const char* msg) { Lcd.PrintfInverted(0, 2, "%S", msg); }
