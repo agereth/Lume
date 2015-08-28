@@ -90,7 +90,11 @@ public:
     uint16_t Brightness;
     void Init();
     void Shutdown();
-    void Backlight(uint8_t ABrightness)  { BckLt.Set(ABrightness); }
+    void Backlight(uint8_t ABrightness)  {
+//        if(ABrightness) PinSet(GPIOB, 15);
+//        else PinClear(GPIOB, 15);
+         BckLt.Set(ABrightness);
+    }
     // High-level
     void DrawChar(uint8_t AChar, Invert_t AInvert);
     void Printf(const uint8_t x, const uint8_t y, const char *S, ...);

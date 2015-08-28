@@ -25,10 +25,41 @@ public:
 //        Lcd.Symbols(0, 2, LineHorizDouble, 6, 0);
     }
     void DisplayTime() {
-        Lcd.Printf(7, 2, "%02u:%02u:%02u", Time.dtNow.H, Time.dtNow.M, Time.dtNow.S);
-        Lcd.Printf(7, 4, "%04u", Time.dtNow.Year);
-        Lcd.Printf(7, 5, "%02u", Time.dtNow.Month);
-        Lcd.Printf(7, 6, "%02u", Time.dtNow.Day);
+        Lcd.Printf(7, 2, "%02u:%02u:%02u", App.dtNow.H, App.dtNow.M, App.dtNow.S);
+        Lcd.Printf(7, 4, "%04u", App.dtNow.Year);
+        Lcd.Printf(7, 5, "%02u", App.dtNow.Month);
+        Lcd.Printf(7, 6, "%02u", App.dtNow.Day);
+    }
+
+    void DisplaySelected() {
+        switch(App.Selected) {
+            case selH:
+                Lcd.PrintfInverted(7, 2, "%02u", App.dtNow.H);
+                break;
+            case selM:
+                Lcd.Printf(7, 2, "%02u", App.dtNow.H);
+                Lcd.PrintfInverted(10, 2, "%02u", App.dtNow.M);
+                break;
+            case selS:
+                Lcd.Printf(10, 2, "%02u", App.dtNow.M);
+                Lcd.PrintfInverted(13, 2, "%02u", App.dtNow.S);
+                break;
+            case selYear:
+                Lcd.Printf(13, 2, "%02u", App.dtNow.S);
+                Lcd.PrintfInverted(7, 4, "%04u", App.dtNow.Year);
+                break;
+            case selMonth:
+                Lcd.Printf(7, 4, "%04u", App.dtNow.Year);
+                Lcd.PrintfInverted(7, 5, "%02u", App.dtNow.Month);
+                break;
+            case selDay:
+                Lcd.Printf(7, 5, "%02u", App.dtNow.Month);
+                Lcd.PrintfInverted(7, 6, "%02u", App.dtNow.Day);
+                break;
+            case selNone:
+                Lcd.Printf(7, 6, "%02u", App.dtNow.Day);
+                break;
+        } // switch
     }
 
     void Error(const char* msg) { Lcd.PrintfInverted(0, 2, "%S", msg); }

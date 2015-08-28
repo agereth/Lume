@@ -41,8 +41,8 @@ void TimeCounter_t::Init() {
             Interface.Error("32768 Fail");
         }
         // Set default datetime values
-        dtNow = (DateTime_t){0,0,0, 2000,1,1};
-        SetDateTime(&dtNow);
+        DateTime_t dt = (DateTime_t){0,0,0, 2000,1,1};
+        SetDateTime(&dt);
     }
     else { // Set
         Uart.Printf("\rSomething is stored");
@@ -59,16 +59,16 @@ void TimeCounter_t::Init() {
 #endif
 }
 
-void TimeCounter_t::GetDateTime() {
+void TimeCounter_t::GetDateTime(DateTime_t *PDateTime) {
     uint32_t time = ((uint32_t)RTC->CNTH << 16) | ((uint32_t)RTC->CNTL);
     uint32_t dayclock, DayCount;
     uint32_t year = YEAR_MIN;
 
     // Calculate time
     dayclock = time % SECS_DAY;
-    dtNow.S = dayclock % 60;
-    dtNow.M = (dayclock % 3600) / 60;
-    dtNow.H = dayclock / 3600;
+    PDateTime->S = dayclock % 60;
+    PDateTime->M = (dayclock % 3600) / 60;
+    PDateTime->H = dayclock / 3600;
 
     // Calculate year
     DayCount = time / SECS_DAY;
@@ -76,16 +76,16 @@ void TimeCounter_t::GetDateTime() {
         DayCount -= YEARSIZE(year);
         year++;
     }
-    dtNow.Year = year;
+    PDateTime->Year = year;
     // Calculate month
-    dtNow.Month = 0;
+    PDateTime->Month = 0;
     uint32_t Leap = LEAPYEAR(year)? 1 : 0;
-    while (DayCount >= MonthDays[Leap][dtNow.Month]) {
-        DayCount -= MonthDays[Leap][dtNow.Month];
-        dtNow.Month++;
+    while (DayCount >= MonthDays[Leap][PDateTime->Month]) {
+        DayCount -= MonthDays[Leap][PDateTime->Month];
+        PDateTime->Month++;
     }
-    dtNow.Month++; // not in [0;11], but in [1;12]
-    dtNow.Day = DayCount + 1;
+    PDateTime->Month++; // not in [0;11], but in [1;12]
+    PDateTime->Day = DayCount + 1;
 }
 
 void TimeCounter_t::SetDateTime(DateTime_t *PDateTime) {

@@ -131,7 +131,7 @@ void __attribute__ ((weak)) _init(void)  {}
 }
 #endif
 
-#if 0 // ======================= Virtual Timer =================================
+#if 1 // ======================= Virtual Timer =================================
 #define VIRTUAL_TIMER_KL    TRUE
 // Universal VirtualTimer callback
 void TmrVirtualCallback(void *p);
@@ -166,6 +166,10 @@ public:
         chSysUnlock();
     }
     void Stop() { chVTReset(&Tmr); }
+    void Restart() {
+        chVTReset(&Tmr);
+        Start();
+    }
     void CallbackHandler() {    // Call it inside callback
         chSysLockFromIsr();
         chEvtSignalI(PThread, EvtMsk);
@@ -186,7 +190,7 @@ static inline void chVTStartIfNotStarted(VirtualTimer *vtp, systime_t time, even
 */
 #endif
 
-#if 0 // =========================== Time ======================================
+#if 1 // =========================== Time ======================================
 static inline bool TimeElapsed(systime_t *PSince, uint32_t Delay_ms) {
     chSysLock();
     bool Rslt = (systime_t)(chTimeNow() - *PSince) > MS2ST(Delay_ms);
@@ -281,7 +285,11 @@ enum TmrSlaveMode_t {smDisable=0, smEncoder1=1, smEncoder2=2, smEncoder3=3, smRe
 enum ExtTrigPol_t {etpInverted=0x8000, etpNotInverted=0x0000};
 enum ExtTrigPsc_t {etpOff=0x0000, etpDiv2=0x1000, etpDiv4=0x2000, etpDiv8=0x30000};
 
+#if defined STM32F10X_LD_VL
+#define TMR_PCCR(PTimer, AChannel)  ((uint16_t*)(&PTimer->CCR1 + ((AChannel-1) * 2)))
+#else
 #define TMR_PCCR(PTimer, AChannel)  ((uint32_t*)(&PTimer->CCR1 + AChannel-1))
+#endif
 #define TMR_ENABLE(PTimer)          PTimer->CR1 |=  TIM_CR1_CEN;
 #define TMR_DISABLE(PTimer)         PTimer->CR1 &= ~TIM_CR1_CEN;
 
