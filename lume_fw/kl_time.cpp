@@ -8,13 +8,14 @@
 #include "kl_time.h"
 #include "interface.h"
 #include "main.h"
+#include "BackupRegSettings.h"
 
 TimeCounter_t Time;
 
 //#define RTC_OUTPUT_ENABLE
 
 void TimeCounter_t::Init() {
-    if (!IsSet()) { // Not set
+    if (!IsStored()) { // Not set
         Uart.Printf("\rNothing is set");
         // ==== Rtc config ====
         BackupSpc::Reset();     // Reset Backup Domain
@@ -34,7 +35,7 @@ void TimeCounter_t::Init() {
             // Set RTC prescaler: set RTC period to 1sec
             Rtc::SetPrescaler(32767);// RTC period = RTCCLK/RTC_PR = (32.768 KHz)/(32767+1)
             //Lcd.Printf(0,1, "32768 Ok");
-            BKPREG_CHECK = 0xA5A5;  // Signal is set
+            SetStored();
         }
         else {
             Uart.Printf("\r32768 Failure");
@@ -45,7 +46,7 @@ void TimeCounter_t::Init() {
         SetDateTime(&dt);
     }
     else { // Set
-        Uart.Printf("\rSomething is stored");
+        Uart.Printf("\rTime is stored");
         Rtc::WaitForSync();
         Rtc::WaitForLastTask();
     }

@@ -17,18 +17,16 @@ public:
     void Reset() {
         Lcd.Printf(11, 0, APP_VERSION);
         Lcd.Printf(0, 2, "Время:");
-        Lcd.Printf(0, 4, "Год:");
-        Lcd.Printf(0, 5, "Месяц:");
-        Lcd.Printf(0, 6, "День:");
-//        Lcd.Symbols(0, 5, LineHorizDouble, 6, LineHorizDoubleUp, 1, LineHorizDouble, 9, 0);
-//        for(int i=0; i<5; i++) Lcd.Symbols(6, i, ((i == 2)? LineVertDoubleLeft : LineVertDouble), 1,0);
-//        Lcd.Symbols(0, 2, LineHorizDouble, 6, 0);
+        Lcd.Printf(0, 3, "Год:");
+        Lcd.Printf(0, 4, "Месяц:");
+        Lcd.Printf(0, 5, "День:");
+        Lcd.Printf(0, 7, "Яркость:");
     }
     void DisplayTime() {
         Lcd.Printf(7, 2, "%02u:%02u:%02u", App.dtNow.H, App.dtNow.M, App.dtNow.S);
-        Lcd.Printf(7, 4, "%04u", App.dtNow.Year);
-        Lcd.Printf(7, 5, "%02u", App.dtNow.Month);
-        Lcd.Printf(7, 6, "%02u", App.dtNow.Day);
+        Lcd.Printf(7, 3, "%04u", App.dtNow.Year);
+        Lcd.Printf(7, 4, "%02u", App.dtNow.Month);
+        Lcd.Printf(7, 5, "%02u", App.dtNow.Day);
     }
 
     void DisplaySelected() {
@@ -46,21 +44,23 @@ public:
                 break;
             case selYear:
                 Lcd.Printf(13, 2, "%02u", App.dtNow.S);
-                Lcd.PrintfInverted(7, 4, "%04u", App.dtNow.Year);
+                Lcd.PrintfInverted(7, 3, "%04u", App.dtNow.Year);
                 break;
             case selMonth:
-                Lcd.Printf(7, 4, "%04u", App.dtNow.Year);
-                Lcd.PrintfInverted(7, 5, "%02u", App.dtNow.Month);
+                Lcd.Printf(7, 3, "%04u", App.dtNow.Year);
+                Lcd.PrintfInverted(7, 4, "%02u", App.dtNow.Month);
                 break;
             case selDay:
-                Lcd.Printf(7, 5, "%02u", App.dtNow.Month);
-                Lcd.PrintfInverted(7, 6, "%02u", App.dtNow.Day);
+                Lcd.Printf(7, 4, "%02u", App.dtNow.Month);
+                Lcd.PrintfInverted(7, 5, "%02u", App.dtNow.Day);
                 break;
             case selNone:
-                Lcd.Printf(7, 6, "%02u", App.dtNow.Day);
+                Lcd.Printf(7, 5, "%02u", App.dtNow.Day);
                 break;
         } // switch
     }
+
+    void DisplayBrightness() { Lcd.Printf(9, 7, "%u%%  ", App.Brightness); }
 
     void Error(const char* msg) { Lcd.PrintfInverted(0, 2, "%S", msg); }
 };

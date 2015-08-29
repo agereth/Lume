@@ -12,7 +12,7 @@
 #include "hal.h"
 #include "main.h"
 #include "interface.h"
-//#include "SimpleSensors.h"
+#include "stones.h"
 #include "buttons.h"
 
 App_t App;
@@ -44,6 +44,8 @@ int main(void) {
     Time.Init();
     Time.GetDateTime(&App.dtNow);
 
+    Stones.Init();
+
     PinSensors.Init();
     // LCD off and save settings timeout
     App.TmrBtnpressTimeout.Init(chThdSelf(), MS2ST(BTNPRESS_TIMEOUT_MS), EVTMSK_BTNPRESS_TIMEOUT, tvtOneShot);
@@ -71,6 +73,8 @@ void App_t::ITask() {
                 Time.GetDateTime(&dtNow);
 //            Time.dtNow.Print();
                 Interface.DisplayTime();
+                Interface.DisplayBrightness();
+                Time2Stones();
             }
         }
 
@@ -124,4 +128,27 @@ void App_t::BtnHandler(uint8_t Btn) {
             Interface.DisplaySelected();
             break;
     } // switch btn
+}
+
+void App_t::Time2Stones() {
+    static int32_t Hour, HMPrev;
+    // Check if hour changed
+    if(dtNow.H != Hour) {
+        Stones.FadeOut(Hour);
+        Hour = dtNow.H;
+        Stones.FadeIn(Hour);
+    }
+    // Check if hyperminute changed
+    int32_t S = dtNow.M * 60 + dtNow.S;
+    int32_t HMNow = S / 150;   // 1 HyperMinute == 2.5 Minutes == 150 s
+    if(HMNow != HMPrev) {
+        // Check if odd
+        if(HMNow & 0x01) { // 1,3,5,7...
+            Stones.FadeIn((HMNow / 2) + 1);
+        }
+        else {
+            Stones.FadeOut(HMPrev);
+        }
+        HMPrev = HMNow;
+    }
 }

@@ -13,7 +13,7 @@
 #include "kl_time.h"
 
 #define APP_NAME        "Lume"
-#define APP_VERSION     __DATE__ " " __TIME__  //"v2.0"
+#define APP_VERSION     "v2.0"
 
 #define BTNPRESS_TIMEOUT_MS     3600
 
@@ -23,9 +23,11 @@ class App_t {
 private:
     Thread *PThread;
     void BtnHandler(uint8_t Btn);
+    void Time2Stones();
 public:
     TmrVirtual_t TmrBtnpressTimeout;
     DateTime_t dtNow;
+    uint8_t Brightness = 100;
     // Eternal methods
     void InitThread() { PThread = chThdSelf(); }
     void SignalEvt(eventmask_t Evt) {

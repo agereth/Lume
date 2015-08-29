@@ -12,8 +12,6 @@
 #include "kl_lib.h"
 #include "uart.h"
 
-#define BKPREG_CHECK        BKP->DR1     // Register to store Time_is_set variable
-
 #define SECS_DAY            (24UL * 60UL * 60UL)
 #define YEAR_MIN            2000
 #define YEAR_MAX            2099
@@ -60,7 +58,6 @@ public:
     void GetDateTime(DateTime_t *PDateTime);
     void SetDateTime(DateTime_t *PDateTime);
     void Init();
-    bool IsSet() { return (BKPREG_CHECK == 0xA5A5); }
 };
 
 extern TimeCounter_t Time;
