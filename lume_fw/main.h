@@ -17,17 +17,50 @@
 
 #define BTNPRESS_TIMEOUT_MS     3600
 
-enum Selected_t {selNone, selH, selM, selS, selYear, selMonth, selDay};
+// Brightness in percent to brightness in PWM
+struct BrtPercentPwm_t {
+    uint8_t Percent, Pwm;
+};
+const BrtPercentPwm_t BrtPercentPwmTable[] = {
+        {1,1},
+        {5,2},
+        {10,4},
+        {15,7},
+        {20,11},
+        {25,17},
+        {30,24},
+        {35,32},
+        {40,41},
+        {45,52},
+        {50,64},
+        {55,77},
+        {60,91},
+        {65,107},
+        {70,124},
+        {75,142},
+        {80,161},
+        {85,182},
+        {90,204},
+        {95,227},
+        {100,255},
+};
+#define BRT_CNT         countof(BrtPercentPwmTable)
+#define BRIGHTNESS_TOP  100
+
+enum Selected_t {selNone, selH, selM, selS, selYear, selMonth, selDay, selBrightness};
 
 class App_t {
 private:
     Thread *PThread;
     void BtnHandler(uint8_t Btn);
     void Time2Stones();
+    uint16_t BrightnessPercent;
+    uint8_t BrightnessPercent2Pwm(uint8_t Brt);
+    void IncBrightness();
+    void DecBrightness();
 public:
     TmrVirtual_t TmrBtnpressTimeout;
     DateTime_t dtNow;
-    uint8_t Brightness = 100;
     // Eternal methods
     void InitThread() { PThread = chThdSelf(); }
     void SignalEvt(eventmask_t Evt) {
