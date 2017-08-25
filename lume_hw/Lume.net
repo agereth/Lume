@@ -1,1039 +1,864 @@
-# EESchema Netlist Version 1.1 created  24/09/2012 01:36:52
-(
- ( /505F5504 $noname  XL10 CONN_1 {Lib=CONN_1}
-  (    1 GND )
- )
- ( /505F47CF $noname  HOLE3 HOLE_METALLED {Lib=HOLE_METALLED}
-  (  Hle GND )
- )
- ( /505F47CE $noname  HOLE4 HOLE_METALLED {Lib=HOLE_METALLED}
-  (  Hle GND )
- )
- ( /505F47CA $noname  HOLE2 HOLE_METALLED {Lib=HOLE_METALLED}
-  (  Hle GND )
- )
- ( /505F47BD $noname  HOLE1 HOLE_METALLED {Lib=HOLE_METALLED}
-  (  Hle GND )
- )
- ( /505F3531 CAP_0603  C13 1u {Lib=C}
-  (    1 +3.3V )
-  (    2 GND )
- )
- ( /505F3528 CAP_0603  C12 1u {Lib=C}
-  (    1 +5V )
-  (    2 GND )
- )
- ( /505F350E RES_0603  R34 4k7 {Lib=R}
-  (    1 +3.3V )
-  (    2 /I2C_SDA )
- )
- ( /505F34FE RES_0603  R32 4k7 {Lib=R}
-  (    1 +3.3V )
-  (    2 /I2C_SCL )
- )
- ( /505F33D6 $noname  FU1 SOLDERFUSE {Lib=SOLDERFUSE}
-  (    1 /FU0 )
-  (    2 GND )
- )
- ( /505F33D5 $noname  FU2 SOLDERFUSE {Lib=SOLDERFUSE}
-  (    1 /FU1 )
-  (    2 GND )
- )
- ( /505F33D0 $noname  FU4 SOLDERFUSE {Lib=SOLDERFUSE}
-  (    1 /FU3 )
-  (    2 GND )
- )
- ( /505F33CF $noname  FU3 SOLDERFUSE {Lib=SOLDERFUSE}
-  (    1 /FU2 )
-  (    2 GND )
- )
- ( /505F32EA $noname  XL1 CONN_3 {Lib=CONN_3}
-  (    1 +3.3V )
-  (    2 N-000107 )
-  (    3 GND )
- )
- ( /505F2DB8 SMA  D1 SS14 {Lib=D_SHOTTKY}
-  (    A N-000108 )
-  (    C +5V )
- )
- ( /505F2D90 $noname  XL8 CONN_2 {Lib=CONN_2}
-  (    1 N-000108 )
-  (    2 GND )
- )
- ( /505F2C91 $noname  XL3 CONN_NOKIA_LCD {Lib=CONN_NOKIA_LCD}
-  (    1 /LCD_SCLK )
-  (    2 /LCD_SDA )
-  (    3 GND )
-  (    4 /LCD_XCS )
-  (    5 /LCD_XRES )
-  (    6 /LCD_BCKLT )
-  (    7 GND )
-  (    8 ? )
-  (    9 +3.3V )
-  (   10 +3.3V )
- )
- ( /505F2B12 $noname  DD3 PCA9635 {Lib=PCA9635}
-  (    1 +3.3V )
-  (    2 +3.3V )
-  (    3 GND )
-  (    4 +3.3V )
-  (    5 GND )
-  (    6 N-000031 )
-  (    7 N-000033 )
-  (    8 N-000035 )
-  (    9 N-000034 )
-  (   10 N-000040 )
-  (   11 N-000039 )
-  (   12 N-000036 )
-  (   13 N-000037 )
-  (   14 GND )
-  (   15 N-000025 )
-  (   16 N-000023 )
-  (   17 N-000019 )
-  (   18 N-000021 )
-  (   19 N-000041 )
-  (   20 N-000043 )
-  (   21 N-000017 )
-  (   22 N-000015 )
-  (   23 /LED_OE )
-  (   24 +3.3V )
-  (   25 GND )
-  (   26 /I2C_SCL )
-  (   27 /I2C_SDA )
-  (   28 +3.3V )
- )
- ( /505F2B08 CAP_0603  C10 4.7u {Lib=C}
-  (    1 +3.3V )
-  (    2 GND )
- )
- ( /505F2B06 CAP_0603  C11 0.1u {Lib=C}
-  (    1 +3.3V )
-  (    2 GND )
- )
- ( /505F2B04 RES_0603  R17 100R {Lib=R}
-  (    1 N-000031 )
-  (    2 N-000032 )
- )
- ( /505F2B03 RES_0603  R18 100R {Lib=R}
-  (    1 N-000033 )
-  (    2 N-000027 )
- )
- ( /505F2B02 RES_0603  R20 100R {Lib=R}
-  (    1 N-000034 )
-  (    2 N-000029 )
- )
- ( /505F2B01 RES_0603  R19 100R {Lib=R}
-  (    1 N-000035 )
-  (    2 N-000028 )
- )
- ( /505F2B00 RES_0603  R23 100R {Lib=R}
-  (    1 N-000036 )
-  (    2 N-000110 )
- )
- ( /505F2AFF RES_0603  R24 100R {Lib=R}
-  (    1 N-000037 )
-  (    2 N-000038 )
- )
- ( /505F2AFE RES_0603  R22 100R {Lib=R}
-  (    1 N-000039 )
-  (    2 N-000030 )
- )
- ( /505F2AFD RES_0603  R21 100R {Lib=R}
-  (    1 N-000040 )
-  (    2 N-000111 )
- )
- ( /505F2AFC RES_0603  R29 100R {Lib=R}
-  (    1 N-000041 )
-  (    2 N-000042 )
- )
- ( /505F2AFB RES_0603  R30 100R {Lib=R}
-  (    1 N-000043 )
-  (    2 N-000026 )
- )
- ( /505F2AFA RES_0603  R33 100R {Lib=R}
-  (    1 N-000015 )
-  (    2 N-000016 )
- )
- ( /505F2AF9 RES_0603  R31 100R {Lib=R}
-  (    1 N-000017 )
-  (    2 N-000018 )
- )
- ( /505F2AF8 RES_0603  R27 100R {Lib=R}
-  (    1 N-000019 )
-  (    2 N-000020 )
- )
- ( /505F2AF7 RES_0603  R28 100R {Lib=R}
-  (    1 N-000021 )
-  (    2 N-000022 )
- )
- ( /505F2AF6 RES_0603  R26 100R {Lib=R}
-  (    1 N-000023 )
-  (    2 N-000024 )
- )
- ( /505F2AF5 RES_0603  R25 100R {Lib=R}
-  (    1 N-000025 )
-  (    2 N-000096 )
- )
- ( /505F2AF4 $noname  XL5 CONN_10 {Lib=CONN_10}
-  (    1 N-000032 )
-  (    2 N-000027 )
-  (    3 N-000028 )
-  (    4 N-000029 )
-  (    5 N-000111 )
-  (    6 N-000030 )
-  (    7 N-000110 )
-  (    8 N-000038 )
-  (    9 +5V )
-  (   10 +5V )
- )
- ( /505F2AF1 $noname  XL6 CONN_10 {Lib=CONN_10}
-  (    1 N-000016 )
-  (    2 N-000018 )
-  (    3 N-000026 )
-  (    4 N-000042 )
-  (    5 N-000022 )
-  (    6 N-000020 )
-  (    7 N-000024 )
-  (    8 N-000096 )
-  (    9 +5V )
-  (   10 +5V )
- )
- ( /505F2AC2 $noname  XL4 CONN_10 {Lib=CONN_10}
-  (    1 N-000005 )
-  (    2 N-000004 )
-  (    3 N-000006 )
-  (    4 N-000095 )
-  (    5 N-000101 )
-  (    6 N-000008 )
-  (    7 N-000009 )
-  (    8 N-000097 )
-  (    9 +5V )
-  (   10 +5V )
- )
- ( /505F2A22 $noname  XL2 CONN_10 {Lib=CONN_10}
-  (    1 N-000010 )
-  (    2 N-000003 )
-  (    3 N-000001 )
-  (    4 N-000007 )
-  (    5 N-000012 )
-  (    6 N-000011 )
-  (    7 N-000013 )
-  (    8 N-000002 )
-  (    9 +5V )
-  (   10 +5V )
- )
- ( /505F288D RES_0603  R9 100R {Lib=R}
-  (    1 N-000076 )
-  (    2 N-000097 )
- )
- ( /505F288C RES_0603  R10 100R {Lib=R}
-  (    1 N-000055 )
-  (    2 N-000009 )
- )
- ( /505F288B RES_0603  R12 100R {Lib=R}
-  (    1 N-000059 )
-  (    2 N-000101 )
- )
- ( /505F288A RES_0603  R11 100R {Lib=R}
-  (    1 N-000057 )
-  (    2 N-000008 )
- )
- ( /505F2889 RES_0603  R15 100R {Lib=R}
-  (    1 N-000070 )
-  (    2 N-000004 )
- )
- ( /505F2888 RES_0603  R16 100R {Lib=R}
-  (    1 N-000072 )
-  (    2 N-000005 )
- )
- ( /505F2887 RES_0603  R14 100R {Lib=R}
-  (    1 N-000068 )
-  (    2 N-000006 )
- )
- ( /505F2886 RES_0603  R13 100R {Lib=R}
-  (    1 N-000060 )
-  (    2 N-000095 )
- )
- ( /505F2881 RES_0603  R5 100R {Lib=R}
-  (    1 N-000067 )
-  (    2 N-000007 )
- )
- ( /505F2880 RES_0603  R6 100R {Lib=R}
-  (    1 N-000069 )
-  (    2 N-000001 )
- )
- ( /505F287F RES_0603  R8 100R {Lib=R}
-  (    1 N-000073 )
-  (    2 N-000010 )
- )
- ( /505F287E RES_0603  R7 100R {Lib=R}
-  (    1 N-000071 )
-  (    2 N-000003 )
- )
- ( /505F2878 RES_0603  R3 100R {Lib=R}
-  (    1 N-000065 )
-  (    2 N-000011 )
- )
- ( /505F2877 RES_0603  R4 100R {Lib=R}
-  (    1 N-000062 )
-  (    2 N-000012 )
- )
- ( /505F2859 RES_0603  R2 100R {Lib=R}
-  (    1 N-000064 )
-  (    2 N-000013 )
- )
- ( /505F283E RES_0603  R1 100R {Lib=R}
-  (    1 N-000063 )
-  (    2 N-000002 )
- )
- ( /505F26CA CAP_0603  C2 0.1u {Lib=C}
-  (    1 +3.3V )
-  (    2 GND )
- )
- ( /505F26C0 CAP_0603  C1 4.7u {Lib=C}
-  (    1 +3.3V )
-  (    2 GND )
- )
- ( /505F26AC CAP_0603  C7 1u {Lib=C}
-  (    1 +3.3V )
-  (    2 GND )
- )
- ( /505F26A8 CAP_0603  C6 4.7u {Lib=C}
-  (    1 +3.3V )
-  (    2 GND )
- )
- ( /505F26A4 CAP_0603  C5 0.1u {Lib=C}
-  (    1 +3.3V )
-  (    2 GND )
- )
- ( /505F26A0 CAP_0603  C4 0.1u {Lib=C}
-  (    1 +3.3V )
-  (    2 GND )
- )
- ( /505F2695 CAP_0603  C3 0.1u {Lib=C}
-  (    1 +3.3V )
-  (    2 GND )
- )
- ( /505F268E CAP_0603  C9 6.8pF {Lib=C}
-  (    1 N-000098 )
-  (    2 GND )
- )
- ( /505F2653 CAP_0603  C8 6.8pF {Lib=C}
-  (    1 N-000044 )
-  (    2 GND )
- )
- ( /505F2637 $noname  DD1 PCA9635 {Lib=PCA9635}
-  (    1 GND )
-  (    2 +3.3V )
-  (    3 GND )
-  (    4 +3.3V )
-  (    5 +3.3V )
-  (    6 N-000063 )
-  (    7 N-000064 )
-  (    8 N-000065 )
-  (    9 N-000062 )
-  (   10 N-000067 )
-  (   11 N-000069 )
-  (   12 N-000071 )
-  (   13 N-000073 )
-  (   14 GND )
-  (   15 N-000076 )
-  (   16 N-000055 )
-  (   17 N-000057 )
-  (   18 N-000059 )
-  (   19 N-000060 )
-  (   20 N-000068 )
-  (   21 N-000070 )
-  (   22 N-000072 )
-  (   23 /LED_OE )
-  (   24 GND )
-  (   25 GND )
-  (   26 /I2C_SCL )
-  (   27 /I2C_SDA )
-  (   28 +3.3V )
- )
- ( /504709D4 $noname  XL9 USB_MINI_B {Lib=USB_MINI_B}
-  (    1 +5V )
-  (    2 ? )
-  (    3 ? )
-  (    4 GND )
-  (    5 GND )
-  ( SHLD GND )
- )
- ( /5047B4CE $noname  DD2 STM32F100C4 {Lib=STM32F100C4}
-  (    1 N-000087 )
-  (    2 ? )
-  (    3 N-000098 )
-  (    4 N-000044 )
-  (    5 ? )
-  (    6 ? )
-  (    7 ? )
-  (    8 GND )
-  (    9 +3.3V )
-  (   10 ? )
-  (   11 N-000107 )
-  (   12 ? )
-  (   13 /FU0 )
-  (   14 /FU1 )
-  (   15 /FU2 )
-  (   16 /FU3 )
-  (   17 ? )
-  (   18 /PB0 )
-  (   19 /PB1 )
-  (   20 /PB2 )
-  (   21 /LCD_SDA )
-  (   22 /LCD_XRES )
-  (   23 GND )
-  (   24 +3.3V )
-  (   25 /LCD_SCLK )
-  (   26 ? )
-  (   27 /LCD_XCS )
-  (   28 /LCD_BCKLT )
-  (   29 ? )
-  (   30 /TX1 )
-  (   31 /RX1 )
-  (   32 ? )
-  (   33 ? )
-  (   34 /SWDIO )
-  (   35 GND )
-  (   36 +3.3V )
-  (   37 /SWCLK )
-  (   38 ? )
-  (   39 /Btn1 )
-  (   40 /Btn2 )
-  (   41 /Btn3 )
-  (   42 /I2C_SCL )
-  (   43 /I2C_SDA )
-  (   44 GND )
-  (   45 /LED_OE )
-  (   46 ? )
-  (   47 GND )
-  (   48 +3.3V )
- )
- ( /4FCBBD2A $noname  XL7 CONN_10 {Lib=CONN_10}
-  (    1 /PB2 )
-  (    2 GND )
-  (    3 /SWCLK )
-  (    4 /SWDIO )
-  (    5 /TX1 )
-  (    6 /RX1 )
-  (    7 /I2C_SCL )
-  (    8 /I2C_SDA )
-  (    9 /PB0 )
-  (   10 /PB1 )
- )
- ( /50470C04 CR2032  B1 BAT {Lib=BAT}
-  (    A N-000087 )
-  (    C GND )
- )
- ( /50470406 $noname  DA2 NCP662SQ {Lib=NCP662SQ}
-  (    1 GND )
-  (    2 +5V )
-  (    3 +3.3V )
-  (    4 +5V )
- )
- ( /5045D6DC $noname  DA1 AAT3221 {Lib=AAT3221}
-  (    1 +5V )
-  (    2 GND )
-  (    3 +5V )
-  (    4 ? )
-  (    5 +3.3V )
- )
- ( /4FFDDE7A $noname  XTAL1 32768 {Lib=CRYSTAL_H}
-  (    1 N-000098 )
-  (    2 N-000044 )
-  (    H GND )
- )
- ( /4FCBDAD7 $noname  SW3 BUTTON {Lib=BUTTON}
-  (    1 GND )
-  (    2 /Btn3 )
- )
- ( /4FCBDAD2 $noname  SW2 BUTTON {Lib=BUTTON}
-  (    1 GND )
-  (    2 /Btn2 )
- )
- ( /4F7FFE71 $noname  SW1 BUTTON {Lib=BUTTON}
-  (    1 GND )
-  (    2 /Btn1 )
- )
-)
-*
-{ Allowed footprints by component:
-$component HOLE3
- HOLE*
-$endlist
-$component HOLE4
- HOLE*
-$endlist
-$component HOLE2
- HOLE*
-$endlist
-$component HOLE1
- HOLE*
-$endlist
-$component C13
- c*
-$endlist
-$component C12
- c*
-$endlist
-$component R34
- r*
-$endlist
-$component R32
- r*
-$endlist
-$component D1
- d*
-$endlist
-$component XL3
- CON_NOKIA_LCD
-$endlist
-$component DD3
- SSOP28
-$endlist
-$component C10
- c*
-$endlist
-$component C11
- c*
-$endlist
-$component R17
- r*
-$endlist
-$component R18
- r*
-$endlist
-$component R20
- r*
-$endlist
-$component R19
- r*
-$endlist
-$component R23
- r*
-$endlist
-$component R24
- r*
-$endlist
-$component R22
- r*
-$endlist
-$component R21
- r*
-$endlist
-$component R29
- r*
-$endlist
-$component R30
- r*
-$endlist
-$component R33
- r*
-$endlist
-$component R31
- r*
-$endlist
-$component R27
- r*
-$endlist
-$component R28
- r*
-$endlist
-$component R26
- r*
-$endlist
-$component R25
- r*
-$endlist
-$component R9
- r*
-$endlist
-$component R10
- r*
-$endlist
-$component R12
- r*
-$endlist
-$component R11
- r*
-$endlist
-$component R15
- r*
-$endlist
-$component R16
- r*
-$endlist
-$component R14
- r*
-$endlist
-$component R13
- r*
-$endlist
-$component R5
- r*
-$endlist
-$component R6
- r*
-$endlist
-$component R8
- r*
-$endlist
-$component R7
- r*
-$endlist
-$component R3
- r*
-$endlist
-$component R4
- r*
-$endlist
-$component R2
- r*
-$endlist
-$component R1
- r*
-$endlist
-$component C2
- c*
-$endlist
-$component C1
- c*
-$endlist
-$component C7
- c*
-$endlist
-$component C6
- c*
-$endlist
-$component C5
- c*
-$endlist
-$component C4
- c*
-$endlist
-$component C3
- c*
-$endlist
-$component C9
- c*
-$endlist
-$component C8
- c*
-$endlist
-$component DD1
- SSOP28
-$endlist
-$component XL9
- USB*
-$endlist
-$component DD2
- LQFP48
-$endlist
-$component B1
- BAT*
-$endlist
-$component DA2
- SC82AB
-$endlist
-$component DA1
- SOT23-5
-$endlist
-$component XTAL1
- CRYSTAL*
-$endlist
-$component SW3
- BUTTON*
-$endlist
-$component SW2
- BUTTON*
-$endlist
-$component SW1
- BUTTON*
-$endlist
-$endfootprintlist
-}
-{ Pin List by Nets
-Net 1 "" ""
- XL2 3
- R6 2
-Net 2 "" ""
- XL2 8
- R1 2
-Net 3 "" ""
- R7 2
- XL2 2
-Net 4 "" ""
- R15 2
- XL4 2
-Net 5 "" ""
- R16 2
- XL4 1
-Net 6 "" ""
- XL4 3
- R14 2
-Net 7 "" ""
- XL2 4
- R5 2
-Net 8 "" ""
- R11 2
- XL4 6
-Net 9 "" ""
- R10 2
- XL4 7
-Net 10 "" ""
- XL2 1
- R8 2
-Net 11 "" ""
- R3 2
- XL2 6
-Net 12 "" ""
- R4 2
- XL2 5
-Net 13 "" ""
- XL2 7
- R2 2
-Net 14 "+3.3V" "+3.3V"
- C13 1
- C10 1
- DA2 3
- DD3 2
- DD3 4
- DD3 24
- R32 1
- C11 1
- DA1 5
- DD1 28
- DD3 1
- DD2 9
- DD1 2
- DD1 4
- DD1 5
- DD2 48
- DD2 36
- DD2 24
- R34 1
- DD3 28
- C2 1
- C1 1
- C7 1
- XL1 1
- XL3 10
- XL3 9
- C6 1
- C5 1
- C4 1
- C3 1
-Net 15 "" ""
- R33 1
- DD3 22
-Net 16 "" ""
- R33 2
- XL6 1
-Net 17 "" ""
- DD3 21
- R31 1
-Net 18 "" ""
- XL6 2
- R31 2
-Net 19 "" ""
- DD3 17
- R27 1
-Net 20 "" ""
- XL6 6
- R27 2
-Net 21 "" ""
- R28 1
- DD3 18
-Net 22 "" ""
- XL6 5
- R28 2
-Net 23 "" ""
- DD3 16
- R26 1
-Net 24 "" ""
- XL6 7
- R26 2
-Net 25 "" ""
- DD3 15
- R25 1
-Net 26 "" ""
- XL6 3
- R30 2
-Net 27 "" ""
- XL5 2
- R18 2
-Net 28 "" ""
- R19 2
- XL5 3
-Net 29 "" ""
- XL5 4
- R20 2
-Net 30 "" ""
- R22 2
- XL5 6
-Net 31 "" ""
- DD3 6
- R17 1
-Net 32 "" ""
- XL5 1
- R17 2
-Net 33 "" ""
- R18 1
- DD3 7
-Net 34 "" ""
- DD3 9
- R20 1
-Net 35 "" ""
- R19 1
- DD3 8
-Net 36 "" ""
- DD3 12
- R23 1
-Net 37 "" ""
- R24 1
- DD3 13
-Net 38 "" ""
- R24 2
- XL5 8
-Net 39 "" ""
- R22 1
- DD3 11
-Net 40 "" ""
- R21 1
- DD3 10
-Net 41 "" ""
- DD3 19
- R29 1
-Net 42 "" ""
- R29 2
- XL6 4
-Net 43 "" ""
- DD3 20
- R30 1
-Net 44 "" ""
- C8 1
- DD2 4
- XTAL1 2
-Net 50 "/SWDIO" "SWDIO"
- XL7 4
- DD2 34
-Net 52 "/Btn3" "Btn3"
- DD2 41
- SW3 2
-Net 53 "/SWCLK" "SWCLK"
- XL7 3
- DD2 37
-Net 55 "" ""
- DD1 16
- R10 1
-Net 56 "/I2C_SCL" "I2C_SCL"
- DD2 42
- XL7 7
- R32 2
- DD3 26
- DD1 26
-Net 57 "" ""
- R11 1
- DD1 17
-Net 58 "/I2C_SDA" "I2C_SDA"
- DD2 43
- XL7 8
- R34 2
- DD3 27
- DD1 27
-Net 59 "" ""
- R12 1
- DD1 18
-Net 60 "" ""
- R13 1
- DD1 19
-Net 62 "" ""
- DD1 9
- R4 1
-Net 63 "" ""
- DD1 6
- R1 1
-Net 64 "" ""
- DD1 7
- R2 1
-Net 65 "" ""
- DD1 8
- R3 1
-Net 67 "" ""
- DD1 10
- R5 1
-Net 68 "" ""
- R14 1
- DD1 20
-Net 69 "" ""
- DD1 11
- R6 1
-Net 70 "" ""
- DD1 21
- R15 1
-Net 71 "" ""
- DD1 12
- R7 1
-Net 72 "" ""
- DD1 22
- R16 1
-Net 73 "" ""
- DD1 13
- R8 1
-Net 74 "/LED_OE" "LED_OE"
- DD1 23
- DD3 23
- DD2 45
-Net 75 "GND" "GND"
- C11 2
- FU1 2
- FU2 2
- FU4 2
- FU3 2
- DD3 25
- DD3 14
- XTAL1 H
- C4 2
- C3 2
- C9 2
- C8 2
- C5 2
- C2 2
- C1 2
- C7 2
- C6 2
- HOLE3 Hle
- C12 2
- C13 2
- HOLE1 Hle
- HOLE2 Hle
- HOLE4 Hle
- XL10 1
- C10 2
- DD3 3
- XL8 2
- XL1 3
- DD3 5
- XL3 7
- XL3 3
- SW2 1
- SW3 1
- XL9 SHLD
- DD1 14
- DD1 24
- DD2 44
- DD2 35
- DD2 47
- XL7 2
- DD1 3
- DD2 8
- DD1 1
- DD2 23
- XL9 5
- XL9 4
- DD1 25
- B1 C
- DA2 1
- DA1 2
- SW1 1
-Net 76 "" ""
- DD1 15
- R9 1
-Net 78 "/FU1" "FU1"
- FU2 1
- DD2 14
-Net 79 "/FU3" "FU3"
- FU4 1
- DD2 16
-Net 80 "/PB0" "PB0"
- XL7 9
- DD2 18
-Net 82 "/PB1" "PB1"
- DD2 19
- XL7 10
-Net 84 "/Btn1" "Btn1"
- SW1 2
- DD2 39
-Net 85 "/PB2" "PB2"
- XL7 1
- DD2 20
-Net 86 "/Btn2" "Btn2"
- SW2 2
- DD2 40
-Net 87 "" ""
- B1 A
- DD2 1
-Net 89 "/TX1" "TX1"
- XL7 5
- DD2 30
-Net 90 "/RX1" "RX1"
- DD2 31
- XL7 6
-Net 94 "+5V" "+5V"
- XL4 10
- XL5 10
- XL5 9
- XL4 9
- XL6 10
- XL9 1
- XL6 9
- DA1 3
- DA2 2
- DA2 4
- DA1 1
- C12 1
- D1 C
- XL2 9
- XL2 10
-Net 95 "" ""
- XL4 4
- R13 2
-Net 96 "" ""
- XL6 8
- R25 2
-Net 97 "" ""
- R9 2
- XL4 8
-Net 98 "" ""
- XTAL1 1
- DD2 3
- C9 1
-Net 99 "/FU2" "FU2"
- FU3 1
- DD2 15
-Net 100 "/FU0" "FU0"
- DD2 13
- FU1 1
-Net 101 "" ""
- R12 2
- XL4 5
-Net 102 "/LCD_SCLK" "LCD_SCLK"
- XL3 1
- DD2 25
-Net 103 "/LCD_SDA" "LCD_SDA"
- DD2 21
- XL3 2
-Net 104 "/LCD_XCS" "LCD_XCS"
- DD2 27
- XL3 4
-Net 105 "/LCD_BCKLT" "LCD_BCKLT"
- XL3 6
- DD2 28
-Net 107 "" ""
- DD2 11
- XL1 2
-Net 108 "" ""
- D1 A
- XL8 1
-Net 109 "/LCD_XRES" "LCD_XRES"
- DD2 22
- XL3 5
-Net 110 "" ""
- XL5 7
- R23 2
-Net 111 "" ""
- R21 2
- XL5 5
-}
-#End
+(export (version D)
+  (design
+    (source D:\Nute\MagicThings\Lume\lume_hw\lume.sch)
+    (date "25.08.2017 18:56:58")
+    (tool "Eeschema (2017-08-24 revision ee43728b1)-makepkg")
+    (sheet (number 1) (name /) (tstamps /)
+      (title_block
+        (title)
+        (company)
+        (rev)
+        (date "19 nov 2014")
+        (source lume.sch)
+        (comment (number 1) (value ""))
+        (comment (number 2) (value ""))
+        (comment (number 3) (value ""))
+        (comment (number 4) (value "")))))
+  (components
+    (comp (ref XL8)
+      (value CONN_2)
+      (footprint Connectors:SLD_2_2D5)
+      (libsource (lib Connectors_kl) (part CONN_2))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 505F2D90))
+    (comp (ref XL3)
+      (value CONN_NOKIA_LCD)
+      (footprint Connectors:NOKIA_10PIN)
+      (libsource (lib display_kl) (part CONN_NOKIA_LCD))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 505F2C91))
+    (comp (ref XTAL1)
+      (value 32768)
+      (footprint Quartz:KX26)
+      (libsource (lib Tittar_kl) (part CRYSTAL_H))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 4FFDDE7A))
+    (comp (ref DD1)
+      (value STM32F072CxTx)
+      (footprint LQFP_TQFP:LQFP48)
+      (fields
+        (field (name PN) stm32f072c8t6)
+        (field (name URL) http://)
+        (field (name Price) 140)
+        (field (name SolderPoints) 48))
+      (libsource (lib st_kl) (part STM32F072CxTx))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A15767))
+    (comp (ref SW1)
+      (value BUTTON)
+      (footprint BtnsSwitches:BTN_6x6_4x4)
+      (fields
+        (field (name Price) 1)
+        (field (name SolderPoints) 4))
+      (libsource (lib Switches) (part BUTTON))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A1607C))
+    (comp (ref SW2)
+      (value BUTTON)
+      (footprint BtnsSwitches:BTN_6x6_4x4)
+      (fields
+        (field (name Price) 1)
+        (field (name SolderPoints) 4))
+      (libsource (lib Switches) (part BUTTON))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A1618C))
+    (comp (ref SW3)
+      (value BUTTON)
+      (footprint BtnsSwitches:BTN_6x6_4x4)
+      (fields
+        (field (name Price) 1)
+        (field (name SolderPoints) 4))
+      (libsource (lib Switches) (part BUTTON))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A161FB))
+    (comp (ref C3)
+      (value 0.1u)
+      (footprint Capacitors:CAP_0603)
+      (fields
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A1679F))
+    (comp (ref C4)
+      (value 0.1u)
+      (footprint Capacitors:CAP_0603)
+      (fields
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A1692F))
+    (comp (ref C6)
+      (value 0.1u)
+      (footprint Capacitors:CAP_0603)
+      (fields
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A169A3))
+    (comp (ref C7)
+      (value 10u)
+      (footprint Capacitors:CAP_0603)
+      (fields
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A169AB))
+    (comp (ref C8)
+      (value 1u)
+      (footprint Capacitors:CAP_0603)
+      (fields
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A16A65))
+    (comp (ref B1)
+      (value BAT)
+      (footprint Installation:BATTERY_CH7410)
+      (libsource (lib Power_kl) (part BAT))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A16C5D))
+    (comp (ref C9)
+      (value 6.8pF)
+      (footprint Capacitors:CAP_0603)
+      (fields
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A17591))
+    (comp (ref C10)
+      (value 6.8pF)
+      (footprint Capacitors:CAP_0603)
+      (fields
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A177C8))
+    (comp (ref HOLE1)
+      (value HOLE_METALLED)
+      (footprint PCB:Hole3_5_out6mm)
+      (fields
+        (field (name Price) 0)
+        (field (name SolderPoints) 0))
+      (libsource (lib pcb_details) (part HOLE_METALLED))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A1814B))
+    (comp (ref XL2)
+      (value CONN_6)
+      (footprint Connectors:PLS-6)
+      (fields
+        (field (name SolderPointsDIP) 6))
+      (libsource (lib Connectors_kl) (part CONN_6))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A04C8D))
+    (comp (ref XL4)
+      (value CONN_3)
+      (footprint Connectors:SLD_3_2D5)
+      (fields
+        (field (name Price) 1)
+        (field (name SolderPoints) 3))
+      (libsource (lib Connectors_kl) (part CONN_3))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A0593F))
+    (comp (ref DA3)
+      (value MC74VHC1)
+      (footprint SOT:SOT23-5)
+      (fields
+        (field (name PN) M74VHC1GT125DT1G)
+        (field (name URL) https://www.terraelectronica.ru/catalog.php?ID=301&search=m74vhc1gt125dt1g)
+        (field (name Price) 5.5)
+        (field (name SolderPoints) 5))
+      (libsource (lib standard_logic) (part MC74VHC1))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A0597D))
+    (comp (ref C14)
+      (value 0.1u)
+      (footprint Capacitors:CAP_0603)
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A05985))
+    (comp (ref TP2)
+      (value TESTPOINT)
+      (footprint PCB:TESTPOINT_1MM)
+      (fields
+        (field (name Price) 0)
+        (field (name SolderPoints) 0))
+      (libsource (lib pcb_details) (part TESTPOINT))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A06562))
+    (comp (ref Logo1)
+      (value Logo)
+      (footprint Pictures:Ostranna_12d7_10d1)
+      (libsource (lib pcb_details) (part Logo))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A09085))
+    (comp (ref Q1)
+      (value ALS-PT19-315C)
+      (footprint Resistors:RES_0603)
+      (libsource (lib Transistors_kl) (part Phototransistor))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A0B59F))
+    (comp (ref C13)
+      (value 0.1u)
+      (footprint Capacitors:CAP_0603)
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A0B5AF))
+    (comp (ref R2)
+      (value 10k)
+      (footprint Resistors:RES_0603)
+      (fields
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (libsource (lib Tittar_kl) (part R))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A0B5B8))
+    (comp (ref SW4)
+      (value BUTTON)
+      (footprint BtnsSwitches:BTN_6x6_4x4)
+      (fields
+        (field (name Price) 1)
+        (field (name SolderPoints) 4))
+      (libsource (lib Switches) (part BUTTON))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A0C3BC))
+    (comp (ref C1)
+      (value 10n)
+      (footprint Capacitors:CAP_0603)
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A0DA95))
+    (comp (ref XL1)
+      (value USB_MINI_B)
+      (footprint Connectors:USBmicro_MOLEX_1050170001)
+      (libsource (lib Connectors_kl) (part USB_MINI_B))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A0DA9C))
+    (comp (ref C2)
+      (value 1u)
+      (footprint Capacitors:CAP_0603)
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A0FD56))
+    (comp (ref C5)
+      (value 1u)
+      (footprint Capacitors:CAP_0603)
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A0FD69))
+    (comp (ref DA1)
+      (value NCP583SQ)
+      (footprint SOT:SC82AB)
+      (libsource (lib Power_kl) (part NCP583SQ))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A0FD76))
+    (comp (ref DA2)
+      (value MCP1700)
+      (footprint SOT:SOT23-3)
+      (datasheet http://datasheet.elcodis.com/pdf2/93/72/937252/mcp1700-1202e.pdf)
+      (fields
+        (field (name Price) 10)
+        (field (name SolderPoints) 3)
+        (field (name PN) MCP1700T-3302E/TT))
+      (libsource (lib Power_kl) (part MCP1700))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A0FD98))
+    (comp (ref D1)
+      (value PMEG2020)
+      (footprint Diodes:SOD323)
+      (fields
+        (field (name Price) 5)
+        (field (name SolderPoints) 2))
+      (libsource (lib Tittar_kl) (part D_Shottky))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A10051))
+    (comp (ref HOLE2)
+      (value HOLE_METALLED)
+      (footprint PCB:Hole3_5_out6mm)
+      (fields
+        (field (name Price) 0)
+        (field (name SolderPoints) 0))
+      (libsource (lib pcb_details) (part HOLE_METALLED))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A10F5A))
+    (comp (ref HOLE3)
+      (value HOLE_METALLED)
+      (footprint PCB:Hole3_5_out6mm)
+      (fields
+        (field (name Price) 0)
+        (field (name SolderPoints) 0))
+      (libsource (lib pcb_details) (part HOLE_METALLED))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A10FE4))
+    (comp (ref HOLE4)
+      (value HOLE_METALLED)
+      (footprint PCB:Hole3_5_out6mm)
+      (fields
+        (field (name Price) 0)
+        (field (name SolderPoints) 0))
+      (libsource (lib pcb_details) (part HOLE_METALLED))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A10FEC))
+    (comp (ref R1)
+      (value 1k)
+      (footprint Resistors:RES_0603)
+      (fields
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (libsource (lib Tittar_kl) (part R))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A12900))
+    (comp (ref XTAL2)
+      (value 12MHz)
+      (footprint Quartz:0503x4-4)
+      (fields
+        (field (name Price) 15)
+        (field (name SolderPoints) 4))
+      (libsource (lib Tittar_kl) (part CRYSTAL_H))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A12909))
+    (comp (ref C12)
+      (value 18pF)
+      (footprint Capacitors:CAP_0603)
+      (fields
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A12912))
+    (comp (ref C11)
+      (value 18pF)
+      (footprint Capacitors:CAP_0603)
+      (fields
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (libsource (lib Tittar_kl) (part C))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A1291B))
+    (comp (ref TP1)
+      (value TESTPOINT)
+      (footprint PCB:TESTPOINT_1MM)
+      (fields
+        (field (name Price) 0)
+        (field (name SolderPoints) 0))
+      (libsource (lib pcb_details) (part TESTPOINT))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A13BFB))
+    (comp (ref R3)
+      (value 100R)
+      (footprint Resistors:RES_0603)
+      (fields
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (libsource (lib Tittar_kl) (part R))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 59A06914)))
+  (libparts
+    (libpart (lib Power_kl) (part BAT)
+      (description Battery)
+      (fields
+        (field (name Reference) B)
+        (field (name Value) BAT))
+      (pins
+        (pin (num A) (name A) (type power_out))
+        (pin (num C) (name C) (type power_out))))
+    (libpart (lib Switches) (part BUTTON)
+      (description "General button symbol")
+      (footprints
+        (fp BUTTON*))
+      (fields
+        (field (name Reference) SW)
+        (field (name Value) BUTTON)
+        (field (name Price) 1)
+        (field (name SolderPoints) 4))
+      (pins
+        (pin (num 1) (name 1) (type passive))
+        (pin (num 2) (name 2) (type passive))))
+    (libpart (lib Tittar_kl) (part C)
+      (description Capacitor)
+      (footprints
+        (fp c*))
+      (fields
+        (field (name Reference) C)
+        (field (name Value) C)
+        (field (name Footprint) Capacitors:CAP_0603)
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (pins
+        (pin (num 1) (name ~) (type passive))
+        (pin (num 2) (name ~) (type passive))))
+    (libpart (lib Connectors_kl) (part CONN_2)
+      (description "Symbole general de connecteur")
+      (fields
+        (field (name Reference) XL)
+        (field (name Value) CONN_2))
+      (pins
+        (pin (num 1) (name P1) (type passive))
+        (pin (num 2) (name PM) (type passive))))
+    (libpart (lib Connectors_kl) (part CONN_3)
+      (description "Symbole general de connecteur")
+      (fields
+        (field (name Reference) XL)
+        (field (name Value) CONN_3)
+        (field (name Price) 1)
+        (field (name SolderPoints) 3))
+      (pins
+        (pin (num 1) (name P1) (type passive))
+        (pin (num 2) (name PM) (type passive))
+        (pin (num 3) (name ~) (type passive))))
+    (libpart (lib Connectors_kl) (part CONN_6)
+      (description "6-pin connector")
+      (fields
+        (field (name Reference) XL)
+        (field (name Value) CONN_6)
+        (field (name SolderPoints) 0)
+        (field (name SolderPointsDIP) 6))
+      (pins
+        (pin (num 1) (name ~) (type passive))
+        (pin (num 2) (name ~) (type passive))
+        (pin (num 3) (name ~) (type passive))
+        (pin (num 4) (name ~) (type passive))
+        (pin (num 5) (name ~) (type passive))
+        (pin (num 6) (name ~) (type passive))))
+    (libpart (lib display_kl) (part CONN_NOKIA_LCD)
+      (footprints
+        (fp CON_NOKIA_LCD))
+      (fields
+        (field (name Reference) XL)
+        (field (name Value) CONN_NOKIA_LCD)
+        (field (name Footprint) Connectors:NOKIA_10PIN)
+        (field (name Solderpoints) 10))
+      (pins
+        (pin (num 1) (name CLK) (type passive))
+        (pin (num 2) (name DATA) (type passive))
+        (pin (num 3) (name GND) (type power_in))
+        (pin (num 4) (name CS) (type passive))
+        (pin (num 5) (name RST) (type passive))
+        (pin (num 6) (name LED+) (type passive))
+        (pin (num 7) (name LED-) (type passive))
+        (pin (num 8) (name NC) (type NotConnected))
+        (pin (num 9) (name VDD) (type power_in))
+        (pin (num 10) (name VDDI) (type power_in))))
+    (libpart (lib Tittar_kl) (part CRYSTAL_H)
+      (description "Crystal with housing to solder")
+      (footprints
+        (fp CRYSTAL*))
+      (fields
+        (field (name Reference) XTAL)
+        (field (name Value) CRYSTAL_H)
+        (field (name Footprint) CRYSTAL)
+        (field (name Price) 15)
+        (field (name SolderPoints) 4))
+      (pins
+        (pin (num 1) (name 1) (type passive))
+        (pin (num 2) (name 2) (type passive))
+        (pin (num H) (name H) (type passive))))
+    (libpart (lib Tittar_kl) (part D_Shottky)
+      (footprints
+        (fp d*))
+      (fields
+        (field (name Reference) D)
+        (field (name Value) D_Shottky)
+        (field (name Price) 5)
+        (field (name SolderPoints) 2))
+      (pins
+        (pin (num A) (name ~) (type passive))
+        (pin (num C) (name ~) (type passive))))
+    (libpart (lib pcb_details) (part HOLE_METALLED)
+      (footprints
+        (fp HOLE*))
+      (fields
+        (field (name Reference) HOLE)
+        (field (name Value) HOLE_METALLED)
+        (field (name Price) 0)
+        (field (name SolderPoints) 0))
+      (pins
+        (pin (num H) (name ~) (type passive))))
+    (libpart (lib pcb_details) (part Logo)
+      (fields
+        (field (name Reference) Logo)
+        (field (name Value) Logo)))
+    (libpart (lib standard_logic) (part MC74VHC1)
+      (description "Single Hi-Lo/Lo-Hi tri-state buffer SOT23-5")
+      (footprints
+        (fp SOT23-5))
+      (fields
+        (field (name Reference) DA)
+        (field (name Value) MC74VHC1)
+        (field (name Footprint) SOT:SOT23-5)
+        (field (name PN) M74VHC1GT125DT1G)
+        (field (name URL) https://www.terraelectronica.ru/catalog.php?ID=301&search=m74vhc1gt125dt1g)
+        (field (name Price) 5.5)
+        (field (name SolderPoints) 5))
+      (pins
+        (pin (num 1) (name ~OE) (type passive))
+        (pin (num 2) (name InA) (type passive))
+        (pin (num 3) (name GND) (type power_in))
+        (pin (num 4) (name OutY) (type passive))
+        (pin (num 5) (name Vcc) (type power_in))))
+    (libpart (lib Power_kl) (part MCP1700)
+      (description "Linear, up to +6Vin, 250mA, SOT23-3, 1.6uA")
+      (docs "D:/Datasheets/Power/Linear regulators/MC7800-D 30V 1A out5V.pdf")
+      (footprints
+        (fp D2PAK))
+      (fields
+        (field (name Reference) DA)
+        (field (name Value) MCP1700)
+        (field (name Footprint) SOT:SOT23-3)
+        (field (name Datasheet) http://datasheet.elcodis.com/pdf2/93/72/937252/mcp1700-1202e.pdf)
+        (field (name Price) 10)
+        (field (name SolderPoints) 3))
+      (pins
+        (pin (num 1) (name GND) (type passive))
+        (pin (num 2) (name OUT) (type power_out))
+        (pin (num 3) (name IN) (type power_in))))
+    (libpart (lib Power_kl) (part NCP583SQ)
+      (description "LDO 1uA Iq, 150mA out, 6.5V in")
+      (footprints
+        (fp SC82AB))
+      (fields
+        (field (name Reference) DA)
+        (field (name Value) NCP583SQ)
+        (field (name Footprint) SOT:SC82AB)
+        (field (name SolderPoints) 4))
+      (pins
+        (pin (num 1) (name EN) (type passive))
+        (pin (num 2) (name GND) (type power_in))
+        (pin (num 3) (name Vout) (type power_out))
+        (pin (num 4) (name Vin) (type power_in))))
+    (libpart (lib Transistors_kl) (part Phototransistor)
+      (fields
+        (field (name Reference) Q)
+        (field (name Value) Phototransistor))
+      (pins
+        (pin (num 1) (name C) (type passive))
+        (pin (num 2) (name E) (type passive))))
+    (libpart (lib Tittar_kl) (part R)
+      (description Resistor)
+      (footprints
+        (fp r*))
+      (fields
+        (field (name Reference) R)
+        (field (name Value) R)
+        (field (name Footprint) Resistors:RES_0603)
+        (field (name Price) 0.5)
+        (field (name SolderPoints) 2))
+      (pins
+        (pin (num 1) (name ~) (type passive))
+        (pin (num 2) (name ~) (type passive))))
+    (libpart (lib st_kl) (part STM32F072CxTx)
+      (description LQFP48)
+      (footprints
+        (fp LQFP48*))
+      (fields
+        (field (name Reference) DD)
+        (field (name Value) STM32F072CxTx)
+        (field (name Footprint) LQFP_TQFP:LQFP48)
+        (field (name PN) stm32f072c8t6)
+        (field (name URL) http://)
+        (field (name Price) 140)
+        (field (name SolderPoints) 48))
+      (pins
+        (pin (num 1) (name VBat) (type power_in))
+        (pin (num 2) (name WKUP2/RTC_OUT/PC13) (type passive))
+        (pin (num 3) (name OC32IN/PC14) (type passive))
+        (pin (num 4) (name OC32OUT/PC15) (type passive))
+        (pin (num 5) (name OSCIN/PF0) (type passive))
+        (pin (num 6) (name OSCOUT/PF1) (type passive))
+        (pin (num 7) (name NRST) (type passive))
+        (pin (num 8) (name VSSA) (type power_in))
+        (pin (num 9) (name VDDA) (type power_in))
+        (pin (num 10) (name ADC0/TX4/T2C1ETR/WKUP1/PA0) (type passive))
+        (pin (num 11) (name ADC1/RX4/T15C1N/T2C2/PA1) (type passive))
+        (pin (num 12) (name ADC2/T15C1/T2C3/TX2/PA2) (type passive))
+        (pin (num 13) (name ADC3/T15C2/T2C4/RX2/PA3) (type passive))
+        (pin (num 14) (name ADC4/DAC1/T14C1/CK2/PA4) (type passive))
+        (pin (num 15) (name ADC5/T2C1ETR/DAC2/SCK1/PA5) (type passive))
+        (pin (num 16) (name ADC6/T16C1/T3C1/MISO1/PA6) (type passive))
+        (pin (num 17) (name ADC7/T14C1/T17C1/T1C1N/T3C2/MOSI1/PA7) (type passive))
+        (pin (num 18) (name PB0/T3C3/T1C2N/CK3/ADC8) (type passive))
+        (pin (num 19) (name PB1/T3C4/T14C1/T1C3N/ADC9) (type passive))
+        (pin (num 20) (name PB2) (type passive))
+        (pin (num 21) (name PB10/SCK2/SCL2/TX3/T2C3) (type passive))
+        (pin (num 22) (name PB11/SDA2/RX3/T2C4) (type passive))
+        (pin (num 23) (name VSS) (type power_in))
+        (pin (num 24) (name VDD) (type power_in))
+        (pin (num 25) (name PB12/CK3) (type passive))
+        (pin (num 26) (name PB13/SCK2/SCL2/T1C1N) (type passive))
+        (pin (num 27) (name PB14/MISO2/SDA2/T1C2N/T15C1) (type passive))
+        (pin (num 28) (name PB15/MOSI2/T1C3N/T15C1N/T15C2) (type passive))
+        (pin (num 29) (name MCO/CK1/T1C1/PA8) (type passive))
+        (pin (num 30) (name T1C2/TX1/PA9) (type passive))
+        (pin (num 31) (name T1C3/RX1/PA10) (type passive))
+        (pin (num 32) (name T1C4/USBDM/PA11) (type passive))
+        (pin (num 33) (name T1ETR/USBDP/PA12) (type passive))
+        (pin (num 34) (name IROUT/USBNOE/SWDIO/PA13) (type passive))
+        (pin (num 35) (name VSS) (type power_in))
+        (pin (num 36) (name VDD) (type power_in))
+        (pin (num 37) (name TX2/SWCLK/PA14) (type passive))
+        (pin (num 38) (name RX2/T2C1ETR/PA15) (type passive))
+        (pin (num 39) (name PB3/T2C2/SCK1) (type passive))
+        (pin (num 40) (name PB4/T3C1/MISO1) (type passive))
+        (pin (num 41) (name PB5/T3C2/MOSI1) (type passive))
+        (pin (num 42) (name PB6/SCL1/T16C1N/TX1) (type passive))
+        (pin (num 43) (name PB7/SDA1/T17C1N/RX1) (type passive))
+        (pin (num 44) (name BOOT0) (type passive))
+        (pin (num 45) (name PB8/SCL1/T16C1) (type passive))
+        (pin (num 46) (name PB9/SDA1/T7C1/IROUT) (type passive))
+        (pin (num 47) (name VSS) (type power_in))
+        (pin (num 48) (name VDD) (type power_in))))
+    (libpart (lib pcb_details) (part TESTPOINT)
+      (footprints
+        (fp TESTPOINT*))
+      (fields
+        (field (name Reference) TP)
+        (field (name Value) TESTPOINT)
+        (field (name Footprint) PCB:TESTPOINT_1MM)
+        (field (name Price) 0)
+        (field (name SolderPoints) 0))
+      (pins
+        (pin (num 1) (name ~) (type passive))))
+    (libpart (lib Connectors_kl) (part USB_MINI_B)
+      (footprints
+        (fp USB*))
+      (fields
+        (field (name Reference) XL)
+        (field (name Value) USB_MINI_B))
+      (pins
+        (pin (num 1) (name UVcc) (type power_out))
+        (pin (num 2) (name D-) (type passive))
+        (pin (num 3) (name D+) (type passive))
+        (pin (num 4) (name UID) (type passive))
+        (pin (num 5) (name UGND) (type power_out))
+        (pin (num H1) (name ~) (type passive))
+        (pin (num H2) (name ~) (type passive))
+        (pin (num H3) (name ~) (type passive))
+        (pin (num H4) (name ~) (type passive)))))
+  (libraries
+    (library (logical display_kl)
+      (uri D:\Libs\Kicad\display_kl.lib))
+    (library (logical Connectors_kl)
+      (uri D:\Libs\Kicad\Connectors_kl.lib))
+    (library (logical Transistors_kl)
+      (uri D:\Libs\Kicad\Transistors_kl.lib))
+    (library (logical Power_kl)
+      (uri D:\Libs\Kicad\Power_kl.lib))
+    (library (logical standard_logic)
+      (uri D:\Libs\Kicad\standard_logic.lib))
+    (library (logical Switches)
+      (uri D:\Libs\Kicad\Switches.lib))
+    (library (logical Tittar_kl)
+      (uri D:\Libs\Kicad\Tittar_kl.lib))
+    (library (logical st_kl)
+      (uri D:\Libs\Kicad\st_kl.lib))
+    (library (logical pcb_details)
+      (uri D:\Libs\Kicad\pcb_details.lib)))
+  (nets
+    (net (code 1) (name +3.3V)
+      (node (ref XL3) (pin 9))
+      (node (ref XL2) (pin 1))
+      (node (ref DD1) (pin 24))
+      (node (ref DD1) (pin 36))
+      (node (ref C8) (pin 1))
+      (node (ref C7) (pin 1))
+      (node (ref C6) (pin 1))
+      (node (ref C4) (pin 1))
+      (node (ref C3) (pin 1))
+      (node (ref DA1) (pin 3))
+      (node (ref C5) (pin 1))
+      (node (ref DA2) (pin 2))
+      (node (ref XL3) (pin 10))
+      (node (ref DD1) (pin 48))
+      (node (ref DD1) (pin 9))
+      (node (ref Q1) (pin 1)))
+    (net (code 2) (name GND)
+      (node (ref DA1) (pin 2))
+      (node (ref XL3) (pin 7))
+      (node (ref XL3) (pin 3))
+      (node (ref XL3) (pin 3))
+      (node (ref C5) (pin 2))
+      (node (ref R2) (pin 2))
+      (node (ref C2) (pin 2))
+      (node (ref DA2) (pin 1))
+      (node (ref C10) (pin 2))
+      (node (ref DD1) (pin 35))
+      (node (ref DD1) (pin 47))
+      (node (ref DD1) (pin 44))
+      (node (ref DD1) (pin 23))
+      (node (ref C3) (pin 2))
+      (node (ref C9) (pin 2))
+      (node (ref B1) (pin C))
+      (node (ref C8) (pin 2))
+      (node (ref C7) (pin 2))
+      (node (ref C6) (pin 2))
+      (node (ref C4) (pin 2))
+      (node (ref SW3) (pin 1))
+      (node (ref SW2) (pin 1))
+      (node (ref SW1) (pin 1))
+      (node (ref XL8) (pin 1))
+      (node (ref DD1) (pin 8))
+      (node (ref XTAL1) (pin H))
+      (node (ref XL2) (pin 3))
+      (node (ref HOLE1) (pin H))
+      (node (ref C14) (pin 2))
+      (node (ref XL4) (pin 3))
+      (node (ref DA3) (pin 3))
+      (node (ref DA3) (pin 1))
+      (node (ref HOLE2) (pin H))
+      (node (ref HOLE3) (pin H))
+      (node (ref HOLE4) (pin H))
+      (node (ref C11) (pin 2))
+      (node (ref C12) (pin 2))
+      (node (ref XTAL2) (pin H))
+      (node (ref C13) (pin 2))
+      (node (ref XL1) (pin 5))
+      (node (ref XL1) (pin 4))
+      (node (ref C1) (pin 1))
+      (node (ref SW4) (pin 1)))
+    (net (code 3) (name /LUM_MEAS)
+      (node (ref DD1) (pin 11))
+      (node (ref C13) (pin 1))
+      (node (ref Q1) (pin 2))
+      (node (ref R2) (pin 1)))
+    (net (code 4) (name /SWCLK)
+      (node (ref XL2) (pin 2))
+      (node (ref DD1) (pin 37)))
+    (net (code 5) (name /SWDIO)
+      (node (ref XL2) (pin 4))
+      (node (ref DD1) (pin 34)))
+    (net (code 6) (name /UART_RX)
+      (node (ref XL2) (pin 6))
+      (node (ref DD1) (pin 31)))
+    (net (code 7) (name /UART_TX)
+      (node (ref DD1) (pin 30))
+      (node (ref XL2) (pin 5)))
+    (net (code 8) (name "Net-(XL1-PadH4)")
+      (node (ref XL1) (pin H4)))
+    (net (code 9) (name "Net-(XL1-PadH3)")
+      (node (ref XL1) (pin H3)))
+    (net (code 10) (name "Net-(XL1-PadH2)")
+      (node (ref XL1) (pin H2)))
+    (net (code 11) (name "Net-(XL1-PadH1)")
+      (node (ref XL1) (pin H1)))
+    (net (code 12) (name /Btn4)
+      (node (ref DD1) (pin 42))
+      (node (ref SW4) (pin 2)))
+    (net (code 13) (name /WS_CTRL)
+      (node (ref DA3) (pin 2))
+      (node (ref TP2) (pin 1))
+      (node (ref DD1) (pin 28)))
+    (net (code 14) (name /D-)
+      (node (ref DD1) (pin 32))
+      (node (ref XL1) (pin 2)))
+    (net (code 15) (name "Net-(DA3-Pad4)")
+      (node (ref XL4) (pin 2))
+      (node (ref DA3) (pin 4)))
+    (net (code 16) (name "Net-(C11-Pad1)")
+      (node (ref C11) (pin 1))
+      (node (ref R1) (pin 1))
+      (node (ref XTAL2) (pin 2)))
+    (net (code 17) (name "Net-(C12-Pad1)")
+      (node (ref DD1) (pin 5))
+      (node (ref XTAL2) (pin 1))
+      (node (ref C12) (pin 1)))
+    (net (code 18) (name "Net-(DD1-Pad6)")
+      (node (ref DD1) (pin 6))
+      (node (ref R1) (pin 2)))
+    (net (code 19) (name "Net-(DD1-Pad2)")
+      (node (ref DD1) (pin 2)))
+    (net (code 20) (name "Net-(D1-PadA)")
+      (node (ref D1) (pin A))
+      (node (ref XL8) (pin 2)))
+    (net (code 21) (name "Net-(DD1-Pad12)")
+      (node (ref DD1) (pin 12)))
+    (net (code 22) (name /LCD_BCKLT)
+      (node (ref DD1) (pin 27))
+      (node (ref R3) (pin 1)))
+    (net (code 23) (name "Net-(R3-Pad2)")
+      (node (ref XL3) (pin 6))
+      (node (ref R3) (pin 2)))
+    (net (code 24) (name /MCO)
+      (node (ref TP1) (pin 1))
+      (node (ref DD1) (pin 29)))
+    (net (code 25) (name "Net-(DD1-Pad17)")
+      (node (ref DD1) (pin 17)))
+    (net (code 26) (name "Net-(DD1-Pad16)")
+      (node (ref DD1) (pin 16)))
+    (net (code 27) (name "Net-(DD1-Pad15)")
+      (node (ref DD1) (pin 15)))
+    (net (code 28) (name "Net-(DD1-Pad14)")
+      (node (ref DD1) (pin 14)))
+    (net (code 29) (name "Net-(DD1-Pad13)")
+      (node (ref DD1) (pin 13)))
+    (net (code 30) (name "Net-(DD1-Pad10)")
+      (node (ref DD1) (pin 10)))
+    (net (code 31) (name "Net-(DD1-Pad45)")
+      (node (ref DD1) (pin 45)))
+    (net (code 32) (name "Net-(DD1-Pad43)")
+      (node (ref DD1) (pin 43)))
+    (net (code 33) (name "Net-(DD1-Pad20)")
+      (node (ref DD1) (pin 20)))
+    (net (code 34) (name "Net-(DD1-Pad19)")
+      (node (ref DD1) (pin 19)))
+    (net (code 35) (name "Net-(DD1-Pad18)")
+      (node (ref DD1) (pin 18)))
+    (net (code 36) (name "Net-(DD1-Pad38)")
+      (node (ref DD1) (pin 38)))
+    (net (code 37) (name /D+)
+      (node (ref DD1) (pin 33))
+      (node (ref XL1) (pin 3)))
+    (net (code 38) (name +5V)
+      (node (ref C1) (pin 2))
+      (node (ref XL1) (pin 1))
+      (node (ref DA1) (pin 4))
+      (node (ref DA1) (pin 1))
+      (node (ref C2) (pin 1))
+      (node (ref DA3) (pin 5))
+      (node (ref D1) (pin C))
+      (node (ref XL4) (pin 1))
+      (node (ref DA2) (pin 3))
+      (node (ref C14) (pin 1)))
+    (net (code 39) (name /LCD_XRES)
+      (node (ref XL3) (pin 5))
+      (node (ref DD1) (pin 22)))
+    (net (code 40) (name /LCD_SDA)
+      (node (ref XL3) (pin 2))
+      (node (ref DD1) (pin 21)))
+    (net (code 41) (name /LCD_SCLK)
+      (node (ref XL3) (pin 1))
+      (node (ref DD1) (pin 25)))
+    (net (code 42) (name /LCD_XCS)
+      (node (ref DD1) (pin 26))
+      (node (ref XL3) (pin 4)))
+    (net (code 43) (name "Net-(XL3-Pad8)")
+      (node (ref XL3) (pin 8)))
+    (net (code 44) (name "Net-(C10-Pad1)")
+      (node (ref C10) (pin 1))
+      (node (ref DD1) (pin 3))
+      (node (ref XTAL1) (pin 1)))
+    (net (code 45) (name "Net-(C9-Pad1)")
+      (node (ref DD1) (pin 4))
+      (node (ref C9) (pin 1))
+      (node (ref XTAL1) (pin 2)))
+    (net (code 46) (name "Net-(B1-PadA)")
+      (node (ref B1) (pin A))
+      (node (ref DD1) (pin 1)))
+    (net (code 47) (name "Net-(DD1-Pad46)")
+      (node (ref DD1) (pin 46)))
+    (net (code 48) (name /Btn1)
+      (node (ref SW1) (pin 2))
+      (node (ref DD1) (pin 39)))
+    (net (code 49) (name /Btn2)
+      (node (ref SW2) (pin 2))
+      (node (ref DD1) (pin 40)))
+    (net (code 50) (name /Btn3)
+      (node (ref SW3) (pin 2))
+      (node (ref DD1) (pin 41)))
+    (net (code 51) (name "Net-(DD1-Pad7)")
+      (node (ref DD1) (pin 7)))))
