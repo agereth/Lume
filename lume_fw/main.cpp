@@ -15,6 +15,7 @@
 //#include "ws2812b.h"
 #include "lcd1200.h"
 #include "led.h"
+#include "kl_time.h"
 
 #if 1 // ======================== Variables and defines ========================
 // Forever
@@ -22,6 +23,8 @@ EvtMsgQ_t<EvtMsg_t, MAIN_EVT_Q_LEN> EvtQMain;
 extern CmdUart_t Uart;
 void OnCmd(Shell_t *PShell);
 void ITask();
+
+#define BKPREG_BRIGHTNESS   RTC->BKP1R
 
 //ColorHSV_t hsv(319, 100, 100);
 //PinOutput_t PwrPin { PWR_EN_PIN };
@@ -51,12 +54,17 @@ int main(void) {
 
     SimpleSensors::Init();
 
-    PinSetupAlterFunc(GPIOB, 14, omPushPull, pudNone, AF1);
-
+    // LCD
     Lcd.Init();
     Lcd.Backlight(100);
     Lcd.PrintfInverted(0,0,"Aiya Finwe");
 
+    // Time and backup space
+    BackupSpc::EnableAccess();
+
+//    Interface.Reset();
+    Time.Init();
+//    Time.GetDateTime(&App.dtNow);
 
     // Adc
 //    PinSetupAnalog(BAT_MEAS_PIN);
@@ -124,6 +132,9 @@ void OnCmd(Shell_t *PShell) {
         PShell->Ack(retvOk);
     }
 
+    else if(PCmd->NameIs("t")) {
+        Printf("%u\r", RTC->TR);
+    }
 //    else if(PCmd->NameIs("HSL")) {
 //        ColorHSL_t ClrHsl(0,0,0);
 //        if(PCmd->GetNextUint16(&ClrHsl.H) != OK) return;

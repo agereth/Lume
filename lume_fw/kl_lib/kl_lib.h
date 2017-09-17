@@ -320,29 +320,40 @@ static inline void DelayLoop(volatile uint32_t ACounter) { while(ACounter--); }
 //}
 #endif
 
-#if 1 // ======================= Power and backup unit =========================
+#if 1 // ======================= Backup unit =========================
 // See Programming manual: http://www.st.com/content/ccc/resource/technical/document/programming_manual/6c/3a/cb/e7/e4/ea/44/9b/DM00046982.pdf/files/DM00046982.pdf/jcr:content/translations/en.DM00046982.pdf
 // On writes, write 0x5FA to VECTKEY, otherwise the write is ignored. 4 is SYSRESETREQ: System reset request
 #define REBOOT()                SCB->AIRCR = 0x05FA0004
 
-#if defined STM32F2XX || defined STM32F4XX || defined STM32F10X_LD_VL
 namespace BackupSpc {
     static inline void EnableAccess() {
         rccEnablePWRInterface(FALSE);
+#if defined STM32F2XX || defined STM32F4XX || defined STM32F10X_LD_VL
         rccEnableBKPSRAM(FALSE);
+#endif
         PWR->CR |= PWR_CR_DBP;
     }
+
     static inline void DisableAccess() { PWR->CR &= ~PWR_CR_DBP; }
 
     static inline void Reset() {
         RCC->BDCR |=  RCC_BDCR_BDRST;
         RCC->BDCR &= ~RCC_BDCR_BDRST;
     }
-} // namespace
-#endif // STM32F2xx/F4xx
+
+#if defined STM32F10X_LD_VL
+#define BKPREG_CHECK        BKP->DR1     // Register to store "IsStored" const
+#elif defined STM32F072xB
+#define BKPREG_CHECK        RTC->BKP0R
 #endif
 
-#if 0 // ============================= RTC =====================================
+    static inline bool IsSetup()  { return (BKPREG_CHECK == 0xA5A5); }
+    static inline void SetSetup() { BKPREG_CHECK = 0xA5A5; }
+
+} // namespace
+#endif
+
+#if 1 // ============================= RTC =====================================
 namespace Rtc {
 #if defined STM32F10X_LD_VL
 // Wait until the RTC registers (RTC_CNT, RTC_ALR and RTC_PRL) are synchronized with RTC APB clock.
@@ -356,6 +367,36 @@ static inline void WaitForSync() {
 // This function must be called before any write to RTC registers.
 static inline void WaitForLastTask() { while((RTC->CRL & RTC_CRL_RTOFF) == 0); }
 
+static inline void SetPrescaler(uint32_t PrescalerValue) {
+    EnterConfigMode();
+    RTC->PRLH = (PrescalerValue & PRLH_MSB_MASK) >> 16;
+    RTC->PRLL = (PrescalerValue & RTC_LSB_MASK);
+    ExitConfigMode();
+}
+
+static inline void EnterConfigMode() { RTC->CRL |= RTC_CRL_CNF; }
+static inline void ExitConfigMode()  { RTC->CRL &= ~((uint16_t)RTC_CRL_CNF); }
+
+static inline void SetCounter(uint32_t CounterValue) {
+    EnterConfigMode();
+    RTC->CNTH = CounterValue >> 16;
+    RTC->CNTL = (CounterValue & RTC_LSB_MASK);
+    ExitConfigMode();
+}
+#elif defined STM32F072xB
+static inline void DisableWriteProtection() {
+    RTC->WPR = 0xCAU;
+    RTC->WPR = 0x53U;
+}
+static inline void EnableWriteProtection() { RTC->WPR = 0xFFU; }
+static inline void WaitSync() {
+    RTC->ISR &= ~RTC_ISR_RSF;   // Clear RSF reg
+    while(!BitIsSet(RTC->ISR, RTC_ISR_RSF));    // Wait RSF to become 1
+}
+
+static inline void ClearWakeupFlag() { RTC->ISR &= ~RTC_ISR_WUTF; }
+#endif
+
 static inline void SetClkSrcLSE() {
     RCC->BDCR &= ~RCC_BDCR_RTCSEL;  // Clear bits
     RCC->BDCR |=  RCC_BDCR_RTCSEL_LSE;
@@ -364,31 +405,17 @@ static inline void EnableClk() { RCC->BDCR |= RCC_BDCR_RTCEN; }
 
 #define RTC_LSB_MASK     ((uint32_t)0x0000FFFF)  // RTC LSB Mask
 #define PRLH_MSB_MASK    ((uint32_t)0x000F0000)  // RTC Prescaler MSB Mask
-static inline void EnterConfigMode() { RTC->CRL |= RTC_CRL_CNF; }
-static inline void ExitConfigMode()  { RTC->CRL &= ~((uint16_t)RTC_CRL_CNF); }
 
-static inline void SetPrescaler(uint32_t PrescalerValue) {
-    EnterConfigMode();
-    RTC->PRLH = (PrescalerValue & PRLH_MSB_MASK) >> 16;
-    RTC->PRLL = (PrescalerValue & RTC_LSB_MASK);
-    ExitConfigMode();
-}
 
-static inline void SetCounter(uint32_t CounterValue) {
-    EnterConfigMode();
-    RTC->CNTH = CounterValue >> 16;
-    RTC->CNTL = (CounterValue & RTC_LSB_MASK);
-    ExitConfigMode();
-}
+//static inline void EnableSecondIRQ() {
+//    WaitForLastTask();
+//    RTC->CRH |= RTC_CRH_SECIE;
+//}
+//static inline void ClearSecondIRQFlag() {
+//    RTC->CRL &= ~RTC_CRL_SECF;
+//}
+//#elif defined STM32F072xB
 
-static inline void EnableSecondIRQ() {
-    WaitForLastTask();
-    RTC->CRH |= RTC_CRH_SECIE;
-}
-static inline void ClearSecondIRQFlag() {
-    RTC->CRL &= ~RTC_CRL_SECF;
-}
-#endif
 } // namespace
 #endif
 
@@ -1396,6 +1423,7 @@ enum AHBDiv_t {
     ahbDiv512=0b1111
 };
 enum APBDiv_t {apbDiv1=0b000, apbDiv2=0b100, apbDiv4=0b101, apbDiv8=0b110, apbDiv16=0b111};
+enum LseLvl_t {lselvlLow=0b00, lselvlMedLow=0b01, lselvlMedHi=0b11, lselvlHigh=0b11};
 
 class Clk_t {
 private:
@@ -1420,6 +1448,11 @@ public:
     // Clk Enables
     uint8_t EnableHSI();
     uint8_t EnableHSI48();
+    void EnableLSE()    { RCC->BDCR |= RCC_BDCR_LSEON; }
+    void SetLSELevel(LseLvl_t Lvl) {
+        RCC->BDCR &= ~RCC_BDCR_LSEDRV;
+        RCC->BDCR |= ((uint32_t)Lvl) << 3;
+    }
     void EnableCRS();
     void EnableCSS()    { RCC->CR  |=  RCC_CR_CSSON; }
     // Clk Disables
@@ -1432,6 +1465,7 @@ public:
 #endif
     void DisableCRS();
     // Checks
+    bool LseIsOn()   { return (RCC->BDCR & RCC_BDCR_LSERDY); }
 #ifdef RCC_CR2_HSI48ON
     bool IsHSI48On() { return (RCC->CR2 & RCC_CR2_HSI48ON); }
 #endif
