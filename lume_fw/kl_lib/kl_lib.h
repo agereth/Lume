@@ -394,6 +394,12 @@ static inline void WaitSync() {
     while(!BitIsSet(RTC->ISR, RTC_ISR_RSF));    // Wait RSF to become 1
 }
 
+static inline void EnterInitMode() {
+    RTC->ISR |= RTC_ISR_INIT;
+    while(!BitIsSet(RTC->ISR, RTC_ISR_INITF));
+}
+static inline void ExitInitMode() { RTC->ISR &= ~RTC_ISR_INIT; }
+
 static inline void ClearWakeupFlag() { RTC->ISR &= ~RTC_ISR_WUTF; }
 #endif
 

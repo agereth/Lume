@@ -52,12 +52,14 @@ struct DateTime_t {
     void Print() const { Printf("%04u/%02u/%02u %02u:%02u:%02u\r", Year, Month, Day, H, M, S); }
     DateTime_t(int32_t AH, int32_t AM, int32_t AS, int32_t AYear, int32_t AMonth, int32_t ADay) :
         H(AH), M(AM), S(AS), Year(AYear), Month(AMonth), Day(ADay) {}
+    DateTime_t() : H(0), M(0), S(0), Year(0), Month(0), Day(0) {}
 };
 
 class TimeCounter_t {
 public:
-    void GetDateTime(DateTime_t *PDateTime);
-    void SetDateTime(DateTime_t *PDateTime);
+    DateTime_t CurrentDT;
+    void GetDateTime();
+    void SetDateTime();
     void Init();
 };
 

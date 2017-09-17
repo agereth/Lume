@@ -16,6 +16,7 @@
 #include "lcd1200.h"
 #include "led.h"
 #include "kl_time.h"
+#include "interface.h"
 
 #if 1 // ======================== Variables and defines ========================
 // Forever
@@ -25,6 +26,8 @@ void OnCmd(Shell_t *PShell);
 void ITask();
 
 #define BKPREG_BRIGHTNESS   RTC->BKP1R
+
+Interface_t Interface;
 
 //ColorHSV_t hsv(319, 100, 100);
 //PinOutput_t PwrPin { PWR_EN_PIN };
@@ -54,17 +57,17 @@ int main(void) {
 
     SimpleSensors::Init();
 
-    // LCD
     Lcd.Init();
     Lcd.Backlight(100);
-    Lcd.PrintfInverted(0,0,"Aiya Finwe");
 
     // Time and backup space
     BackupSpc::EnableAccess();
 
-//    Interface.Reset();
+    Interface.Reset();
     Time.Init();
 //    Time.GetDateTime(&App.dtNow);
+
+//    Printf("CR: %X\r", RTC->CR);
 
     // Adc
 //    PinSetupAnalog(BAT_MEAS_PIN);
@@ -83,6 +86,12 @@ void ITask() {
             case evtIdShellCmd:
                 OnCmd((Shell_t*)Msg.Ptr);
                 ((Shell_t*)Msg.Ptr)->SignalCmdProcessed();
+                break;
+
+            case evtIdEverySecond:
+                Time.GetDateTime();
+                Time.CurrentDT.Print();
+                Interface.DisplayDateTime(&Time.CurrentDT);
                 break;
 
             case evtIdButtons:
@@ -134,6 +143,9 @@ void OnCmd(Shell_t *PShell) {
 
     else if(PCmd->NameIs("t")) {
         Printf("%u\r", RTC->TR);
+    }
+    else if(PCmd->NameIs("i")) {
+        EXTI->SWIER |= EXTI_SWIER_SWIER20;
     }
 //    else if(PCmd->NameIs("HSL")) {
 //        ColorHSL_t ClrHsl(0,0,0);
