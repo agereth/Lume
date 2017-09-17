@@ -1,15 +1,14 @@
 /*
-    ChibiOS/RT - Copyright (C) 2006,2007,2008,2009,2010,
-                 2011,2012 Giovanni Di Sirio.
+    ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio.
 
-    This file is part of ChibiOS/RT.
+    This file is part of ChibiOS.
 
-    ChibiOS/RT is free software; you can redistribute it and/or modify
+    ChibiOS is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 3 of the License, or
     (at your option) any later version.
 
-    ChibiOS/RT is distributed in the hope that it will be useful,
+    ChibiOS is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -26,22 +25,63 @@
  * @{
  */
 
-#ifndef _CHMSG_H_
-#define _CHMSG_H_
+#ifndef CHMSG_H
+#define CHMSG_H
 
-#if CH_USE_MESSAGES || defined(__DOXYGEN__)
+#if (CH_CFG_USE_MESSAGES == TRUE) || defined(__DOXYGEN__)
+
+/*===========================================================================*/
+/* Module constants.                                                         */
+/*===========================================================================*/
+
+/*===========================================================================*/
+/* Module pre-compile time settings.                                         */
+/*===========================================================================*/
+
+/*===========================================================================*/
+/* Derived constants and error checks.                                       */
+/*===========================================================================*/
+
+/*===========================================================================*/
+/* Module data structures and types.                                         */
+/*===========================================================================*/
+
+/*===========================================================================*/
+/* Module macros.                                                            */
+/*===========================================================================*/
+
+/*===========================================================================*/
+/* External declarations.                                                    */
+/*===========================================================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+  msg_t chMsgSend(thread_t *tp, msg_t msg);
+  thread_t * chMsgWait(void);
+  void chMsgRelease(thread_t *tp, msg_t msg);
+#ifdef __cplusplus
+}
+#endif
+
+/*===========================================================================*/
+/* External declarations.                                                    */
+/*===========================================================================*/
 
 /**
- * @name    Macro Functions
- * @{
- */
-/**
- * @brief   Evaluates to TRUE if the thread has pending messages.
+ * @brief   Evaluates to @p true if the thread has pending messages.
+ *
+ * @param[in] tp        pointer to the thread
+ * @return              The pending messages status.
  *
  * @iclass
  */
-#define chMsgIsPendingI(tp) \
-        ((tp)->p_msgqueue.p_next != (Thread *)&(tp)->p_msgqueue)
+static inline bool chMsgIsPendingI(thread_t *tp) {
+
+  chDbgCheckClassI();
+
+  return (bool)(tp->msgqueue.next != (thread_t *)&tp->msgqueue);
+}
 
 /**
  * @brief   Returns the message carried by the specified thread.
@@ -53,7 +93,12 @@
  *
  * @api
  */
-#define chMsgGet(tp) ((tp)->p_msg)
+static inline msg_t chMsgGet(thread_t *tp) {
+
+  chDbgAssert(tp->state == CH_STATE_SNDMSG, "invalid state");
+
+  return tp->u.sentmsg;
+}
 
 /**
  * @brief   Releases the thread waiting on top of the messages queue.
@@ -65,21 +110,15 @@
  *
  * @sclass
  */
-#define chMsgReleaseS(tp, msg) chSchWakeupS(tp, msg)
-/** @} */
+static inline void chMsgReleaseS(thread_t *tp, msg_t msg) {
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-  msg_t chMsgSend(Thread *tp, msg_t msg);
-  Thread * chMsgWait(void);
-  void chMsgRelease(Thread *tp, msg_t msg);
-#ifdef __cplusplus
+  chDbgCheckClassS();
+
+  chSchWakeupS(tp, msg);
 }
-#endif
 
-#endif /* CH_USE_MESSAGES */
+#endif /* CH_CFG_USE_MESSAGES == TRUE */
 
-#endif /* _CHMSG_H_ */
+#endif /* CHMSG_H */
 
 /** @} */

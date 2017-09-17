@@ -12,6 +12,11 @@
 #include "string.h" // for memcpy
 #include <kl_lib.h>
 
+// Lib version
+#define KL_BUF_VERSION      "20151102_1339"
+
+enum AddRslt_t {addrOk, addrFail, addrSwitch};
+
 // Simple buffer
 struct Buf_t {
     uint8_t *Ptr;
@@ -26,20 +31,37 @@ protected:
     T IBuf[Sz], *PRead=IBuf, *PWrite=IBuf;
 public:
     uint8_t Get(T *p) {
-        if(IFullSlotsCount == 0) return FAILURE;
+        if(IFullSlotsCount == 0) return retvEmpty;
         memcpy(p, PRead, sizeof(T));
         if(++PRead > (IBuf + Sz - 1)) PRead = IBuf;     // Circulate buffer
         IFullSlotsCount--;
-        return OK;
+        return retvOk;
+    }
+    uint8_t GetPAndMove(T **pp) {
+    	if(IFullSlotsCount == 0) return retvEmpty;
+    	*pp = PRead;
+        if(++PRead > (IBuf + Sz - 1)) PRead = IBuf;     // Circulate buffer
+        IFullSlotsCount--;
+        return retvOk;
+    }
+    uint8_t GetLastP(T **pp) {
+    	if(IFullSlotsCount == 0) return retvEmpty;
+		*pp = PRead;
+		return retvOk;
     }
 
+    uint8_t PutAnyway(T *p) {
+		memcpy(PWrite, p, sizeof(T));
+		if(++PWrite > (IBuf + Sz - 1)) PWrite = IBuf;   // Circulate buffer
+		if(IFullSlotsCount < Sz) IFullSlotsCount++;
+		return retvOk;
+	}
     uint8_t Put(T *p) {
-        if(IFullSlotsCount >= Sz) return FAILURE;
-        memcpy(PWrite, p, sizeof(T));
-        if(++PWrite > (IBuf + Sz - 1)) PWrite = IBuf;   // Circulate buffer
-        IFullSlotsCount++;
-        return OK;
+        if(IFullSlotsCount >= Sz) return retvOverflow;
+        return PutAnyway(p);
     }
+
+    inline bool IsEmpty() { return (IFullSlotsCount == 0); }
     inline uint32_t GetEmptyCount() { return Sz-IFullSlotsCount; }
     inline uint32_t GetFullCount()  { return IFullSlotsCount; }
     void Flush(uint32_t ALength) {
@@ -51,6 +73,10 @@ public:
             PRead = IBuf + ALength;
         }
         else PRead += ALength;
+    }
+    void Flush() {
+        IFullSlotsCount = 0;
+        PRead = PWrite;
     }
 };
 #endif
@@ -99,27 +125,19 @@ public:
 template <typename T, uint32_t Sz>
 class CircBufNumber_t : public CircBuf_t<T, Sz> {
 public:
-    uint8_t Get(T *p, uint32_t ALength) {
-        uint8_t Rslt = FAILURE;
-        if(this->IFullSlotsCount >= ALength) {  // if enough data
-            this->IFullSlotsCount -= ALength;   // 'Length' slots will be freed
-            uint32_t PartSz = (this->IBuf + Sz) - this->PRead;  // Data from PRead to right bound
-            if(ALength > PartSz) {
-                memcpy(p, this->PRead, PartSz);
-                this->PRead = this->IBuf;     // Start from beginning
-                p += PartSz;
-                ALength -= PartSz;
-            }
-            memcpy(p, this->PRead, ALength);
-            this->PRead += ALength;
-            if(this->PRead >= (this->IBuf + Sz)) this->PRead = this->IBuf;   // Circulate pointer
-            Rslt = OK;
+    uint32_t Get(T *p, uint32_t ALength) {
+        uint32_t Cnt = 0;
+        while(this->IFullSlotsCount > 0 and Cnt < ALength) {
+            *p++ = *this->PRead++;
+            if(this->PRead >= (this->IBuf + Sz)) this->PRead = this->IBuf;
+            this->IFullSlotsCount--;
+            Cnt++;
         }
-        return Rslt;
+        return Cnt; // return how many items were written
     }
 
     uint8_t Put(T *p, uint32_t Length) {
-        uint8_t Rslt = FAILURE;
+        uint8_t Rslt = retvFail;
         if(this->GetEmptyCount() >= Length) {    // check if Buffer overflow
             this->IFullSlotsCount += Length;                      // 'Length' slots will be occupied
             uint32_t PartSz = (this->IBuf + Sz) - this->PWrite;  // Data from PWrite to right bound
@@ -132,34 +150,67 @@ public:
             memcpy(this->PWrite, p, Length);
             this->PWrite += Length;
             if(this->PWrite >= (this->IBuf + Sz)) this->PWrite = this->IBuf; // Circulate pointer
-            Rslt = OK;
+            Rslt = retvOk;
         }
         return Rslt;
     }
 
     uint8_t Get(T *p) {
-        if(this->IFullSlotsCount == 0) return FAILURE;
+        if(this->IFullSlotsCount == 0) return retvFail;
         *p = *this->PRead;
         if(++this->PRead > (this->IBuf + Sz - 1)) this->PRead = this->IBuf;     // Circulate buffer
         this->IFullSlotsCount--;
-        return OK;
+        return retvOk;
     }
 
     uint8_t Put(T Value) {
         *this->PWrite = Value;
         if(++this->PWrite > (this->IBuf + Sz - 1)) this->PWrite = this->IBuf;   // Circulate buffer
-        if(this->IFullSlotsCount >= Sz) return OVERFLOW;
+        if(this->IFullSlotsCount >= Sz) return retvOverflow;
         else {
             this->IFullSlotsCount++;
-            return OK;
+            return retvOk;
         }
     }
 
     uint8_t PutIfNotOverflow(T *p) {
-        if(this->IFullSlotsCount >= Sz) return OVERFLOW;
+        if(this->IFullSlotsCount >= Sz) return retvOverflow;
         else return Put(p);
     }
 };
+#endif
+
+#if 1 // ========================== Double buffer ==============================
+// Append to buf 1, until filled up. Switch buffers and return addrSwitch.
+template <typename T, uint32_t Sz>
+class DoubleBuf_t {
+private:
+    T Buf1[Sz], Buf2[Sz];
+    T *pWrite = Buf1;
+    T *pRead = Buf2;
+public:
+    AddRslt_t Append(T Value) {
+        *pWrite++ = Value;
+        if(pRead == Buf1) {             // Check if overflow
+            if(pWrite >= &Buf2[Sz]) {    // Switch buffers
+                pRead = Buf2;
+                pWrite = Buf1;
+                return addrSwitch;
+            }
+            else return addrOk;
+        }
+        else {  // pRead == Buf2
+            if(pWrite >= &Buf1[Sz]) {    // Switch buffers
+                pRead = Buf1;
+                pWrite = Buf2;
+                return addrSwitch;
+            }
+            else return addrOk;
+        }
+    }
+    T* GetBufToRead() { return pRead; }
+};
+
 #endif
 
 #if 1 // ========================= Counting buffer =============================
