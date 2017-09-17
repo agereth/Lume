@@ -67,7 +67,6 @@ private:
     // High-level
     void GotoXY(uint8_t x, uint8_t y) { CurrentPosition =  x + y*96; }
 public:
-    uint16_t Brightness;
     void Init();
     void Shutdown();
     void Backlight(uint8_t ABrightness)  { BckLt.Set(ABrightness); }
@@ -84,7 +83,7 @@ public:
     // Symbols printing
     void Symbols(const uint8_t x, const uint8_t y, ...);
     // Constructor
-    Lcd_t(): CurrentPosition(0), Brightness(0) {
+    Lcd_t(): CurrentPosition(0) {
         for(uint32_t i=0; i<LCD_VIDEOBUF_SIZE; i++) IBuf[i] = 0;
     }
 };
