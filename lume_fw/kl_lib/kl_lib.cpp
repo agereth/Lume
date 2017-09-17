@@ -139,13 +139,13 @@ void Timer_t::Init() const {
     else if(ITmr == TIM14)  { rccEnableTIM14(FALSE); }
 #endif
 #ifdef TIM15
-    else if(ITmr == TIM15)  { rccDisableTIM15(FALSE); }
+    else if(ITmr == TIM15)  { rccEnableTIM15(FALSE); }
 #endif
 #ifdef TIM16
-    else if(ITmr == TIM16)  { rccDisableTIM16(FALSE); }
+    else if(ITmr == TIM16)  { rccEnableTIM16(FALSE); }
 #endif
 #ifdef TIM17
-    else if(ITmr == TIM17)  { rccDisableTIM17(FALSE); }
+    else if(ITmr == TIM17)  { rccEnableTIM17(FALSE); }
 #endif
 }
 

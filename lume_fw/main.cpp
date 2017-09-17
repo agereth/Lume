@@ -12,8 +12,9 @@
 #include "kl_lib.h"
 #include "SimpleSensors.h"
 #include "buttons.h"
-//#include "board.h"
 //#include "ws2812b.h"
+#include "lcd1200.h"
+#include "led.h"
 
 #if 1 // ======================== Variables and defines ========================
 // Forever
@@ -29,7 +30,6 @@ void ITask();
 
 //bool AdcFirstConv = true;
 
-//void BtnHandler(BtnEvt_t BtnEvt);
 #endif
 
 int main(void) {
@@ -49,14 +49,15 @@ int main(void) {
     Printf("\r%S %S\r", APP_NAME, BUILD_TIME);
     Clk.PrintFreqs();
 
-    // Power pin
-//    PwrPin.Init();
-//    PwrPin.SetHi();
-
-//    Effects.Init();
-//    Effects.AllTogetherNow(hsv);
-
     SimpleSensors::Init();
+
+    PinSetupAlterFunc(GPIOB, 14, omPushPull, pudNone, AF1);
+
+    Lcd.Init();
+    Lcd.Backlight(100);
+    Lcd.PrintfInverted(0,0,"Aiya Finwe");
+
+
     // Adc
 //    PinSetupAnalog(BAT_MEAS_PIN);
 //    Adc.Init();
@@ -97,39 +98,6 @@ void ITask() {
             default: break;
         } // switch
 
-
-//        Effects.AllTogetherNow(hsv);
-//        hsv.H++;
-//        if(hsv.H > 360) hsv.H = 0;
-//        chThdSleepMilliseconds(90);
-
-
-//        Effects.AllTogetherSmoothly(clRed, 360);
-//        chThdSleepMilliseconds(2700);
-//        Effects.AllTogetherSmoothly(clGreen, 360);
-//        chThdSleepMilliseconds(2700);
-//        Effects.AllTogetherSmoothly(clBlue, 360);
-//        chThdSleepMilliseconds(2700);
-
-//        __unused eventmask_t Evt = chEvtWaitAny(ALL_EVENTS);
-
-//        if(Evt & EVT_BUTTONS) {
-//            BtnEvtInfo_t EInfo;
-//            while(BtnGetEvt(&EInfo) == OK) BtnHandler(EInfo.Type);
-//        }
-
-//        // If battery discharged, indicate it
-//        if(Evt & EVT_BATTERY_LOW) {
-//            Uart.Printf("Battery low\r");
-//            State = stateDischarged;
-//            Led.IndicateDischarged();
-//        }
-
-        // Led sequence end: switch off if time to sleep
-//        if(Evt & EVT_LED_DONE) {
-//            Uart.Printf("Led Done\r");
-//        }
-
 #if ADC_REQUIRED
         if(Evt & EVT_SAMPLING) Adc.StartMeasurement();
         if(Evt & EVT_ADC_DONE) {
@@ -144,13 +112,7 @@ void ITask() {
         } // evt
 #endif
     } // while true
-} // App_t::ITask()
-
-//void BtnHandler(BtnEvt_t BtnEvt) {
-//    if(BtnEvt == beShortPress) Uart.Printf("Btn Short\r");
-//    if(BtnEvt == beLongPress)  Uart.Printf("Btn Long\r");
-//    if(BtnEvt == beRelease)    Uart.Printf("Btn Release\r");
-//}
+} // ITask()
 
 #if UART_RX_ENABLED // ================= Command processing ====================
 void OnCmd(Shell_t *PShell) {

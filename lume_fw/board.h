@@ -44,7 +44,7 @@
 #define LCD_XRES        GPIOB, 11
 #define LCD_SCLK        GPIOB, 12
 #define LCD_XCS         GPIOB, 13
-#define LCD_BCKLT       { GPIOB, 0, TIM3, 3, invNotInverted, omPushPull, 255 }
+#define LCD_BCKLT       { GPIOB, 14, TIM15, 1, invNotInverted, omPushPull, 100 }
 
 // Battery measurement
 #define BAT_MEAS_PIN    GPIOA, 2
@@ -54,7 +54,7 @@
 #define UART_TX_PIN     9
 #define UART_RX_PIN     10
 
-// LED
+// LEDs
 #define LEDWS_PIN       GPIOB, 15, omPushPull, pudNone, AF0, psHigh
 
 #endif // GPIO
@@ -68,6 +68,9 @@
 #define CMD_UART        USART1
 #define UART_USE_INDEPENDENT_CLK    TRUE
 #define UART_TXBUF_SZ   1024
+
+// LCD USART
+#define LCD_UART_SPEED      100000
 #endif
 
 #if 1 // ========================== USB ========================================
@@ -105,6 +108,8 @@
 #define UART_DMA_TX     STM32_DMA1_STREAM2
 #define UART_DMA_RX     STM32_DMA1_STREAM3
 #define UART_DMA_CHNL   0   // Dummy
+
+#define LCD_DMA         STM32_DMA1_STREAM7  // USART3 TX
 
 #define LEDWS_DMA       STM32_DMA1_STREAM5  // SPI2 TX
 
