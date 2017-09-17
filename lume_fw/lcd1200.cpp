@@ -63,7 +63,7 @@ void Lcd_t::Init(void) {
     USART3->CR2 = USART_CR2_CLKEN | USART_CR2_LBCL; // Enable clock, enable last bit clock
     USART3->CR1 = USART_CR1_M0 | USART_CR1_TE;
     USART3->CR3 = USART_CR3_DMAT;   // Enable DMA at transmitter
-    USART3->CR1 |= USART_CR1_UE;     // Enable
+    USART3->CR1 |= USART_CR1_UE;    // Enable
 #else
     PinSetupAlterFunc(LCD_SCLK, omPushPull, pudNone, AF7, psHigh);
     PinSetupAlterFunc(LCD_SDA,  omPushPull, pudNone, AF7, psHigh);

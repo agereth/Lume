@@ -17,6 +17,7 @@
 #define LCD_HEIGHT		    65
 
 // Settings
+#define LCD_DELAY()         // DelayLoop(180)
 #define USE_LARGE_FONTS     FALSE
 #if USE_LARGE_FONTS
 #include "lcd_LargeFonts.h"
@@ -54,12 +55,12 @@ private:
     // Pin driving functions
     void XRES_Hi() { PinSetHi(LCD_XRES); }
     void XRES_Lo() { PinSetLo(LCD_XRES); }
-    void SCLK_Hi() { PinSetHi(LCD_SCLK); }
-    void SCLK_Lo() { PinSetLo(LCD_SCLK); }
-    void SDA_Hi () { PinSetHi(LCD_SDA);  }
-    void SDA_Lo () { PinSetLo(LCD_SDA);  }
-    void XCS_Hi () { PinSetHi(LCD_XCS);  }
-    void XCS_Lo () { PinSetLo(LCD_XCS);  }
+    void SCLK_Hi() { PinSetHi(LCD_SCLK); LCD_DELAY(); }
+    void SCLK_Lo() { PinSetLo(LCD_SCLK); LCD_DELAY(); }
+    void SDA_Hi () { PinSetHi(LCD_SDA);  LCD_DELAY(); }
+    void SDA_Lo () { PinSetLo(LCD_SDA);  LCD_DELAY(); }
+    void XCS_Hi () { PinSetHi(LCD_XCS);  LCD_DELAY(); }
+    void XCS_Lo () { PinSetLo(LCD_XCS);  LCD_DELAY(); }
     semaphore_t semLcd;
     void WriteCmd(uint8_t ACmd);
     uint8_t IPutChar(char c);

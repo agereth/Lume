@@ -57,6 +57,7 @@ int main(void) {
 
     SimpleSensors::Init();
 
+    chThdSleepMilliseconds(360); // Let power to stabilize
     Lcd.Init();
     Lcd.Backlight(100);
 
@@ -90,7 +91,7 @@ void ITask() {
 
             case evtIdEverySecond:
                 Time.GetDateTime();
-                Time.CurrentDT.Print();
+//                Time.CurrentDT.Print();
                 Interface.DisplayDateTime(&Time.CurrentDT);
                 break;
 
