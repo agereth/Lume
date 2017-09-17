@@ -56,7 +56,7 @@ int main(void) {
 //    Effects.Init();
 //    Effects.AllTogetherNow(hsv);
 
-//    SimpleSensors::Init();
+    SimpleSensors::Init();
     // Adc
 //    PinSetupAnalog(BAT_MEAS_PIN);
 //    Adc.Init();
@@ -76,8 +76,8 @@ void ITask() {
                 ((Shell_t*)Msg.Ptr)->SignalCmdProcessed();
                 break;
 
-//            case evtIdButtons:
-////                Printf("Btn %u\r", Msg.BtnEvtInfo.BtnID);
+            case evtIdButtons:
+                Printf("Btn %u\r", Msg.BtnEvtInfo.BtnID);
 //                if(Msg.BtnEvtInfo.BtnID == 1) {
 //                    if(hsv.H < 360) hsv.H++;
 //                    else hsv.H = 0;
@@ -92,7 +92,7 @@ void ITask() {
 ////                    rgb.Print();
 ////                }
 //                Effects.AllTogetherNow(hsv);
-//                break;
+                break;
 
             default: break;
         } // switch

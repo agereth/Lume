@@ -27,7 +27,7 @@
  */
 
 // ================================= Settings ==================================
-#define BUTTONS_CNT                 3
+#define BUTTONS_CNT                 4
 // Select required events etc.
 #define BTN_SHORTPRESS              TRUE   // beShortPress evt
 #define BTN_RELEASE                 FALSE
@@ -50,7 +50,7 @@
 enum BtnName_t {btnUp=0, btnDown=1};
 
 // Define correct button behavior depending on schematic
-#define BTN_IDLE_LOW                TRUE
+#define BTN_IDLE_LOW                FALSE
 // =============================================================================
 
 // Selected depending on Idle state

@@ -29,6 +29,7 @@ const PinSns_t PinSns[] = {
         {BTN1_PIN, ProcessButtons},
         {BTN2_PIN, ProcessButtons},
         {BTN3_PIN, ProcessButtons},
+        {BTN4_PIN, ProcessButtons},
 };
 #define PIN_SNS_CNT     countof(PinSns)
 

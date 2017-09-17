@@ -10,8 +10,8 @@
 #include <inttypes.h>
 
 // ==== General ====
-#define BOARD_NAME          "CrystalMushroom"
-#define APP_NAME            "Mushroom"
+#define BOARD_NAME          "Lume3"
+#define APP_NAME            "Lume"
 
 // MCU type as defined in the ST header.
 #define STM32F072xB     // no matter, 8 or B
@@ -30,13 +30,21 @@
 #if 1 // ========================== GPIO =======================================
 // PortMinTim_t: GPIO, Pin, Tim, TimChnl, invInverted, omPushPull, TopValue
 
-// Buttons
-#define BTN1_PIN        GPIOA, 0, pudPullDown
-#define BTN2_PIN        GPIOA, 8, pudPullDown
-#define BTN3_PIN        GPIOA, 1, pudPullDown
+// Luminocity measurement
+#define LUM_MEAS_PIN    GPIOA, 1
 
-// Peripheral power enable
-#define PWR_EN_PIN      GPIOB, 14, omPushPull
+// Buttons
+#define BTN1_PIN        GPIOB, 3, pudPullUp
+#define BTN2_PIN        GPIOB, 4, pudPullUp
+#define BTN3_PIN        GPIOB, 5, pudPullUp
+#define BTN4_PIN        GPIOB, 6, pudPullUp
+
+// LCD
+#define LCD_SDA         GPIOB, 10
+#define LCD_XRES        GPIOB, 11
+#define LCD_SCLK        GPIOB, 12
+#define LCD_XCS         GPIOB, 13
+#define LCD_BCKLT       { GPIOB, 0, TIM3, 3, invNotInverted, omPushPull, 255 }
 
 // Battery measurement
 #define BAT_MEAS_PIN    GPIOA, 2
@@ -45,7 +53,6 @@
 #define UART_GPIO       GPIOA
 #define UART_TX_PIN     9
 #define UART_RX_PIN     10
-#define UART_AF         AF1 // for USART1 @ GPIOA
 
 // LED
 #define LEDWS_PIN       GPIOB, 15, omPushPull, pudNone, AF0, psHigh
