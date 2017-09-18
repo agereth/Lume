@@ -15,7 +15,7 @@ TimeCounter_t Time;
     ((Ytens<<20)|(Yunits<<16)|(WeekDay<<13)|(Mtens<<12)|(Munits<<8)|(Dtens<<4)|Dunits)
 
 void TimeCounter_t::Init() {
-    if (!BackupSpc::IsSetup()) {
+    if(!BackupSpc::IsSetup()) {
         Printf("Nothing is set\r");
         // ==== Rtc config ====
         BackupSpc::Reset();     // Reset Backup Domain

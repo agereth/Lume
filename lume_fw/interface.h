@@ -14,7 +14,6 @@
 class Interface_t {
 public:
     void Reset() {
-//        Lcd.Printf(11, 0, APP_VERSION);
         Lcd.Printf(0, 0, "Время:  00:00:00");
         Lcd.Printf(0, 1, "Дата: 0000/00/00");
         Lcd.Printf(0, 2, "Освещённость: 00");
@@ -25,7 +24,7 @@ public:
         Lcd.Printf(0, 7, "Цвет минут: 000");
     }
 
-    void DisplayDateTime(DateTime_t *pDT, State_t State = stIdle) {
+    void DisplayDateTime(DateTime_t *pDT) {
         if(State == stHours) Lcd.PrintfInverted(8,  0, "%02u", pDT->H);
         else Lcd.Printf(8,  0, "%02u", pDT->H);
         if(State == stMinutes) Lcd.PrintfInverted(11, 0, "%02u", pDT->M);
@@ -39,7 +38,11 @@ public:
         else Lcd.Printf(14, 1, "%02u", pDT->Day);
     }
 
-    void DisplayClrM(uint16_t ClrId, State_t State = stIdle) {
+    void DisplayClrH(uint16_t ClrId) {
+        if(State == stClrH) Lcd.PrintfInverted(12, 6, "%03u", ClrId);
+        else Lcd.Printf(12, 6, "%03u", ClrId);
+    }
+    void DisplayClrM(uint16_t ClrId) {
         if(State == stClrM) Lcd.PrintfInverted(12, 7, "%03u", ClrId);
         else Lcd.Printf(12, 7, "%03u", ClrId);
     }

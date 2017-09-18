@@ -10,3 +10,5 @@
 enum State_t {stIdle, stHours, stMinutes, stYear, stMonth, stDay,
     stThreshold, stBrtHi, stBrtLo, stClrH, stClrM
 };
+
+extern State_t State;

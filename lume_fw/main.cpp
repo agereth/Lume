@@ -26,8 +26,20 @@ extern CmdUart_t Uart;
 void OnCmd(Shell_t *PShell);
 void ITask();
 
-#define BKPREG_BRIGHTNESS   RTC->BKP1R
+// Settings
+union Settings_t {
+    struct {
+        uint32_t R1,R2,R3;
+    } __packed;
+    struct {
+        uint8_t Threshold;
+        uint8_t BrtHi;
+        uint8_t BrtLo;
+        uint16_t ClrIdH, ClrIdM;
+    } __packed;
+} __packed;
 
+Settings_t Settings;
 Interface_t Interface;
 
 //ColorHSV_t hsv(319, 100, 100);
@@ -38,13 +50,14 @@ Interface_t Interface;
 //bool AdcFirstConv = true;
 State_t State = stIdle;
 bool DateTimeHasChanged = false;
-ColorHSV_t ClrM(hsvYellow), ClrH(hsvCyan);
+//ColorHSV_t ClrM(hsvYellow), ClrH(hsvCyan);
 
 TmrKL_t TmrMenu {MS2ST(3600), evtIdMenuTimeout, tktOneShot};
 
 enum Btns_t {btnUp=0, btnDown=1, btnPlus=2, btnMinus=3};
 
 static void MenuHandler(Btns_t Btn);
+static void EnterIdle();
 
 #endif
 
@@ -72,8 +85,14 @@ int main(void) {
 
     // Time and backup space
     BackupSpc::EnableAccess();
+    // Load settings
+    Settings.R1 = RTC->BKP1R;
+    Settings.R2 = RTC->BKP2R;
+    Settings.R3 = RTC->BKP3R;
 
     Interface.Reset();
+    EnterIdle();
+
     Time.Init();
 //    Time.GetDateTime(&App.dtNow);
 
@@ -113,13 +132,7 @@ void ITask() {
 
             case evtIdMenuTimeout:
                 Printf("MenuTimeout\r");
-                Interface.DisplayDateTime(&Time.CurrentDT);
-                State = stIdle;
-                Lcd.Backlight(0);
-                // Save time if changed
-                if(DateTimeHasChanged) {
-                    // XXX
-                }
+                EnterIdle();
                 break;
             default: break;
         } // switch
@@ -150,20 +163,55 @@ void MenuHandler(Btns_t Btn) {
             switch(Btn) {
                 case btnDown:
                     State = stHours;
-                    Interface.DisplayDateTime(&Time.CurrentDT, State);
+                    Interface.DisplayDateTime(&Time.CurrentDT);
                     break;
                 case btnUp:
                     State = stClrM;
-                    Interface.DisplayClrM(ClrM.H, stClrM);
+                    Interface.DisplayClrM(Settings.ClrIdM);
                     break;
                 default: break; // do not react on +-
             }
             break;
 
-//            case
 
 
+            case stClrM:
+                switch(Btn) {
+                    case btnDown: EnterIdle(); break;
+                    case btnUp:
+                        State = stClrH;
+                        Interface.DisplayClrM(Settings.ClrIdM);
+                        Interface.DisplayClrM(Settings.ClrIdH);
+                        break;
+                    case btnPlus:
+                        if(Settings.ClrIdM == 360) Settings.ClrIdM = 0;
+                        else Settings.ClrIdM++;
+                        Interface.DisplayClrM(Settings.ClrIdM);
+                        break;
+                    case btnMinus:
+                        if(Settings.ClrIdM == 0) Settings.ClrIdM = 360;
+                        else Settings.ClrIdM--;
+                        Interface.DisplayClrM(Settings.ClrIdM);
+                        break;
+                }
+                break;
     } // switch state
+}
+
+void EnterIdle() {
+    State = stIdle;
+    Interface.DisplayDateTime(&Time.CurrentDT);
+    Interface.DisplayClrH(Settings.ClrIdH);
+    Interface.DisplayClrM(Settings.ClrIdM);
+    Lcd.Backlight(0);
+    // Save settings
+    RTC->BKP1R = Settings.R1;
+    RTC->BKP2R = Settings.R2;
+    RTC->BKP3R = Settings.R3;
+    // Save time if changed
+    if(DateTimeHasChanged) {
+        // XXX
+    }
 }
 
 #if UART_RX_ENABLED // ================= Command processing ====================
