@@ -76,7 +76,7 @@ void Lcd_t::Init(void) {
     USART3->CR3 = USART_CR3_DMAT;   // Enable DMA at transmitter
 #endif
     // DMA
-    dmaStreamAllocate     (LCD_DMA, IRQ_PRIO_LOW, nullptr, NULL);
+    dmaStreamAllocate     (LCD_DMA, IRQ_PRIO_LOW, nullptr, nullptr);
     dmaStreamSetPeripheral(LCD_DMA, &USART3->TDR);
     dmaStreamSetMemory0   (LCD_DMA, IBuf);
     dmaStreamSetTransactionSize(LCD_DMA, LCD_VIDEOBUF_SIZE);

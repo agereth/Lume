@@ -12,12 +12,13 @@
 #include "kl_lib.h"
 #include "SimpleSensors.h"
 #include "buttons.h"
-//#include "ws2812b.h"
 #include "lcd1200.h"
 #include "led.h"
 #include "kl_time.h"
 #include "interface.h"
 #include "main.h"
+#include "ws2812b.h"
+#include "IntelLedEffs.h"
 
 #if 1 // ======================== Variables and defines ========================
 // Forever
@@ -80,7 +81,11 @@ int main(void) {
 
     SimpleSensors::Init();
 
-    chThdSleepMilliseconds(360); // Let power to stabilize
+    // LEDs: must be set up before LCD to allow DMA irq
+    LedEffectsInit();
+    EffAllTogetherNow.SetupAndStart(clBlue);
+
+    chThdSleepMilliseconds(180); // Let power to stabilize
     Lcd.Init();
 
     // Time and backup space
@@ -94,9 +99,6 @@ int main(void) {
     EnterIdle();
 
     Time.Init();
-//    Time.GetDateTime(&App.dtNow);
-
-//    Printf("CR: %X\r", RTC->CR);
 
     // Adc
 //    PinSetupAnalog(BAT_MEAS_PIN);
@@ -241,9 +243,9 @@ void OnCmd(Shell_t *PShell) {
 //        PShell->Ack(OK);
 //    }
 
-//    else if(PCmd->NameIs("HSV")) {
+    else if(PCmd->NameIs("HSV")) {
 //        ColorHSV_t ClrHsv(0,0,0);
-//        if(PCmd->GetNextUint16(&ClrHsv.H) != OK) return;
+//        if(PCmd->GetNextUint16(&ClrHsv.H) != retvOk) return;
 //        if(PCmd->GetNextByte(&ClrHsv.S)   != OK) return;
 //        if(PCmd->GetNextByte(&ClrHsv.V)   != OK) return;
 //        Color_t Clr;
@@ -252,7 +254,17 @@ void OnCmd(Shell_t *PShell) {
 ////        Uart.Printf("{%u; %u; %u}\r", R, G, B);
 ////        Led.SetColor(Clr, 100);
 //        PShell->Ack(OK);
-//    }
+    }
+
+    else if(PCmd->NameIs("RGB")) {
+        Color_t FClr(0,0,0);
+        if(PCmd->GetNext<uint8_t>(&FClr.R) != retvOk) return;
+        if(PCmd->GetNext<uint8_t>(&FClr.G) != retvOk) return;
+        if(PCmd->GetNext<uint8_t>(&FClr.B) != retvOk) return;
+        EffAllTogetherNow.SetupAndStart(FClr);
+//        EffAllTogetherSmoothly.SetupAndStart(FClr, 360);
+        PShell->Ack(retvOk);
+    }
 
     else PShell->Ack(retvCmdUnknown);
 }
