@@ -17,6 +17,7 @@
 #include "led.h"
 #include "kl_time.h"
 #include "interface.h"
+#include "main.h"
 
 #if 1 // ======================== Variables and defines ========================
 // Forever
@@ -35,6 +36,15 @@ Interface_t Interface;
 //Profile_t Profile;
 
 //bool AdcFirstConv = true;
+State_t State = stIdle;
+bool DateTimeHasChanged = false;
+ColorHSV_t ClrM(hsvYellow), ClrH(hsvCyan);
+
+TmrKL_t TmrMenu {MS2ST(3600), evtIdMenuTimeout, tktOneShot};
+
+enum Btns_t {btnUp=0, btnDown=1, btnPlus=2, btnMinus=3};
+
+static void MenuHandler(Btns_t Btn);
 
 #endif
 
@@ -59,7 +69,6 @@ int main(void) {
 
     chThdSleepMilliseconds(360); // Let power to stabilize
     Lcd.Init();
-    Lcd.Backlight(100);
 
     // Time and backup space
     BackupSpc::EnableAccess();
@@ -90,29 +99,28 @@ void ITask() {
                 break;
 
             case evtIdEverySecond:
-                Time.GetDateTime();
+                if(State == stIdle) {
+                    Time.GetDateTime();
 //                Time.CurrentDT.Print();
-                Interface.DisplayDateTime(&Time.CurrentDT);
+                    Interface.DisplayDateTime(&Time.CurrentDT);
+                }
                 break;
 
             case evtIdButtons:
                 Printf("Btn %u\r", Msg.BtnEvtInfo.BtnID);
-//                if(Msg.BtnEvtInfo.BtnID == 1) {
-//                    if(hsv.H < 360) hsv.H++;
-//                    else hsv.H = 0;
-//                }
-//                else if(Msg.BtnEvtInfo.BtnID == 2) {
-//                    if(hsv.H > 0) hsv.H--;
-//                    else hsv.H = 360;
-//                }
-////                Printf("HSV %u; ", hsv.H);
-////                {
-////                    Color_t rgb = hsv.ToRGB();
-////                    rgb.Print();
-////                }
-//                Effects.AllTogetherNow(hsv);
+                MenuHandler((Btns_t)Msg.BtnEvtInfo.BtnID);
                 break;
 
+            case evtIdMenuTimeout:
+                Printf("MenuTimeout\r");
+                Interface.DisplayDateTime(&Time.CurrentDT);
+                State = stIdle;
+                Lcd.Backlight(0);
+                // Save time if changed
+                if(DateTimeHasChanged) {
+                    // XXX
+                }
+                break;
             default: break;
         } // switch
 
@@ -131,6 +139,32 @@ void ITask() {
 #endif
     } // while true
 } // ITask()
+
+void MenuHandler(Btns_t Btn) {
+    // Switch backlight on
+    Lcd.Backlight(100);
+    TmrMenu.StartOrRestart();
+    // Process menu
+    switch(State) {
+        case stIdle:
+            switch(Btn) {
+                case btnDown:
+                    State = stHours;
+                    Interface.DisplayDateTime(&Time.CurrentDT, State);
+                    break;
+                case btnUp:
+                    State = stClrM;
+                    Interface.DisplayClrM(ClrM.H, stClrM);
+                    break;
+                default: break; // do not react on +-
+            }
+            break;
+
+//            case
+
+
+    } // switch state
+}
 
 #if UART_RX_ENABLED // ================= Command processing ====================
 void OnCmd(Shell_t *PShell) {

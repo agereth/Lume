@@ -46,9 +46,6 @@
 #define BTNS_EVT_Q_LEN              1   // No need in queue if combo not allowed
 #endif
 
-// Select convenient names
-enum BtnName_t {btnUp=0, btnDown=1};
-
 // Define correct button behavior depending on schematic
 #define BTN_IDLE_LOW                FALSE
 // =============================================================================

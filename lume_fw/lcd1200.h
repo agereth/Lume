@@ -17,7 +17,7 @@
 #define LCD_HEIGHT		    65
 
 // Settings
-#define LCD_DELAY()         // DelayLoop(180)
+#define LCD_DELAY()         DelayLoop(180)
 #define USE_LARGE_FONTS     FALSE
 #if USE_LARGE_FONTS
 #include "lcd_LargeFonts.h"
