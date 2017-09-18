@@ -19,6 +19,7 @@
 #include "main.h"
 #include "ws2812b.h"
 #include "IntelLedEffs.h"
+#include "kl_adc.h"
 
 #if 1 // ======================== Variables and defines ========================
 // Forever
@@ -42,16 +43,8 @@ union Settings_t {
 
 Settings_t Settings;
 Interface_t Interface;
-
-//ColorHSV_t hsv(319, 100, 100);
-//PinOutput_t PwrPin { PWR_EN_PIN };
-//TmrKL_t TmrAdc {MS2ST(450), evtIdEverySecond, tktPeriodic};
-//Profile_t Profile;
-
-//bool AdcFirstConv = true;
 State_t State = stIdle;
 bool DateTimeHasChanged = false;
-//ColorHSV_t ClrM(hsvYellow), ClrH(hsvCyan);
 
 TmrKL_t TmrMenu {MS2ST(3600), evtIdMenuTimeout, tktOneShot};
 
@@ -101,10 +94,9 @@ int main(void) {
     Time.Init();
 
     // Adc
-//    PinSetupAnalog(BAT_MEAS_PIN);
-//    Adc.Init();
-//    Adc.EnableVRef();
-//    TmrAdc.InitAndStart();
+    PinSetupAnalog(LUM_MEAS_PIN);
+    Adc.Init();
+    Adc.EnableVRef();
     // Main cycle
     ITask();
 }
@@ -127,6 +119,10 @@ void ITask() {
                 }
                 break;
 
+            case evtIdAdcRslt:
+                Printf("Lum: %u\r", Msg.Value);
+                break;
+
             case evtIdButtons:
                 Printf("Btn %u\r", Msg.BtnEvtInfo.BtnID);
                 MenuHandler((Btns_t)Msg.BtnEvtInfo.BtnID);
@@ -138,20 +134,6 @@ void ITask() {
                 break;
             default: break;
         } // switch
-
-#if ADC_REQUIRED
-        if(Evt & EVT_SAMPLING) Adc.StartMeasurement();
-        if(Evt & EVT_ADC_DONE) {
-            if(AdcFirstConv) AdcFirstConv = false;
-            else {
-                uint32_t VBat_adc = Adc.GetResult(ADC_BAT_CHNL);
-                uint32_t VRef_adc = Adc.GetResult(ADC_VREFINT_CHNL);
-                __unused int32_t Vbat_mv = (2 * Adc.Adc2mV(VBat_adc, VRef_adc));   // Resistor divider
-//                Uart.Printf("VBat_adc: %u; Vref_adc: %u; VBat_mv: %u\r", VBat_adc, VRef_adc, Vbat_mv);
-//                if(Vbat_mv < 3600) SignalEvt(EVT_BATTERY_LOW);
-            } // if not big diff
-        } // evt
-#endif
     } // while true
 } // ITask()
 
