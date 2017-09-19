@@ -119,9 +119,11 @@ void ITask() {
                 }
                 break;
 
-            case evtIdAdcRslt:
-                Printf("Lum: %u\r", Msg.Value);
-                break;
+            case evtIdAdcRslt: {
+                uint32_t Lum = Msg.Value / 100;
+//                Printf("Lum: %u\r", Msg.Value);
+                Interface.DisplayLum(Lum);
+                } break;
 
             case evtIdButtons:
                 Printf("Btn %u\r", Msg.BtnEvtInfo.BtnID);

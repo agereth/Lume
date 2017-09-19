@@ -38,6 +38,10 @@ public:
         else Lcd.Printf(14, 1, "%02u", pDT->Day);
     }
 
+    void DisplayLum(uint32_t Lum) {
+        Lcd.Printf(14, 2, "%02u", Lum);
+    }
+
     void DisplayClrH(uint16_t ClrId) {
         if(State == stClrH) Lcd.PrintfInverted(12, 6, "%03u", ClrId);
         else Lcd.Printf(12, 6, "%03u", ClrId);
