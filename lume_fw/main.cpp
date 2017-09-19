@@ -28,19 +28,6 @@ extern CmdUart_t Uart;
 void OnCmd(Shell_t *PShell);
 void ITask();
 
-// Settings
-union Settings_t {
-    struct {
-        uint32_t R1,R2,R3;
-    } __packed;
-    struct {
-        uint8_t Threshold;
-        uint8_t BrtHi;
-        uint8_t BrtLo;
-        uint16_t ClrIdH, ClrIdM;
-    } __packed;
-} __packed;
-
 Settings_t Settings;
 Interface_t Interface;
 State_t State = stIdle;
@@ -115,12 +102,12 @@ void ITask() {
                 if(State == stIdle) {
                     Time.GetDateTime();
 //                Time.CurrentDT.Print();
-                    Interface.DisplayDateTime(&Time.CurrentDT);
+                    Interface.DisplayDateTime();
                 }
                 break;
 
             case evtIdAdcRslt: {
-                uint32_t Lum = Msg.Value / 100;
+                uint32_t Lum = Msg.Value / 36;
 //                Printf("Lum: %u\r", Msg.Value);
                 Interface.DisplayLum(Lum);
                 } break;
@@ -149,46 +136,161 @@ void MenuHandler(Btns_t Btn) {
             switch(Btn) {
                 case btnDown:
                     State = stHours;
-                    Interface.DisplayDateTime(&Time.CurrentDT);
+                    Interface.DisplayDateTime();
                     break;
                 case btnUp:
                     State = stClrM;
-                    Interface.DisplayClrM(Settings.ClrIdM);
+                    Interface.DisplayClrM();
                     break;
                 default: break; // do not react on +-
             }
             break;
 
+#if 1 // ==== Date ====
+                case stDay:
+                    switch(Btn) {
+                        case btnDown:
+                            State = stBrtHi;
+                            Interface.DisplayBrtHi();
+                            break;
+                        case btnUp:
+                            State = stDay;
+                            Interface.DisplayDateTime();
+                            break;
+                        case btnPlus:
+                            if(Settings.Threshold == 99) Settings.Threshold = 0;
+                            else Settings.Threshold++;
+                            break;
+                        case btnMinus:
+                            if(Settings.Threshold == 0) Settings.Threshold = 99;
+                            else Settings.Threshold--;
+                            break;
+                    }
+                    Interface.DisplayDateTime();
+                    break;
+#endif
 
+#if 1 // ==== Brightness threshold ====
+        case stThreshold:
+            switch(Btn) {
+                case btnDown:
+                    State = stBrtHi;
+                    Interface.DisplayBrtHi();
+                    break;
+                case btnUp:
+                    State = stDay;
+                    Interface.DisplayDateTime();
+                    break;
+                case btnPlus:
+                    if(Settings.Threshold == 99) Settings.Threshold = 0;
+                    else Settings.Threshold++;
+                    break;
+                case btnMinus:
+                    if(Settings.Threshold == 0) Settings.Threshold = 99;
+                    else Settings.Threshold--;
+                    break;
+            }
+            Interface.DisplayThreshold();
+            break;
+
+        case stBrtHi:
+            switch(Btn) {
+                case btnDown:
+                    State = stBrtLo;
+                    Interface.DisplayBrtLo();
+                    break;
+                case btnUp:
+                    State = stThreshold;
+                    Interface.DisplayThreshold();
+                    break;
+                case btnPlus:
+                    if(Settings.BrtHi == 99) Settings.BrtHi = 0;
+                    else Settings.BrtHi++;
+                    break;
+                case btnMinus:
+                    if(Settings.BrtHi == 0) Settings.BrtHi = 99;
+                    else Settings.BrtHi--;
+                    break;
+            }
+            Interface.DisplayBrtHi();
+            break;
+
+        case stBrtLo:
+            switch(Btn) {
+                case btnDown:
+                    State = stClrH;
+                    Interface.DisplayClrH();
+                    break;
+                case btnUp:
+                    State = stBrtHi;
+                    Interface.DisplayBrtHi();
+                    break;
+                case btnPlus:
+                    if(Settings.BrtLo == 99) Settings.BrtLo = 0;
+                    else Settings.BrtLo++;
+                    break;
+                case btnMinus:
+                    if(Settings.BrtLo == 0) Settings.BrtLo = 99;
+                    else Settings.BrtLo--;
+                    break;
+            }
+            Interface.DisplayBrtLo();
+            break;
+#endif
+
+#if 1 // ==== Colors ====
+            case stClrH:
+                switch(Btn) {
+                    case btnDown:
+                        State = stClrM;
+                        Interface.DisplayClrM();
+                        break;
+                    case btnUp:
+                        State = stBrtLo;
+                        Interface.DisplayBrtLo();
+                        break;
+                    case btnPlus:
+                        if(Settings.ClrIdH == 360) Settings.ClrIdH = 0;
+                        else Settings.ClrIdH++;
+                        break;
+                    case btnMinus:
+                        if(Settings.ClrIdH == 0) Settings.ClrIdH = 360;
+                        else Settings.ClrIdH--;
+                        break;
+                }
+                Interface.DisplayClrH();
+                break;
 
             case stClrM:
                 switch(Btn) {
                     case btnDown: EnterIdle(); break;
                     case btnUp:
                         State = stClrH;
-                        Interface.DisplayClrM(Settings.ClrIdM);
-                        Interface.DisplayClrM(Settings.ClrIdH);
+                        Interface.DisplayClrH();
                         break;
                     case btnPlus:
                         if(Settings.ClrIdM == 360) Settings.ClrIdM = 0;
                         else Settings.ClrIdM++;
-                        Interface.DisplayClrM(Settings.ClrIdM);
                         break;
                     case btnMinus:
                         if(Settings.ClrIdM == 0) Settings.ClrIdM = 360;
                         else Settings.ClrIdM--;
-                        Interface.DisplayClrM(Settings.ClrIdM);
                         break;
                 }
+                Interface.DisplayClrM();
                 break;
+#endif
     } // switch state
 }
 
 void EnterIdle() {
     State = stIdle;
-    Interface.DisplayDateTime(&Time.CurrentDT);
-    Interface.DisplayClrH(Settings.ClrIdH);
-    Interface.DisplayClrM(Settings.ClrIdM);
+    Interface.DisplayDateTime();
+    Interface.DisplayThreshold();
+    Interface.DisplayBrtHi();
+    Interface.DisplayBrtLo();
+    Interface.DisplayClrH();
+    Interface.DisplayClrM();
     Lcd.Backlight(0);
     // Save settings
     RTC->BKP1R = Settings.R1;

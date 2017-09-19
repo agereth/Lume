@@ -24,36 +24,44 @@ public:
         Lcd.Printf(0, 7, "Цвет минут: 000");
     }
 
-    void DisplayDateTime(DateTime_t *pDT) {
-        if(State == stHours) Lcd.PrintfInverted(8,  0, "%02u", pDT->H);
-        else Lcd.Printf(8,  0, "%02u", pDT->H);
-        if(State == stMinutes) Lcd.PrintfInverted(11, 0, "%02u", pDT->M);
-        else Lcd.Printf(11, 0, "%02u", pDT->M);
-        Lcd.Printf(14, 0, "%02u", pDT->S);  // do not touch seconds
-        if(State == stYear) Lcd.PrintfInverted(6,  1, "%04u", pDT->Year);
-        else Lcd.Printf(6,  1, "%04u", pDT->Year);
-        if(State == stMonth) Lcd.PrintfInverted(11, 1, "%02u", pDT->Month);
-        else Lcd.Printf(11, 1, "%02u", pDT->Month);
-        if(State == stDay) Lcd.PrintfInverted(14, 1, "%02u", pDT->Day);
-        else Lcd.Printf(14, 1, "%02u", pDT->Day);
+    void DisplayDateTime() {
+        if(State == stHours) Lcd.PrintfInverted(8,  0, "%02u", Time.CurrentDT.H);
+        else Lcd.Printf(8,  0, "%02u", Time.CurrentDT.H);
+        if(State == stMinutes) Lcd.PrintfInverted(11, 0, "%02u", Time.CurrentDT.M);
+        else Lcd.Printf(11, 0, "%02u", Time.CurrentDT.M);
+        Lcd.Printf(14, 0, "%02u", Time.CurrentDT.S);  // do not touch seconds
+        if(State == stYear) Lcd.PrintfInverted(6,  1, "%04u", Time.CurrentDT.Year);
+        else Lcd.Printf(6,  1, "%04u", Time.CurrentDT.Year);
+        if(State == stMonth) Lcd.PrintfInverted(11, 1, "%02u", Time.CurrentDT.Month);
+        else Lcd.Printf(11, 1, "%02u", Time.CurrentDT.Month);
+        if(State == stDay) Lcd.PrintfInverted(14, 1, "%02u", Time.CurrentDT.Day);
+        else Lcd.Printf(14, 1, "%02u", Time.CurrentDT.Day);
     }
 
     void DisplayLum(uint32_t Lum) {
         Lcd.Printf(14, 2, "%02u", Lum);
     }
 
-    void DisplayClrH(uint16_t ClrId) {
-        if(State == stClrH) Lcd.PrintfInverted(12, 6, "%03u", ClrId);
-        else Lcd.Printf(12, 6, "%03u", ClrId);
+    void DisplayThreshold() {
+        if(State == stThreshold) Lcd.PrintfInverted(14, 3, "%02u", Settings.Threshold);
+        else Lcd.Printf(14, 3, "%02u", Settings.Threshold);
     }
-    void DisplayClrM(uint16_t ClrId) {
-        if(State == stClrM) Lcd.PrintfInverted(12, 7, "%03u", ClrId);
-        else Lcd.Printf(12, 7, "%03u", ClrId);
+    void DisplayBrtHi() {
+        if(State == stBrtHi) Lcd.PrintfInverted(14, 4, "%02u", Settings.BrtHi);
+        else Lcd.Printf(14, 4, "%02u", Settings.BrtHi);
+    }
+    void DisplayBrtLo() {
+        if(State == stBrtLo) Lcd.PrintfInverted(14, 5, "%02u", Settings.BrtLo);
+        else Lcd.Printf(14, 5, "%02u", Settings.BrtLo);
     }
 
-    void DisplayBrightness() {
-//        if(App.Selected == selBrightness) Lcd.PrintfInverted(9, 7, "%u%%  ", App.BrightnessPercent);
-//        else Lcd.Printf(9, 7, "%u%%    ", App.BrightnessPercent);
+    void DisplayClrH() {
+        if(State == stClrH) Lcd.PrintfInverted(12, 6, "%03u", Settings.ClrIdH);
+        else Lcd.Printf(12, 6, "%03u", Settings.ClrIdH);
+    }
+    void DisplayClrM() {
+        if(State == stClrM) Lcd.PrintfInverted(12, 7, "%03u", Settings.ClrIdM);
+        else Lcd.Printf(12, 7, "%03u", Settings.ClrIdM);
     }
 
     void Error(const char* msg) { Lcd.PrintfInverted(0, 0, "%S", msg); }
