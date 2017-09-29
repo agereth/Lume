@@ -2,3 +2,5 @@ lume_fw/.settings/language.settings.xml
 lume_hw/.lume.fsxview
 lume_hw/lume.kicad_pcb-bak
 lume_hw/lume.ses
+lume_hw/lume.xml
+lume_hw/lume.csv

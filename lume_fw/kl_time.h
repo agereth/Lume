@@ -57,7 +57,7 @@ struct DateTime_t {
 
 class TimeCounter_t {
 public:
-    DateTime_t CurrentDT;
+    DateTime_t Curr;
     void GetDateTime();
     void SetDateTime();
     void Init();

@@ -72,12 +72,12 @@ void TimeCounter_t::Init() {
 }
 
 void TimeCounter_t::GetDateTime() {
-    CurrentDT.Year  = ((RTC->DR >> 20) & 0b1111)* 10 + ((RTC->DR >> 16) & 0b1111) + 2000;
-    CurrentDT.Month = ((RTC->DR >> 12) & 0b1  ) * 10 + ((RTC->DR >> 8)  & 0b1111);
-    CurrentDT.Day   = ((RTC->DR >>  4) & 0b11 ) * 10 + ((RTC->DR >> 0)  & 0b1111);
-    CurrentDT.H     = ((RTC->TR >> 20) & 0b11 ) * 10 + ((RTC->TR >> 16) & 0b1111);
-    CurrentDT.M     = ((RTC->TR >> 12) & 0b111) * 10 + ((RTC->TR >> 8)  & 0b1111);
-    CurrentDT.S     = ((RTC->TR >>  4) & 0b111) * 10 + ((RTC->TR >> 0)  & 0b1111);
+    Curr.Year  = ((RTC->DR >> 20) & 0b1111)* 10 + ((RTC->DR >> 16) & 0b1111) + 2000;
+    Curr.Month = ((RTC->DR >> 12) & 0b1  ) * 10 + ((RTC->DR >> 8)  & 0b1111);
+    Curr.Day   = ((RTC->DR >>  4) & 0b11 ) * 10 + ((RTC->DR >> 0)  & 0b1111);
+    Curr.H     = ((RTC->TR >> 20) & 0b11 ) * 10 + ((RTC->TR >> 16) & 0b1111);
+    Curr.M     = ((RTC->TR >> 12) & 0b111) * 10 + ((RTC->TR >> 8)  & 0b1111);
+    Curr.S     = ((RTC->TR >>  4) & 0b111) * 10 + ((RTC->TR >> 0)  & 0b1111);
 }
 
 void TimeCounter_t::SetDateTime() {

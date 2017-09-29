@@ -25,17 +25,17 @@ public:
     }
 
     void DisplayDateTime() {
-        if(State == stHours) Lcd.PrintfInverted(8,  0, "%02u", Time.CurrentDT.H);
-        else Lcd.Printf(8,  0, "%02u", Time.CurrentDT.H);
-        if(State == stMinutes) Lcd.PrintfInverted(11, 0, "%02u", Time.CurrentDT.M);
-        else Lcd.Printf(11, 0, "%02u", Time.CurrentDT.M);
-        Lcd.Printf(14, 0, "%02u", Time.CurrentDT.S);  // do not touch seconds
-        if(State == stYear) Lcd.PrintfInverted(6,  1, "%04u", Time.CurrentDT.Year);
-        else Lcd.Printf(6,  1, "%04u", Time.CurrentDT.Year);
-        if(State == stMonth) Lcd.PrintfInverted(11, 1, "%02u", Time.CurrentDT.Month);
-        else Lcd.Printf(11, 1, "%02u", Time.CurrentDT.Month);
-        if(State == stDay) Lcd.PrintfInverted(14, 1, "%02u", Time.CurrentDT.Day);
-        else Lcd.Printf(14, 1, "%02u", Time.CurrentDT.Day);
+        if(State == stHours) Lcd.PrintfInverted(8,  0, "%02u", Time.Curr.H);
+        else Lcd.Printf(8,  0, "%02u", Time.Curr.H);
+        if(State == stMinutes) Lcd.PrintfInverted(11, 0, "%02u", Time.Curr.M);
+        else Lcd.Printf(11, 0, "%02u", Time.Curr.M);
+        Lcd.Printf(14, 0, "%02u", Time.Curr.S);  // do not touch seconds
+        if(State == stYear) Lcd.PrintfInverted(6,  1, "%04u", Time.Curr.Year);
+        else Lcd.Printf(6,  1, "%04u", Time.Curr.Year);
+        if(State == stMonth) Lcd.PrintfInverted(11, 1, "%02u", Time.Curr.Month);
+        else Lcd.Printf(11, 1, "%02u", Time.Curr.Month);
+        if(State == stDay) Lcd.PrintfInverted(14, 1, "%02u", Time.Curr.Day);
+        else Lcd.Printf(14, 1, "%02u", Time.Curr.Day);
     }
 
     void DisplayLum(uint32_t Lum) {

@@ -66,6 +66,9 @@ int main(void) {
     EffAllTogetherNow.SetupAndStart(clBlue);
 
     chThdSleepMilliseconds(180); // Let power to stabilize
+    PinSetupOut(LCD_PWR, omPushPull);
+    PinSetHi(LCD_PWR);
+    chThdSleepMilliseconds(18);
     Lcd.Init();
 
     // Time and backup space
@@ -146,28 +149,62 @@ void MenuHandler(Btns_t Btn) {
             }
             break;
 
+#if 1 // ==== Time ====
+        case stMinutes:
+            switch(Btn) {
+                case btnDown: State = stYear; break;
+                case btnUp: State = stHours; break;
+                case btnPlus:  Time.Curr.IncM(); Time.Curr.S = 0; DateTimeHasChanged = true; break;
+                case btnMinus: Time.Curr.DecM(); Time.Curr.S = 0; DateTimeHasChanged = true; break;
+            }
+            Interface.DisplayDateTime();
+            break;
+
+        case stHours:
+            switch(Btn) {
+                case btnDown: State = stMinutes; break;
+                case btnUp: EnterIdle(); break;
+                case btnPlus:  Time.Curr.IncH(); DateTimeHasChanged = true; break;
+                case btnMinus: Time.Curr.DecH(); DateTimeHasChanged = true; break;
+            }
+            Interface.DisplayDateTime();
+            break;
+
+#endif
+
 #if 1 // ==== Date ====
-                case stDay:
-                    switch(Btn) {
-                        case btnDown:
-                            State = stBrtHi;
-                            Interface.DisplayBrtHi();
-                            break;
-                        case btnUp:
-                            State = stDay;
-                            Interface.DisplayDateTime();
-                            break;
-                        case btnPlus:
-                            if(Settings.Threshold == 99) Settings.Threshold = 0;
-                            else Settings.Threshold++;
-                            break;
-                        case btnMinus:
-                            if(Settings.Threshold == 0) Settings.Threshold = 99;
-                            else Settings.Threshold--;
-                            break;
-                    }
-                    Interface.DisplayDateTime();
+        case stDay:
+            switch(Btn) {
+                case btnDown:
+                    State = stThreshold;
+                    Interface.DisplayThreshold();
                     break;
+                case btnUp: State = stMonth; break;
+                case btnPlus:  Time.Curr.IncDay(); DateTimeHasChanged = true; break;
+                case btnMinus: Time.Curr.DecDay(); DateTimeHasChanged = true; break;
+            }
+            Interface.DisplayDateTime();
+            break;
+
+        case stMonth:
+            switch(Btn) {
+                case btnDown: State = stDay; break;
+                case btnUp: State = stYear; break;
+                case btnPlus:  Time.Curr.IncMonth(); DateTimeHasChanged = true; break;
+                case btnMinus: Time.Curr.DecMonth(); DateTimeHasChanged = true; break;
+            }
+            Interface.DisplayDateTime();
+            break;
+
+        case stYear:
+            switch(Btn) {
+                case btnDown: State = stMonth; break;
+                case btnUp: State = stMinutes; break;
+                case btnPlus:  Time.Curr.IncYear(); DateTimeHasChanged = true; break;
+                case btnMinus: Time.Curr.DecYear(); DateTimeHasChanged = true; break;
+            }
+            Interface.DisplayDateTime();
+            break;
 #endif
 
 #if 1 // ==== Brightness threshold ====
@@ -239,46 +276,46 @@ void MenuHandler(Btns_t Btn) {
 #endif
 
 #if 1 // ==== Colors ====
-            case stClrH:
-                switch(Btn) {
-                    case btnDown:
-                        State = stClrM;
-                        Interface.DisplayClrM();
-                        break;
-                    case btnUp:
-                        State = stBrtLo;
-                        Interface.DisplayBrtLo();
-                        break;
-                    case btnPlus:
-                        if(Settings.ClrIdH == 360) Settings.ClrIdH = 0;
-                        else Settings.ClrIdH++;
-                        break;
-                    case btnMinus:
-                        if(Settings.ClrIdH == 0) Settings.ClrIdH = 360;
-                        else Settings.ClrIdH--;
-                        break;
-                }
-                Interface.DisplayClrH();
-                break;
+        case stClrH:
+            switch(Btn) {
+                case btnDown:
+                    State = stClrM;
+                    Interface.DisplayClrM();
+                    break;
+                case btnUp:
+                    State = stBrtLo;
+                    Interface.DisplayBrtLo();
+                    break;
+                case btnPlus:
+                    if(Settings.ClrIdH == 360) Settings.ClrIdH = 0;
+                    else Settings.ClrIdH++;
+                    break;
+                case btnMinus:
+                    if(Settings.ClrIdH == 0) Settings.ClrIdH = 360;
+                    else Settings.ClrIdH--;
+                    break;
+            }
+            Interface.DisplayClrH();
+            break;
 
-            case stClrM:
-                switch(Btn) {
-                    case btnDown: EnterIdle(); break;
-                    case btnUp:
-                        State = stClrH;
-                        Interface.DisplayClrH();
-                        break;
-                    case btnPlus:
-                        if(Settings.ClrIdM == 360) Settings.ClrIdM = 0;
-                        else Settings.ClrIdM++;
-                        break;
-                    case btnMinus:
-                        if(Settings.ClrIdM == 0) Settings.ClrIdM = 360;
-                        else Settings.ClrIdM--;
-                        break;
-                }
-                Interface.DisplayClrM();
-                break;
+        case stClrM:
+            switch(Btn) {
+                case btnDown: EnterIdle(); break;
+                case btnUp:
+                    State = stClrH;
+                    Interface.DisplayClrH();
+                    break;
+                case btnPlus:
+                    if(Settings.ClrIdM == 360) Settings.ClrIdM = 0;
+                    else Settings.ClrIdM++;
+                    break;
+                case btnMinus:
+                    if(Settings.ClrIdM == 0) Settings.ClrIdM = 360;
+                    else Settings.ClrIdM--;
+                    break;
+            }
+            Interface.DisplayClrM();
+            break;
 #endif
     } // switch state
 }
