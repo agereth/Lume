@@ -102,6 +102,7 @@ void ITask() {
                 break;
 
             case evtIdEverySecond:
+//                Printf("RTC: %X\r", RTC->TR);
                 if(State == stIdle) {
                     Time.GetDateTime();
 //                Time.CurrentDT.Print();
@@ -322,6 +323,7 @@ void MenuHandler(Btns_t Btn) {
 
 void EnterIdle() {
     State = stIdle;
+    TmrMenu.Stop();
     Interface.DisplayDateTime();
     Interface.DisplayThreshold();
     Interface.DisplayBrtHi();
@@ -334,9 +336,8 @@ void EnterIdle() {
     RTC->BKP2R = Settings.R2;
     RTC->BKP3R = Settings.R3;
     // Save time if changed
-    if(DateTimeHasChanged) {
-        // XXX
-    }
+    if(DateTimeHasChanged) Time.SetDateTime();
+//    Time.EnableIrq();
 }
 
 #if UART_RX_ENABLED // ================= Command processing ====================

@@ -14,6 +14,9 @@ TimeCounter_t Time;
 #define DATE2REG(Ytens, Yunits, WeekDay, Mtens, Munits, Dtens, Dunits)  \
     ((Ytens<<20)|(Yunits<<16)|(WeekDay<<13)|(Mtens<<12)|(Munits<<8)|(Dtens<<4)|Dunits)
 
+#define RTC_TR_RESERVED_MASK    0x007F7F7FU
+#define RTC_DR_RESERVED_MASK    0x00FFFF3FU
+
 void TimeCounter_t::Init() {
     if(!BackupSpc::IsSetup()) {
         Printf("Nothing is set\r");
@@ -37,19 +40,22 @@ void TimeCounter_t::Init() {
                 RTC->PRER = (0x7FUL << 16) | (0xFFUL);  // async pre = 128, sync = 256 => 32768->1
                 // Clear RTC_CR FMT (24h format), OSEL (no output), disable WUTE
                 RTC->CR &= ~(RTC_CR_FMT | RTC_CR_OSEL | RTC_CR_WUTE | RTC_CR_WUCKSEL);
+                RTC->CR |= RTC_CR_BYPSHAD;  // Bypass shadow regs
 
                 // ==== Setup wake-up timer ====
                 // Wait WakeUp timer to allow changes
                 while(!BitIsSet(RTC->ISR, RTC_ISR_WUTWF));
-                RTC->WUTR = 0;      // Flag is set every WUTR+1 cycles => every second with 1Hz input freq
-                RTC->CR |= 0b100UL; // ck_spre (usually 1 Hz) clock is selected
+//                RTC->WUTR = 0;      // Flag is set every WUTR+1 cycles => every second with 1Hz input freq
+//                RTC->CR |= 0b100UL; // ck_spre (usually 1 Hz) clock is selected
+                RTC->WUTR = 2047; // Flag is set every WUTR+1 cycles => every second
+                RTC->CR &= ~(0b111UL); // RTC/16 clock is selected
                 RTC->CR |= RTC_CR_WUTE | RTC_CR_WUTIE;  // Enable Wake-up timer and its irq
 
                 // Setup default time & date
                 RTC->TR = 0;    // Time = 0
                 RTC->DR = DATE2REG(1, 7, 7, 0, 9, 1, 8); // 17 09 18
                 Rtc::ExitInitMode();
-                Rtc::WaitSync();
+                if(!(RTC->CR & RTC_CR_BYPSHAD)) Rtc::WaitSync(); // Sync not required if shadow regs bypassed
                 Rtc::EnableWriteProtection();
                 BackupSpc::SetSetup();
                 break;
@@ -71,6 +77,26 @@ void TimeCounter_t::Init() {
     nvicEnableVector(RTC_IRQn, IRQ_PRIO_LOW);
 }
 
+void TimeCounter_t::DisableIrq() {
+    chSysLock();
+    Rtc::DisableWriteProtection();
+    chSysUnlock();
+    RTC->CR &= ~(RTC_CR_WUTE | RTC_CR_WUTIE);
+    Rtc::EnableWriteProtection();
+    EXTI->PR |= EXTI_PR_PR20;   // Clear exti flag
+    Rtc::ClearWakeupFlag();
+}
+
+void TimeCounter_t::EnableIrq() {
+    Rtc::ClearWakeupFlag();
+    EXTI->PR |= EXTI_PR_PR20;   // Clear exti flag
+    chSysLock();
+    Rtc::DisableWriteProtection();
+    chSysUnlock();
+    RTC->CR |= RTC_CR_WUTE | RTC_CR_WUTIE;
+    Rtc::EnableWriteProtection();
+}
+
 void TimeCounter_t::GetDateTime() {
     Curr.Year  = ((RTC->DR >> 20) & 0b1111)* 10 + ((RTC->DR >> 16) & 0b1111) + 2000;
     Curr.Month = ((RTC->DR >> 12) & 0b1  ) * 10 + ((RTC->DR >> 8)  & 0b1111);
@@ -81,20 +107,41 @@ void TimeCounter_t::GetDateTime() {
 }
 
 void TimeCounter_t::SetDateTime() {
-//    uint32_t DayCount=0, seconds=0;
-//    // Count days elapsed since YEAR_MIN
-//    for(int32_t y=YEAR_MIN; y<PDateTime->Year; y++) DayCount += YEARSIZE(y);
-//    // Count days in monthes elapsed
-//    uint32_t Leap = LEAPYEAR(PDateTime->Year)? 1 : 0;
-//    for(int32_t m=0; m < PDateTime->Month-1; m++) DayCount += MonthDays[Leap][m];
-//
-//    DayCount += PDateTime->Day-1;
-//    seconds = PDateTime->H*3600 + PDateTime->M*60 + PDateTime->S;
-//    seconds += DayCount * SECS_DAY;
-//
-//    Rtc::WaitForLastTask();
-//    Rtc::SetCounter(seconds);
-//    Rtc::WaitForLastTask();
+    uint32_t tmpD = 0x2000;  // Set week day to default monday (not used, but is a must)
+    // Year
+    uint32_t tens = (Curr.Year - 2000) / 10;
+    uint32_t units = Curr.Year - 2000 - tens * 10;
+    tmpD |= (tens << 20) | (units << 16);
+    // Month
+    tens = Curr.Month / 10;
+    units = Curr.Month - tens * 10;
+    tmpD |= (tens << 12) | (units << 8);
+    // Day
+    tens = Curr.Day / 10;
+    units = Curr.Day - tens * 10;
+    tmpD |= (tens << 4) | (units << 0);
+
+    uint32_t tmpT = 0;
+    // Hour
+    tens = Curr.H / 10;
+    units = Curr.H - tens * 10;
+    tmpT |= (tens << 20) | (units << 16);
+    // Minute
+    tens = Curr.M / 10;
+    units = Curr.M - tens * 10;
+    tmpT |= (tens << 12) | (units << 8);
+    // Seconds are always zero
+    // Write the values
+    chSysLock();
+    Rtc::DisableWriteProtection();
+    Rtc::EnterInitMode();
+    RTC->DR = tmpD;
+    RTC->TR = tmpT & RTC_TR_RESERVED_MASK;
+    Rtc::ExitInitMode();
+    if(!(RTC->CR & RTC_CR_BYPSHAD)) Rtc::WaitSync();
+    Rtc::EnableWriteProtection();
+    BackupSpc::SetSetup();
+    chSysUnlock();
 }
 
 extern "C" {

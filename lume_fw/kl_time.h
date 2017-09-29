@@ -60,6 +60,9 @@ public:
     DateTime_t Curr;
     void GetDateTime();
     void SetDateTime();
+    void DisableIrq();
+    void EnableIrq();
+
     void Init();
 };
 
