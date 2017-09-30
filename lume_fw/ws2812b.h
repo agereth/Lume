@@ -20,8 +20,8 @@
 #include "kl_lib.h"
 #include "color.h"
 #include "uart.h"
+#include "Mirilli.h"
 
-#define LED_CNT             24   // Number of WS2812 LEDs
 
 // Do not touch
 #define SEQ_LEN             4

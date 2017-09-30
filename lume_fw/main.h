@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "kl_lib.h"
+
 enum State_t {stIdle, stHours, stMinutes, stYear, stMonth, stDay,
     stThreshold, stBrtHi, stBrtLo, stClrH, stClrM
 };
@@ -27,3 +29,10 @@ union Settings_t {
 } __packed;
 
 extern Settings_t Settings;
+
+class Hypertime_t {
+public:
+    void ConvertFromTime();
+    int32_t H, M;
+    bool NewH = true, NewM = true;
+};

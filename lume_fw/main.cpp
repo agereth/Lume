@@ -7,7 +7,6 @@
 
 #include "hal.h"
 #include "MsgQ.h"
-#include "uart.h"
 #include "shell.h"
 #include "kl_lib.h"
 #include "SimpleSensors.h"
@@ -18,7 +17,7 @@
 #include "interface.h"
 #include "main.h"
 #include "ws2812b.h"
-#include "IntelLedEffs.h"
+#include "Mirilli.h"
 #include "kl_adc.h"
 
 #if 1 // ======================== Variables and defines ========================
@@ -37,8 +36,13 @@ TmrKL_t TmrMenu {MS2ST(3600), evtIdMenuTimeout, tktOneShot};
 
 enum Btns_t {btnUp=0, btnDown=1, btnPlus=2, btnMinus=3};
 
+static Hypertime_t Hypertime;
+ColorHSV_t ClrActiveH(144, 100, 100), ClrPassiveH(144, 0, 0);
+ColorHSV_t ClrActiveM(144, 100, 100), ClrPassiveM(144, 0, 0);
+
 static void MenuHandler(Btns_t Btn);
 static void EnterIdle();
+static void IndicateNewSecond(bool ForceIndicate = false);
 
 #endif
 
@@ -62,8 +66,7 @@ int main(void) {
     SimpleSensors::Init();
 
     // LEDs: must be set up before LCD to allow DMA irq
-    LedEffectsInit();
-    EffAllTogetherNow.SetupAndStart(clBlue);
+    InitMirilli();
 
     chThdSleepMilliseconds(180); // Let power to stabilize
     PinSetupOut(LCD_PWR, omPushPull);
@@ -77,6 +80,9 @@ int main(void) {
     Settings.R1 = RTC->BKP1R;
     Settings.R2 = RTC->BKP2R;
     Settings.R3 = RTC->BKP3R;
+
+    ClrActiveH.H = Settings.ClrIdH;
+    ClrActiveM.H = Settings.ClrIdM;
 
     Interface.Reset();
     EnterIdle();
@@ -108,6 +114,7 @@ void ITask() {
 //                Time.CurrentDT.Print();
                     Interface.DisplayDateTime();
                 }
+                IndicateNewSecond();
                 break;
 
             case evtIdAdcRslt: {
@@ -117,7 +124,7 @@ void ITask() {
                 } break;
 
             case evtIdButtons:
-                Printf("Btn %u\r", Msg.BtnEvtInfo.BtnID);
+//                Printf("Btn %u\r", Msg.BtnEvtInfo.BtnID);
                 MenuHandler((Btns_t)Msg.BtnEvtInfo.BtnID);
                 break;
 
@@ -129,6 +136,68 @@ void ITask() {
         } // switch
     } // while true
 } // ITask()
+
+void IndicateNewSecond(bool ForceIndicate) {
+    Hypertime.ConvertFromTime();
+    if(Hypertime.NewH or ForceIndicate) {
+        if(Hypertime.H == 0) {
+            SetTargetClrH(11, ClrPassiveH);
+            SetTargetClrH(0, ClrActiveH);
+            SetTargetClrH(1, ClrPassiveH);
+        }
+        else {
+            SetTargetClrH(Hypertime.H, ClrActiveH);
+            SetTargetClrH(Hypertime.H-1, ClrPassiveH);
+        }
+    }
+    if(Hypertime.NewM or ForceIndicate) {
+        if(Hypertime.M == 0) {
+            SetTargetClrM(1, ClrPassiveM);
+            SetTargetClrM(0, ClrActiveM);
+            SetTargetClrM(11, ClrActiveM);
+            SetTargetClrM(10, ClrPassiveM);
+        }
+        else if(Hypertime.M == 23) {
+            SetTargetClrM(10, ClrPassiveM);
+            SetTargetClrM(11, ClrActiveM);
+            SetTargetClrM(0, ClrPassiveM);
+        }
+        else {
+            uint32_t N = Hypertime.M / 2;
+            if(Hypertime.M & 1) { // Odd, single
+                SetTargetClrM(N, ClrActiveM);
+                if(N == 0) SetTargetClrM(11, ClrPassiveM);
+                else SetTargetClrM(N-1, ClrPassiveM);
+            }
+            else { // Even, couple
+                SetTargetClrM(N, ClrActiveM);
+                SetTargetClrM(N+1, ClrPassiveM); // hide next in case of time going back
+            }
+        }
+    }
+    if(Hypertime.NewH or Hypertime.NewM or ForceIndicate) {
+        Hypertime.NewH = false;
+        Hypertime.NewM = false;
+        WakeMirilli();
+    }
+}
+
+void Hypertime_t::ConvertFromTime() {
+    // Hours
+    int32_t FH = Time.Curr.H;
+    if(FH > 11) FH -= 12;
+    if(H != FH) {
+        H = FH;
+        NewH = true;
+    }
+    // Minutes
+    int32_t S = Time.Curr.M * 60 + Time.Curr.S;
+    int32_t FMin = S / 150;    // 150s in one hyperminute (== 2.5 minutes)
+    if(M != FMin) {
+        M = FMin;
+        NewM = true;
+    }
+}
 
 void MenuHandler(Btns_t Btn) {
     // Switch backlight on
@@ -290,10 +359,14 @@ void MenuHandler(Btns_t Btn) {
                 case btnPlus:
                     if(Settings.ClrIdH == 360) Settings.ClrIdH = 0;
                     else Settings.ClrIdH++;
+                    ClrActiveH.H = Settings.ClrIdH;
+                    IndicateNewSecond(true);    // Show new color
                     break;
                 case btnMinus:
                     if(Settings.ClrIdH == 0) Settings.ClrIdH = 360;
                     else Settings.ClrIdH--;
+                    ClrActiveH.H = Settings.ClrIdH;
+                    IndicateNewSecond(true);    // Show new color
                     break;
             }
             Interface.DisplayClrH();
@@ -309,10 +382,14 @@ void MenuHandler(Btns_t Btn) {
                 case btnPlus:
                     if(Settings.ClrIdM == 360) Settings.ClrIdM = 0;
                     else Settings.ClrIdM++;
+                    ClrActiveM.H = Settings.ClrIdM;
+                    IndicateNewSecond(true);    // Show new color
                     break;
                 case btnMinus:
                     if(Settings.ClrIdM == 0) Settings.ClrIdM = 360;
                     else Settings.ClrIdM--;
+                    ClrActiveM.H = Settings.ClrIdM;
+                    IndicateNewSecond(true);    // Show new color
                     break;
             }
             Interface.DisplayClrM();
@@ -356,16 +433,6 @@ void OnCmd(Shell_t *PShell) {
     else if(PCmd->NameIs("i")) {
         EXTI->SWIER |= EXTI_SWIER_SWIER20;
     }
-//    else if(PCmd->NameIs("HSL")) {
-//        ColorHSL_t ClrHsl(0,0,0);
-//        if(PCmd->GetNextUint16(&ClrHsl.H) != OK) return;
-//        if(PCmd->GetNextByte(&ClrHsl.S)   != OK) return;
-//        if(PCmd->GetNextByte(&ClrHsl.L)   != OK) return;
-//        Color_t Clr;
-//        ClrHsl.ToRGB(Clr);
-////        Led.SetColor(Clr, 100);
-//        PShell->Ack(OK);
-//    }
 
     else if(PCmd->NameIs("HSV")) {
 //        ColorHSV_t ClrHsv(0,0,0);
@@ -385,7 +452,7 @@ void OnCmd(Shell_t *PShell) {
         if(PCmd->GetNext<uint8_t>(&FClr.R) != retvOk) return;
         if(PCmd->GetNext<uint8_t>(&FClr.G) != retvOk) return;
         if(PCmd->GetNext<uint8_t>(&FClr.B) != retvOk) return;
-        EffAllTogetherNow.SetupAndStart(FClr);
+//        EffAllTogetherNow.SetupAndStart(FClr);
 //        EffAllTogetherSmoothly.SetupAndStart(FClr, 360);
         PShell->Ack(retvOk);
     }
