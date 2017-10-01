@@ -54,6 +54,11 @@ void SetTargetClrH(uint32_t H, ColorHSV_t Clr) {
     uint32_t Indx = H2LedN[H];
 //    Printf("H=%u; Indx=%u\r", H, Indx);
     ITargetClr[Indx] = Clr.ToRGB();
+    // Special case
+    if(H == 0) {
+        ITargetClr[SECOND_0_LED_INDX] = Clr.ToRGB();
+//        Printf("H=%u; Indx=%u\r\r", H, Indx);
+    }
 }
 void SetTargetClrM(uint32_t M, ColorHSV_t Clr) {
     if(M >= MIRILLI_M_CNT) return;
