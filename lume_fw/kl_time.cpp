@@ -77,6 +77,29 @@ void TimeCounter_t::Init() {
     nvicEnableVector(RTC_IRQn, IRQ_PRIO_LOW);
 }
 
+void TimeCounter_t::BeFast() {
+    chSysLock();
+    Rtc::DisableWriteProtection();
+    Rtc::EnterInitMode();
+    // Program both the prescaler factors
+    RTC->PRER = (0x7UL << 16) | (0xFFUL);  // async pre = 8, sync = 256 => 32768->1
+    Rtc::ExitInitMode();
+    Rtc::EnableWriteProtection();
+    chSysUnlock();
+}
+
+void TimeCounter_t::BeNormal() {
+    chSysLock();
+    Rtc::DisableWriteProtection();
+    Rtc::EnterInitMode();
+    // Program both the prescaler factors
+    RTC->PRER = (0x7FUL << 16) | (0xFFUL);  // async pre = 128, sync = 256 => 32768->1
+    Rtc::ExitInitMode();
+    Rtc::EnableWriteProtection();
+    chSysUnlock();
+}
+
+
 void TimeCounter_t::DisableIrq() {
     chSysLock();
     Rtc::DisableWriteProtection();

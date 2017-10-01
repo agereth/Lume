@@ -49,6 +49,16 @@ struct DateTime_t {
         else Day--;
     }
 
+    DateTime_t& operator = (const DateTime_t &Right) {
+       H = Right.H;
+       M = Right.M;
+       S = Right.S;
+       Year = Right.Year;
+       Month = Right.Month;
+       Day = Right.Day;
+       return *this;
+    }
+
     void Print() const { Printf("%04u/%02u/%02u %02u:%02u:%02u\r", Year, Month, Day, H, M, S); }
     DateTime_t(int32_t AH, int32_t AM, int32_t AS, int32_t AYear, int32_t AMonth, int32_t ADay) :
         H(AH), M(AM), S(AS), Year(AYear), Month(AMonth), Day(ADay) {}
@@ -62,6 +72,9 @@ public:
     void SetDateTime();
     void DisableIrq();
     void EnableIrq();
+
+    void BeFast();
+    void BeNormal();
 
     void Init();
 };

@@ -12,10 +12,6 @@
 IntelLeds_t Leds;
 static thread_reference_t PThd = nullptr;
 
-// Tables of accordance between hours/minutes and LED indxs
-static const uint32_t H2LedN[MIRILLI_H_CNT] = { 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
-static const uint32_t M2LedN[MIRILLI_H_CNT] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-
 // Target colors
 static Color_t ITargetClr[LED_CNT];
 static bool ColorsDone = true;
@@ -56,6 +52,7 @@ void InitMirilli() {
 void SetTargetClrH(uint32_t H, ColorHSV_t Clr) {
     if(H >= MIRILLI_H_CNT) return;
     uint32_t Indx = H2LedN[H];
+//    Printf("H=%u; Indx=%u\r", H, Indx);
     ITargetClr[Indx] = Clr.ToRGB();
 }
 void SetTargetClrM(uint32_t M, ColorHSV_t Clr) {
@@ -70,4 +67,13 @@ void WakeMirilli() {
     chSysLock();
     chThdResumeS(&PThd, MSG_OK);
     chSysUnlock();
+}
+
+void ResetColors(ColorHSV_t ClrH, ColorHSV_t ClrM) {
+    ClrH.V = OFF_LUMINOCITY;
+    ClrM.V = OFF_LUMINOCITY;
+    for(int32_t i=0; i<12; i++) {
+      SetTargetClrH(i, ClrH);
+      SetTargetClrM(i, ClrM);
+    }
 }

@@ -37,12 +37,14 @@ TmrKL_t TmrMenu {MS2ST(3600), evtIdMenuTimeout, tktOneShot};
 enum Btns_t {btnUp=0, btnDown=1, btnPlus=2, btnMinus=3};
 
 static Hypertime_t Hypertime;
-ColorHSV_t ClrActiveH(144, 100, 100), ClrPassiveH(144, 0, 0);
-ColorHSV_t ClrActiveM(144, 100, 100), ClrPassiveM(144, 0, 0);
+ColorHSV_t ClrH(144, 100, 100);
+ColorHSV_t ClrM(144, 100, 100);
+
+uint32_t CurrentLum = 0;
 
 static void MenuHandler(Btns_t Btn);
 static void EnterIdle();
-static void IndicateNewSecond(bool ForceIndicate = false);
+static void IndicateNewSecond();
 
 #endif
 
@@ -81,8 +83,8 @@ int main(void) {
     Settings.R2 = RTC->BKP2R;
     Settings.R3 = RTC->BKP3R;
 
-    ClrActiveH.H = Settings.ClrIdH;
-    ClrActiveM.H = Settings.ClrIdM;
+    ClrH.H = Settings.ClrIdH;
+    ClrM.H = Settings.ClrIdM;
 
     Interface.Reset();
     EnterIdle();
@@ -118,9 +120,9 @@ void ITask() {
                 break;
 
             case evtIdAdcRslt: {
-                uint32_t Lum = Msg.Value / 36;
+                CurrentLum = Msg.Value / 2;
 //                Printf("Lum: %u\r", Msg.Value);
-                Interface.DisplayLum(Lum);
+                Interface.DisplayLum(CurrentLum);
                 } break;
 
             case evtIdButtons:
@@ -137,49 +139,41 @@ void ITask() {
     } // while true
 } // ITask()
 
-void IndicateNewSecond(bool ForceIndicate) {
+void IndicateNewSecond() {
     Hypertime.ConvertFromTime();
-    if(Hypertime.NewH or ForceIndicate) {
-        if(Hypertime.H == 0) {
-            SetTargetClrH(11, ClrPassiveH);
-            SetTargetClrH(0, ClrActiveH);
-            SetTargetClrH(1, ClrPassiveH);
+//    Printf("HyperH: %u; HyperM: %u\r", Hypertime.H, Hypertime.M);
+    ResetColors(ClrH, ClrM);
+
+    // Calculate brightness
+    if(CurrentLum > Settings.Threshold) {
+        ClrH.V = Settings.BrtHi;
+        ClrM.V = Settings.BrtHi;
+    }
+    else {
+        ClrH.V = Settings.BrtLo;
+        ClrM.V = Settings.BrtLo;
+    }
+//    Printf("V: %u\r", ClrH.V);
+
+    // ==== Process hours ====
+    SetTargetClrH(Hypertime.H, ClrH);
+
+    // ==== Process minutes ====
+    if(Hypertime.M == 0) {
+        SetTargetClrM(0, ClrM);
+        SetTargetClrM(11, ClrM);
+    }
+    else {
+        uint32_t N = Hypertime.M / 2;
+        if(Hypertime.M & 1) { // Odd, single
+            SetTargetClrM(N, ClrM);
         }
-        else {
-            SetTargetClrH(Hypertime.H, ClrActiveH);
-            SetTargetClrH(Hypertime.H-1, ClrPassiveH);
+        else { // Even, couple
+            SetTargetClrM(N, ClrM);
+            SetTargetClrM(N-1, ClrM);
         }
     }
-    if(Hypertime.NewM or ForceIndicate) {
-        if(Hypertime.M == 0) {
-            SetTargetClrM(1, ClrPassiveM);
-            SetTargetClrM(0, ClrActiveM);
-            SetTargetClrM(11, ClrActiveM);
-            SetTargetClrM(10, ClrPassiveM);
-        }
-        else if(Hypertime.M == 23) {
-            SetTargetClrM(10, ClrPassiveM);
-            SetTargetClrM(11, ClrActiveM);
-            SetTargetClrM(0, ClrPassiveM);
-        }
-        else {
-            uint32_t N = Hypertime.M / 2;
-            if(Hypertime.M & 1) { // Odd, single
-                SetTargetClrM(N, ClrActiveM);
-                if(N == 0) SetTargetClrM(11, ClrPassiveM);
-                else SetTargetClrM(N-1, ClrPassiveM);
-            }
-            else { // Even, couple
-                SetTargetClrM(N, ClrActiveM);
-                SetTargetClrM(N+1, ClrPassiveM); // hide next in case of time going back
-            }
-        }
-    }
-    if(Hypertime.NewH or Hypertime.NewM or ForceIndicate) {
-        Hypertime.NewH = false;
-        Hypertime.NewM = false;
-        WakeMirilli();
-    }
+    WakeMirilli();
 }
 
 void Hypertime_t::ConvertFromTime() {
@@ -359,14 +353,14 @@ void MenuHandler(Btns_t Btn) {
                 case btnPlus:
                     if(Settings.ClrIdH == 360) Settings.ClrIdH = 0;
                     else Settings.ClrIdH++;
-                    ClrActiveH.H = Settings.ClrIdH;
-                    IndicateNewSecond(true);    // Show new color
+                    ClrH.H = Settings.ClrIdH;
+                    IndicateNewSecond();    // Show new color
                     break;
                 case btnMinus:
                     if(Settings.ClrIdH == 0) Settings.ClrIdH = 360;
                     else Settings.ClrIdH--;
-                    ClrActiveH.H = Settings.ClrIdH;
-                    IndicateNewSecond(true);    // Show new color
+                    ClrH.H = Settings.ClrIdH;
+                    IndicateNewSecond();    // Show new color
                     break;
             }
             Interface.DisplayClrH();
@@ -382,14 +376,14 @@ void MenuHandler(Btns_t Btn) {
                 case btnPlus:
                     if(Settings.ClrIdM == 360) Settings.ClrIdM = 0;
                     else Settings.ClrIdM++;
-                    ClrActiveM.H = Settings.ClrIdM;
-                    IndicateNewSecond(true);    // Show new color
+                    ClrM.H = Settings.ClrIdM;
+                    IndicateNewSecond();    // Show new color
                     break;
                 case btnMinus:
                     if(Settings.ClrIdM == 0) Settings.ClrIdM = 360;
                     else Settings.ClrIdM--;
-                    ClrActiveM.H = Settings.ClrIdM;
-                    IndicateNewSecond(true);    // Show new color
+                    ClrM.H = Settings.ClrIdM;
+                    IndicateNewSecond();    // Show new color
                     break;
             }
             Interface.DisplayClrM();
@@ -413,8 +407,11 @@ void EnterIdle() {
     RTC->BKP2R = Settings.R2;
     RTC->BKP3R = Settings.R3;
     // Save time if changed
-    if(DateTimeHasChanged) Time.SetDateTime();
-//    Time.EnableIrq();
+    if(DateTimeHasChanged) {
+        ResetColors(ClrH, ClrM);
+        Time.SetDateTime();
+        IndicateNewSecond();
+    }
 }
 
 #if UART_RX_ENABLED // ================= Command processing ====================
@@ -427,33 +424,22 @@ void OnCmd(Shell_t *PShell) {
         PShell->Ack(retvOk);
     }
 
-    else if(PCmd->NameIs("t")) {
-        Printf("%u\r", RTC->TR);
-    }
-    else if(PCmd->NameIs("i")) {
-        EXTI->SWIER |= EXTI_SWIER_SWIER20;
-    }
-
-    else if(PCmd->NameIs("HSV")) {
-//        ColorHSV_t ClrHsv(0,0,0);
-//        if(PCmd->GetNextUint16(&ClrHsv.H) != retvOk) return;
-//        if(PCmd->GetNextByte(&ClrHsv.S)   != OK) return;
-//        if(PCmd->GetNextByte(&ClrHsv.V)   != OK) return;
-//        Color_t Clr;
-//        ClrHsv.ToRGB(Clr);
-////        Clr.Print();
-////        Uart.Printf("{%u; %u; %u}\r", R, G, B);
-////        Led.SetColor(Clr, 100);
-//        PShell->Ack(OK);
+    else if(PCmd->NameIs("SetTime")) {
+        DateTime_t dt = Time.Curr;
+        if(PCmd->GetNext<int32_t>(&dt.H) != retvOk) return;
+        if(PCmd->GetNext<int32_t>(&dt.M) != retvOk) return;
+        Time.Curr = dt;
+        Time.SetDateTime();
+        IndicateNewSecond();
+        PShell->Ack(retvOk);
     }
 
-    else if(PCmd->NameIs("RGB")) {
-        Color_t FClr(0,0,0);
-        if(PCmd->GetNext<uint8_t>(&FClr.R) != retvOk) return;
-        if(PCmd->GetNext<uint8_t>(&FClr.G) != retvOk) return;
-        if(PCmd->GetNext<uint8_t>(&FClr.B) != retvOk) return;
-//        EffAllTogetherNow.SetupAndStart(FClr);
-//        EffAllTogetherSmoothly.SetupAndStart(FClr, 360);
+    else if(PCmd->NameIs("Fast")) {
+        Time.BeFast();
+        PShell->Ack(retvOk);
+    }
+    else if(PCmd->NameIs("Norm")) {
+        Time.BeNormal();
         PShell->Ack(retvOk);
     }
 
