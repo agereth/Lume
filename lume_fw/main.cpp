@@ -32,7 +32,7 @@ Interface_t Interface;
 State_t State = stIdle;
 bool DateTimeHasChanged = false;
 
-TmrKL_t TmrMenu {MS2ST(3600), evtIdMenuTimeout, tktOneShot};
+TmrKL_t TmrMenu {MS2ST(9999), evtIdMenuTimeout, tktOneShot};
 
 enum Btns_t {btnUp=0, btnDown=1, btnPlus=2, btnMinus=3};
 
