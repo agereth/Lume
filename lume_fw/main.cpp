@@ -115,7 +115,7 @@ void ITask() {
             case evtIdEverySecond:
                 if(State == stIdle) {
                     Time.GetDateTime();
-//                Time.CurrentDT.Print();
+                    Time.Curr.Print();
                     Interface.DisplayDateTime();
                 }
                 IndicateNewSecond();
@@ -129,7 +129,7 @@ void ITask() {
                 } break;
 
             case evtIdButtons:
-//                Printf("Btn %u\r", Msg.BtnEvtInfo.BtnID);
+                Printf("Btn %u\r", Msg.BtnEvtInfo.BtnID);
                 MenuHandler((Btns_t)Msg.BtnEvtInfo.BtnID);
                 break;
 
