@@ -34,7 +34,7 @@
 #define BTN_LONGPRESS               FALSE   // Send LongPress evt
 #define BTN_REPEAT                  TRUE   // Send Repeat evt
 #define BTN_COMBO                   FALSE   // Allow combo
-#define BTN_GETSTATE_REQUIRED       FALSE
+#define BTN_GETSTATE_REQUIRED       TRUE
 
 #define BTN_REPEAT_PERIOD_MS        54
 #define BTN_LONGPRESS_DELAY_MS      999

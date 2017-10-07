@@ -27,6 +27,8 @@ extern CmdUart_t Uart;
 void OnCmd(Shell_t *PShell);
 void ITask();
 
+#define TOP_BRIGHTNESS      99  // to fit in two-digit place
+
 Settings_t Settings;
 Interface_t Interface;
 State_t State = stIdle;
@@ -50,9 +52,6 @@ static void IndicateNewSecond();
 
 int main(void) {
     // ==== Init Clock system ====
-//    Clk.SetupFlashLatency(16);
-//    Clk.SetupPLLDividers(1, pllMul4, plsHSIdiv2);
-//    Clk.SwitchTo(csPLL);
     Clk.UpdateFreqValues();
 
     // === Init OS ===
@@ -66,11 +65,10 @@ int main(void) {
     Clk.PrintFreqs();
 
     SimpleSensors::Init();
-
+    chThdSleepMilliseconds(180); // Let power to stabilize
     // LEDs: must be set up before LCD to allow DMA irq
     InitMirilli();
 
-    chThdSleepMilliseconds(180); // Let power to stabilize
     PinSetupOut(LCD_PWR, omPushPull);
     PinSetHi(LCD_PWR);
     chThdSleepMilliseconds(18);
@@ -83,6 +81,11 @@ int main(void) {
     Settings.R2 = RTC->BKP2R;
     Settings.R3 = RTC->BKP3R;
 
+    // Check settings, setup top brightness if both are empty
+    if(Settings.BrtHi == 0 and Settings.BrtLo == 0) {
+        Settings.BrtHi = TOP_BRIGHTNESS;
+        Settings.BrtLo = TOP_BRIGHTNESS;
+    }
     ClrH.H = Settings.ClrIdH;
     ClrM.H = Settings.ClrIdM;
 
@@ -110,7 +113,6 @@ void ITask() {
                 break;
 
             case evtIdEverySecond:
-//                Printf("RTC: %X\r", RTC->TR);
                 if(State == stIdle) {
                     Time.GetDateTime();
 //                Time.CurrentDT.Print();
@@ -121,6 +123,7 @@ void ITask() {
 
             case evtIdAdcRslt: {
                 CurrentLum = Msg.Value / 2;
+                if(CurrentLum > 99) CurrentLum = 99;
 //                Printf("Lum: %u\r", Msg.Value);
                 Interface.DisplayLum(CurrentLum);
                 } break;
@@ -131,7 +134,6 @@ void ITask() {
                 break;
 
             case evtIdMenuTimeout:
-                Printf("MenuTimeout\r");
                 EnterIdle();
                 break;
             default: break;
@@ -153,7 +155,6 @@ void IndicateNewSecond() {
         ClrH.V = Settings.BrtLo;
         ClrM.V = Settings.BrtLo;
     }
-//    Printf("V: %u\r", ClrH.V);
 
     // ==== Process hours ====
     SetTargetClrH(Hypertime.H, ClrH);
@@ -305,11 +306,11 @@ void MenuHandler(Btns_t Btn) {
                     Interface.DisplayThreshold();
                     break;
                 case btnPlus:
-                    if(Settings.BrtHi == 99) Settings.BrtHi = 0;
+                    if(Settings.BrtHi == TOP_BRIGHTNESS) Settings.BrtHi = 0;
                     else Settings.BrtHi++;
                     break;
                 case btnMinus:
-                    if(Settings.BrtHi == 0) Settings.BrtHi = 99;
+                    if(Settings.BrtHi == 0) Settings.BrtHi = TOP_BRIGHTNESS;
                     else Settings.BrtHi--;
                     break;
             }
@@ -327,11 +328,11 @@ void MenuHandler(Btns_t Btn) {
                     Interface.DisplayBrtHi();
                     break;
                 case btnPlus:
-                    if(Settings.BrtLo == 99) Settings.BrtLo = 0;
+                    if(Settings.BrtLo == TOP_BRIGHTNESS) Settings.BrtLo = 0;
                     else Settings.BrtLo++;
                     break;
                 case btnMinus:
-                    if(Settings.BrtLo == 0) Settings.BrtLo = 99;
+                    if(Settings.BrtLo == 0) Settings.BrtLo = TOP_BRIGHTNESS;
                     else Settings.BrtLo--;
                     break;
             }
