@@ -71,7 +71,6 @@ void SetTargetClrM(uint32_t M, ColorHSV_t Clr) {
 void WakeMirilli() {
     ColorsDone = false;
     if(PThd == nullptr) return;
-    if(PThd->state != CH_STATE_SUSPENDED) return;
     chSysLock();
     chThdResumeS(&PThd, MSG_OK);
     chSysUnlock();

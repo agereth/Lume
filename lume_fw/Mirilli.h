@@ -12,7 +12,7 @@
 #define SMOOTH_VALUE    360
 #define OFF_LUMINOCITY  1       // Set to 0 if "backlight all" is not required
 
-#define MIRILLI_H_CNT   12
+#define MIRILLI_H_CNT   13
 #define MIRILLI_M_CNT   12
 
 // Tables of accordance between hours/minutes and LED indxs
