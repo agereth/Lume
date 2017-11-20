@@ -7,6 +7,7 @@
 
 #include "kl_time.h"
 #include "interface.h"
+#include "lume_state_machine.h"
 #include "MsgQ.h"
 
 TimeCounter_t Time;
@@ -174,7 +175,7 @@ CH_IRQ_HANDLER(Vector48) {
     EXTI->PR |= EXTI_PR_PR20;   // Clear exti flag
 //    PrintfI("RtcIrq\r");
     chSysLockFromISR();
-    EvtMsg_t Msg(evtIdEverySecond);
+    EvtMsg_t Msg(TICK_SEC_SIG);
     EvtQMain.SendNowOrExitI(Msg);
     chSysUnlockFromISR();
     CH_IRQ_EPILOGUE();

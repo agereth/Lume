@@ -5,10 +5,11 @@
  *      Author: kreyl
  */
 
-#include "MsgQ.h"
+#include "lume_state_machine.h"
 #include <string.h>
 #include "uart.h"
 #include "kl_lib.h"
+#include "MsgQ.h"
 
 #if 1 // ==================== Common and eternal ===============================
 #define UART_DMA_TX_MODE(Chnl) \
@@ -291,7 +292,7 @@ void CmdUart_t::IRxTask() {
     uint8_t b;
     while(GetByte(&b) == retvOk) {
         if(Cmd.PutChar(b) == pdrNewCmd) {
-            EvtMsg_t Msg(evtIdShellCmd, (Shell_t*)this);
+            EvtMsg_t Msg(SHELL_COMMAND_SIG, (Shell_t*)this);
             CmdProcessInProgress = (EvtQMain.SendNowOrExit(Msg) == retvOk);
         }
     }
