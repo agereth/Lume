@@ -76,9 +76,9 @@ void WakeMirilli() {
     chSysUnlock();
 }
 
-void ResetColors(ColorHSV_t ClrH, ColorHSV_t ClrM) {
-    ClrH.V = OFF_LUMINOCITY;
-    ClrM.V = OFF_LUMINOCITY;
+void ResetColors(ColorHSV_t ClrH, ColorHSV_t ClrM, uint8_t Bckgrnd) {
+    ClrH.V = Bckgrnd;
+    ClrM.V = Bckgrnd;
     for(int32_t i=0; i<12; i++) {
       SetTargetClrH(i, ClrH);
       SetTargetClrM(i, ClrM);
