@@ -9,6 +9,7 @@
 #include "ch.h"
 #include "uart.h"
 #include "MsgQ.h"
+#include "lume_state_machine.h"
 
 #if BUTTONS_ENABLED
 
@@ -140,13 +141,14 @@ void ProcessButtons(PinSnsState_t *BtnState, uint32_t Len) {
 
 __unused
 void AddEvtToQueue(BtnEvtInfo_t &Evt) {
-    EvtMsg_t Msg(evtIdButtons);
+    EvtMsg_t Msg(BUTTON_PRESSED_SIG);
     Msg.BtnEvtInfo = Evt;
     EvtQMain.SendNowOrExit(Msg);
 }
 
 void AddEvtToQueue(BtnEvt_t AType, uint8_t KeyIndx) {
-    EvtMsg_t Msg(evtIdButtons);
+	//Ugly mapping, need to refactor
+    EvtMsg_t Msg(KeyIndx+BUTTON_OFFSET);
     Msg.BtnEvtInfo.Type = AType;
 #if BTN_COMBO
     Msg.BtnEvtInfo.BtnCnt = 1;
@@ -155,5 +157,7 @@ void AddEvtToQueue(BtnEvt_t AType, uint8_t KeyIndx) {
     Msg.BtnEvtInfo.BtnID = KeyIndx;
 #endif
     EvtQMain.SendNowOrExit(Msg);
+    EvtMsg_t MsgCommon(BUTTON_PRESSED_SIG);
+    EvtQMain.SendNowOrExit(MsgCommon);
 }
 #endif

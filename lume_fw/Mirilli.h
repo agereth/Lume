@@ -27,4 +27,4 @@ void InitMirilli();
 void SetTargetClrH(uint32_t H, ColorHSV_t Clr);
 void SetTargetClrM(uint32_t M, ColorHSV_t Clr);
 void WakeMirilli();
-void ResetColors(ColorHSV_t ClrH, ColorHSV_t ClrM);
+void ResetColors(ColorHSV_t ClrH, ColorHSV_t ClrM, uint8_t BckGrnd);

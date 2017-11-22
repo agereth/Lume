@@ -10,6 +10,7 @@
 #include "ch.h"
 #include "hal.h"
 #include "core_cmInstr.h"
+#include "lume_state_machine.h"
 #include <cstdlib>
 #include <sys/cdefs.h>
 #include "EvtMsgIDs.h"
@@ -258,7 +259,7 @@ private:
     virtual_timer_t Tmr;
     void StartI() { chVTSetI(&Tmr, Period, TmrKLCallback, this); }  // Will be reset before start
     systime_t Period;
-    EvtMsgId_t EvtId;
+    PlayerSignals EvtId;
     TmrKLType_t TmrType;
     void IIrqHandler();
 public:
@@ -283,10 +284,10 @@ public:
     void SetNewPeriod_ms(uint32_t NewPeriod) { Period = MS2ST(NewPeriod); }
     void SetNewPeriod_s(uint32_t NewPeriod) { Period = S2ST(NewPeriod); }
 
-    TmrKL_t(systime_t APeriod, EvtMsgId_t AEvtId, TmrKLType_t AType) :
+    TmrKL_t(systime_t APeriod, PlayerSignals AEvtId, TmrKLType_t AType) :
         Period(APeriod), EvtId(AEvtId), TmrType(AType) {}
     // Dummy period is set
-    TmrKL_t(EvtMsgId_t AEvtId, TmrKLType_t AType) :
+    TmrKL_t(PlayerSignals AEvtId, TmrKLType_t AType) :
             Period(S2ST(9)), EvtId(AEvtId), TmrType(AType) {}
 };
 #endif
