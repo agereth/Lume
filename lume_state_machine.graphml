@@ -108,10 +108,10 @@ for Lume clock<y:LabelModel>
               <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="267.4853441923332" x="0.0" y="4.0">idle</y:NodeLabel>
-              <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="224.517578125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="179.3828125" x="2.0" y="30.701171875">entry/
+              <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="224.517578125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="173.3828125" x="2.0" y="30.701171875">entry/
      //ShowMenuElements 
     Interface.Reset();
-    Interface.DisplayFirstScreen();
+    Interface.ResetFirstScreen();
     Interface.DisplayDateTime();
      //SaveSettings
     RTC-&gt;BKP1R = Settings.R1;
@@ -230,7 +230,7 @@ exit/
                   <y:BorderStyle color="#000000" type="line" width="1.0"/>
                   <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="232.6734751199898" x="0.0" y="4.0">minutes</y:NodeLabel>
                   <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="151.01171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="211.685546875" x="2.0" y="30.701171875">entry/
-      Interface,DisplayMinutesInverted();
+      Interface.DisplayMinutesInverted();
 BTN_PLUS/
     Time.Curr.IncM(); Time.Curr.S = 0;
     Interface.DisplayinutesInverted()
@@ -260,15 +260,15 @@ exit/
                   <y:BorderStyle color="#000000" type="line" width="1.0"/>
                   <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="214.8543061736956" x="0.0" y="4.0">day</y:NodeLabel>
                   <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="151.01171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="186.068359375" x="2.0" y="30.701171875">entry/
-     Interface,DisplayDayInverted();
+     Interface.DisplayDayInverted();
 BTN_PLUS/
     Time.Curr.IncDay(); 
-   Interface,DisplayDayInverted();
+   Interface.DisplayDayInverted();
 BTN_MINUS/
     Time.Curr.DecDay(); 
-    Interface,DisplayDayInverted();
+    Interface.DisplayDayInverted();
 exit/
-    Interface,DisplayDay();<y:LabelModel>
+    Interface.DisplayDay();<y:LabelModel>
                       <y:ErdAttributesNodeLabelModel/>
                     </y:LabelModel>
                     <y:ModelParameter>
@@ -290,15 +290,15 @@ exit/
                   <y:BorderStyle color="#000000" type="line" width="1.0"/>
                   <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="214.8543061736956" x="0.0" y="4.0">month</y:NodeLabel>
                   <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="151.01171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="201.4140625" x="2.0" y="30.701171875">entry/
-     Interface,DisplayMonthInverted();
+     Interface.DisplayMonthInverted();
 BTN_PLUS/
     Time.Curr.IncMonth(); 
-      Interface,DisplayMonthInverted();
+      Interface.DisplayMonthInverted();
 BTN_MINUS/
     Time.Curr.DecMonth();
-      Interface,DisplayMonthInverted();
+      Interface.DisplayMonthInverted();
 exit/
-    Interface,DisplayMonth(); <y:LabelModel>
+    Interface.DisplayMonth(); <y:LabelModel>
                       <y:ErdAttributesNodeLabelModel/>
                     </y:LabelModel>
                     <y:ModelParameter>
@@ -319,16 +319,16 @@ exit/
                   <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
                   <y:BorderStyle color="#000000" type="line" width="1.0"/>
                   <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="195.04395530000232" x="0.0" y="4.0">year</y:NodeLabel>
-                  <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="151.01171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="190.076171875" x="2.0" y="30.701171875">entry/
-      Interface,DisplayYearnverted();
+                  <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="151.01171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="193.41015625" x="2.0" y="30.701171875">entry/
+      Interface.DisplayYearInverted();
 BTN_PLUS/
     Time.Curr.IncYear(); 
-    Interface,DisplayYearInverted();
+    Interface.DisplayYearInverted();
 BTN_MINUS/
     Time.Curr.DecYear(); 
-     Interface,DisplayYearInverted();
+     Interface.DisplayYearInverted();
 exit/
-     Interface,DisplayYear();<y:LabelModel>
+     <y:LabelModel>
                       <y:ErdAttributesNodeLabelModel/>
                     </y:LabelModel>
                     <y:ModelParameter>
@@ -402,17 +402,17 @@ LUM_CHANGED/
                       <y:BorderStyle color="#000000" type="line" width="1.0"/>
                       <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="336.6265634943318" x="0.0" y="4.0">brightness_high</y:NodeLabel>
                       <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="180.4140625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="335.1015625" x="2.0" y="30.701171875">entry/
-     Interface,DisplayBrHighInverted();
+     Interface.DisplayBrHighInverted();
 BTN_PLUS/
     if(Settings.BrtHi == TOP_BRIGHTNESS) Settings.BrtHi = 0;
                     else Settings.BrtHi++;
-     Interface,DisplayBrHighInverted();;
+     Interface.DisplayBrHighInverted();;
 BTN_MINUS/
     if(Settings.BrtHi == 0) Settings.BrtHi = TOP_BRIGHTNESS;
                     else Settings.BrtHi--;
-     Interface,DisplayBrHighInverted();
+     Interface.DisplayBrHighInverted();
 exit/
-    Interface,DisplayBrHigh();<y:LabelModel>
+    Interface.DisplayBrHigh();<y:LabelModel>
                           <y:ErdAttributesNodeLabelModel/>
                         </y:LabelModel>
                         <y:ModelParameter>
@@ -434,17 +434,17 @@ exit/
                       <y:BorderStyle color="#000000" type="line" width="1.0"/>
                       <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="344.2016427609776" x="0.0" y="4.0">brightness_low</y:NodeLabel>
                       <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="180.4140625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="339.1328125" x="2.0" y="30.701171875">entry/
-      Interface,DisplayBrLowInverted();
+      Interface.DisplayBrLowInverted();
 BTN_PLUS/
     if(Settings.BrtLo == TOP_BRIGHTNESS) Settings.BrtLo = 0;
                     else Settings.BrtLo++;
-        Interface,DisplayBrLowInverted();
+        Interface.DisplayBrLowInverted();
 BTN_MINUS/
     if(Settings.BrtLo == 0) Settings.BrtLo = TOP_BRIGHTNESS;
                     else Settings.BrtLo--;
-        Interface,DisplayBrLowInverted();
+        Interface.DisplayBrLowInverted();
 exit/
-       Interface,DisplayBrLow();<y:LabelModel>
+       Interface.DisplayBrLow();<y:LabelModel>
                           <y:ErdAttributesNodeLabelModel/>
                         </y:LabelModel>
                         <y:ModelParameter>
@@ -466,17 +466,17 @@ exit/
                       <y:BorderStyle color="#000000" type="line" width="1.0"/>
                       <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="326.5998609771848" x="0.0" y="4.0">threshold</y:NodeLabel>
                       <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="180.4140625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="292.486328125" x="2.0" y="30.701171875">entry/
-   Interface,DisplayTresholdnverted();
+   Interface.DisplayTresholdInverted();
 BTN_PLUS/
     if(Settings.Threshold == 99) Settings.Threshold = 0;
      else Settings.Threshold++;
-     Interface,DisplayTresholdnverted();
+     Interface.DisplayTresholdInverted();
 BTN_MINUS/
     if(Settings.Threshold == 0) Settings.Threshold = 99;
                     else Settings.Threshold--;
-      Interface,DisplayTresholdnverted();
+      Interface.DisplayTresholdInverted();
 exit/
-   Interface,DisplayTreshold();<y:LabelModel>
+   Interface.DisplayTreshold();<y:LabelModel>
                           <y:ErdAttributesNodeLabelModel/>
                         </y:LabelModel>
                         <y:ModelParameter>
@@ -498,21 +498,21 @@ exit/
                       <y:BorderStyle color="#000000" type="line" width="1.0"/>
                       <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="324.7423694595499" x="0.0" y="4.0">color_minute</y:NodeLabel>
                       <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="239.21875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="263.1015625" x="2.0" y="30.701171875">entry/
-   Interface,DisplayColorMinInverted();
+   Interface.DisplayColorMinInverted();
 BTN_PLUS/
     if(Settings.ClrIdM == 360) Settings.ClrIdM = 0;
-                    else Settings.ClrIM++;
-                    ClrM.M = Settings.ClrIdM;
+                    else Settings.ClrIdM++;
+                    ClrM.H = Settings.ClrIdM;
                     IndicateNewSecond();  
-     Interface,DisplayColorMinInverted();
+     Interface.DisplayColorMinInverted();
 BTN_MINUS/
     if(Settings.ClrIdM == 0) Settings.ClrIdM = 360;
                     else Settings.ClrIdM--;
                     ClrM.H = Settings.ClrIdM;
                     IndicateNewSecond();     
-     Interface,DisplayColorMinInverted();
+     Interface.DisplayColorMinInverted();
 exit/
-    Interface,DisplayColorM();<y:LabelModel>
+    Interface.DisplayColorMin();<y:LabelModel>
                           <y:ErdAttributesNodeLabelModel/>
                         </y:LabelModel>
                         <y:ModelParameter>
@@ -533,22 +533,21 @@ exit/
                       <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
                       <y:BorderStyle color="#000000" type="line" width="1.0"/>
                       <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="328.28246670081967" x="0.0" y="4.0">color_hour</y:NodeLabel>
-                      <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="239.21875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="267.109375" x="2.0" y="30.701171875">entry/
-     Interface,DisplayColorHourInverted();
+                      <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="209.81640625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="267.109375" x="2.0" y="30.701171875">entry/
+     Interface.DisplayColorHourInverted();
 BTN_PLUS/
      if(Settings.ClrIdH == 360) Settings.ClrIdH = 0;
                     else Settings.ClrIdH++;
                     ClrH.H = Settings.ClrIdH;
                     IndicateNewSecond();
-      Interface,DisplayColorHourInverted();
+      Interface.DisplayColorHourInverted();
 BTN_MINUS/
       if(Settings.ClrIdH == 0) Settings.ClrIdH = 360;
                     else Settings.ClrIdH--;
                     ClrH.H = Settings.ClrIdH;
                     IndicateNewSecond();  
-      Interface,DisplayColorHourInverted();
-exit/
-    Interface,DisplayColorHour();<y:LabelModel>
+      Interface.DisplayColorHourInverted();
+<y:LabelModel>
                           <y:ErdAttributesNodeLabelModel/>
                         </y:LabelModel>
                         <y:ModelParameter>
@@ -569,16 +568,18 @@ exit/
                       <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
                       <y:BorderStyle color="#000000" type="line" width="1.0"/>
                       <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="320.3403662240212" x="0.0" y="4.0">background</y:NodeLabel>
-                      <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="180.4140625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="292.486328125" x="2.0" y="30.701171875">entry/
+                      <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="209.81640625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="285.80078125" x="2.0" y="30.701171875">entry/
     Interface.DisplayBackgroundInverted();
 BTN_PLUS/
-    if(Settings.Threshold == 99) Settings.Threshold = 0;
-     else Settings.Threshold++;
+    if(Settings.BckGrnd == 99) Settings.BckGrnd = 0;
+     else Settings.BackGrnd++;
      Interface.DisplayBackgroundInverted();
+     IndicateNewSecond();
 BTN_MINUS/
-    if(Settings.Threshold == 0) Settings.Threshold = 99;
-                    else Settings.Threshold--;
+    if(Settings.BackGrnd == 0) Settings.BckGrnd = 99;
+                    else Settings.BckGrnd--;
       Interface.DisplayBackgroundInverted();
+      IndicateNewSecond();
 exit/
    Interface.DisplayBackground();<y:LabelModel>
                           <y:ErdAttributesNodeLabelModel/>
@@ -646,9 +647,9 @@ exit/
           <y:Path sx="-107.42715308684728" sy="49.16533850972496" tx="133.74267209616664" ty="-278.5000025230403"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="92.20703125" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="157.33984375" x="-190.14461129610663" y="13.971090348040434">BTN_UP/
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="92.20703125" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="257.3828125" x="-240.16609567110663" y="13.971090348040434">BTN_UP/
      TmrMenu.Stop();
-      ResetColors(ClrH, ClrM);
+      ResetColors(ClrH, ClrM, Settings.BckGrnd);
      Time.SetDateTime();
      IndicateNewSecond();
      Lcd.Backlight(0);
@@ -764,7 +765,8 @@ exit/
           <y:Path sx="-97.52197765000119" sy="5.0" tx="107.42715308684774" ty="5.000000000000114"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="51.34375" x="-51.890669025358875" y="83.35369973104503">BTN_UP<y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/>
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="143.3828125" x="-97.91020027535887" y="76.00311379354503">BTN_UP/
+    Interface.DisplayYear();<y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/>
           </y:EdgeLabel>
           <y:StyleProperties>
             <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="CONNECTION_TYPE_MESSAGE_FLOW"/>
@@ -778,8 +780,8 @@ exit/
           <y:Path sx="-762.7412355771719" sy="33.93608049935267" tx="133.74267209616664" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="92.20703125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="154.005859375" x="-98.85574587374686" y="30.4209518680822">TIMEOUT/
-     ResetColors(ClrH, ClrM);
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="92.20703125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="254.048828125" x="-148.87723024874686" y="30.4209518680822">TIMEOUT/
+     ResetColors(ClrH, ClrM, Settings.BckGrnd);
      Time.SetDateTime();
      IndicateNewSecond();
      Lcd.Backlight(0);
@@ -821,12 +823,13 @@ exit/
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="92.20703125" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="256.779296875" x="-11.365934778432347" y="147.9694303919057">BTN_DOWN/
-     ResetColors(ClrH, ClrM);
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="106.908203125" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="256.779296875" x="-11.365934778432347" y="140.6188444544057">BTN_DOWN/
+     ResetColors(ClrH, ClrM, Settings.BckGrnd);
      Time.SetDateTime();
      IndicateNewSecond();
-    Interface.ResetSecondSreen();
-    Interface.DispalySecondScreen(CurrentLum)<y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/>
+    Interface.Reset();
+    Interface.ResetSecondScreen();
+    Interface.DisplaySecondScreen(CurrentLum)<y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/>
           </y:EdgeLabel>
           <y:StyleProperties>
             <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="CONNECTION_TYPE_MESSAGE_FLOW"/>
@@ -840,8 +843,9 @@ exit/
           <y:Path sx="126.83817677023717" sy="-138.32021541010766" tx="-70.21892106982796" ty="91.74606462303234"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="48.103515625" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="170.048828125" x="-138.25046085334907" y="-54.76023293152946">BTN_UP/
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="62.8046875" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="178.052734375" x="-142.25241397834907" y="-62.11081886902946">BTN_UP/
       Interface.Reset();
+      Interface.ResetFirstScreen();
     Interface.DisplayDateTime();
 <y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/>
           </y:EdgeLabel>
@@ -875,10 +879,11 @@ exit/
           <y:Path sx="133.74267209616664" sy="279.838317375684" tx="-172.10082138048892" ty="-76.28800626719686"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="77.505859375" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="256.779296875" x="-37.643306544569896" y="-83.66006513501782">BTN_UP/   
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="92.20703125" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="256.779296875" x="-37.643306544569896" y="-91.01065107251782">BTN_UP/   
    Lcd.Backlight(100);
    TmrMenu.StartOrRestart();
     Interface.Reset();
+    Interface.ResetSecondScreen();
    Interface.DisplaySecondScreen(CurrentLum);<y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/>
           </y:EdgeLabel>
           <y:StyleProperties>
@@ -991,7 +996,8 @@ exit/
           <y:Path sx="5.0" sy="138.32021541010766" tx="5.0" ty="-138.32021541010766"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="72.666015625" x="16.123102907274188" y="4.714501302750364">BTN_DOWN<y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/>
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="172.720703125" x="27.57526735399597" y="-2.7866993888479783">BTN_DOWN/
+    Interface.DisplayColorHour();<y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/>
           </y:EdgeLabel>
           <y:StyleProperties>
             <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="CONNECTION_TYPE_MESSAGE_FLOW"/>

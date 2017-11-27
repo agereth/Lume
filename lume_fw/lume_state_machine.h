@@ -25,7 +25,13 @@
 
     #define BUTTON_OFFSET 7
 
-    enum PlayerSignals {
+typedef struct LumeQEvt{
+    QEvt super;
+    void* Ptr;
+    int32_t Value;
+ } LumeQEvt;
+
+enum PlayerSignals {
 TICK_SEC_SIG = Q_USER_SIG,
 
 SHELL_COMMAND_SIG,

@@ -5,8 +5,8 @@
  *      Author: juice
  */
 
-#ifndef TIMESETTINGS_H_
-#define TIMESETTINGS_H_
+#ifndef EVENTSHANDLERS_H_
+#define EVENTSHANDLERS_H_
 
 #include "mirilli.h"
 #include "shell.h"
@@ -47,6 +47,6 @@ extern ColorHSV_t ClrM;
 extern uint32_t CurrentLum;
 extern TmrKL_t TmrMenu;
 
-#endif /* TIMESETTINGS_H_ */
+#endif /* EVENTSHANDLERS_H_ */
 
 

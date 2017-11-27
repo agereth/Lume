@@ -10,36 +10,34 @@ typedef uint16_t QState;
 
 typedef struct {
     QSignal sig;
-    void* Ptr;
-    int32_t Value;
 } QEvt;
 
 typedef QState(* QStateHandler) (void *const me, QEvt const *const e);
 
 union QMAttr {
-    QState state;    
-    QStateHandler fun;       
+    QState state;
+    QStateHandler fun;
 };
 
 enum {
     QEP_EMPTY_SIG_ = 0,
-    Q_ENTRY_SIG,  
-    Q_EXIT_SIG,       
-    Q_INIT_SIG,       
-    Q_USER_SIG        
+    Q_ENTRY_SIG,
+    Q_EXIT_SIG,
+    Q_INIT_SIG,
+    Q_USER_SIG
 };
 
 enum {
      Q_RET_SUPER,
      Q_RET_UNHANDLED,
      Q_RET_HANDLED,
-     Q_RET_IGNORED, 
-     Q_RET_TRAN,      
+     Q_RET_IGNORED,
+     Q_RET_TRAN,
 };
 
 typedef struct {
-     union QMAttr state;   
-     union QMAttr temp;    
+     union QMAttr state;
+     union QMAttr temp;
 } QHsm;
 
 #define Q_MSM_UPCAST(ptr_) ((QHsm *)(ptr_))
@@ -50,8 +48,8 @@ typedef struct {
       ((Q_MSM_UPCAST(me))->temp.fun = Q_STATE_CAST(target_), (QState)Q_RET_TRAN)
 #define Q_SUPER(super_) \
       ((Q_MSM_UPCAST(me))->temp.fun = Q_STATE_CAST(super_), (QState)Q_RET_SUPER)
-#define QMSM_DISPATCH(me_, e_) (QMsm_dispatch_(me_, e_)) 
-#define QMSM_INIT(me_, e_) (QMsm_init_(me_, e_))    // Macro for external calls   
+#define QMSM_DISPATCH(me_, e_) (QMsm_dispatch_(me_, e_))
+#define QMSM_INIT(me_, e_) (QMsm_init_(me_, e_))    // Macro for external calls
                                                     // for compatibility with QP
 #ifdef __cplusplus
 extern "C" {

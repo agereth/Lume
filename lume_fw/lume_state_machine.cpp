@@ -15,6 +15,7 @@
 * for more details.
 *****************************************************************************/
 /*${.::lume_state_machine.cpp} .............................................*/
+#include <EventsHandlers.h>
 #include "qpc.h"
 #include "lume_state_machine.h"
 #include "kl_lib.h"
@@ -24,10 +25,6 @@
 #include "Mirilli.h"
 #include "kl_adc.h"
 #include "lume_state_machine.h"
-#include "TimeSettings.h"
-
-
-
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
@@ -112,8 +109,8 @@ static QState Lume_state_machine_Lume(Lume_state_machine * const me, QEvt const 
     switch (e->sig) {
         /* ${SMs::Lume_state_machi~::SM::global::Lume::SHELL_COMMAND} */
         case SHELL_COMMAND_SIG: {
-            OnCmd((Shell_t*)e->Ptr);
-                  ((Shell_t*)e->Ptr)->SignalCmdProcessed();
+            OnCmd((Shell_t*)((LumeQEvt const*)e)->Ptr);
+                  ((Shell_t*)((LumeQEvt const*)e)->Ptr)->SignalCmdProcessed();
             status_ = Q_HANDLED();
             break;
         }
@@ -202,7 +199,7 @@ static QState Lume_state_machine_second_screen(Lume_state_machine * const me, QE
     QState status_;
     switch (e->sig) {
         case LUM_CHANGED_SIG: {
-            	CurrentLum = e->Value / 2;
+            	CurrentLum = ((LumeQEvt const*)e)->Value / 2;
             	    if(CurrentLum > 99) CurrentLum = 99;
             	    Interface.DisplayLum(CurrentLum);
                      status_ = Q_HANDLED();
@@ -484,7 +481,8 @@ static QState Lume_state_machine_background(Lume_state_machine * const me, QEvt 
         case BTN_PLUS_SIG: {
             if(Settings.BckGrnd == 99) Settings.BckGrnd = 0;
                  else Settings.BckGrnd++;
-                 Interface.DisplayBackgroundInverted();
+            Interface.DisplayBackgroundInverted();
+            IndicateNewSecond();
             status_ = Q_HANDLED();
             break;
         }
@@ -493,6 +491,7 @@ static QState Lume_state_machine_background(Lume_state_machine * const me, QEvt 
             if(Settings.BckGrnd == 0) Settings.BckGrnd = 99;
                                 else Settings.BckGrnd--;
                   Interface.DisplayBackgroundInverted();
+            IndicateNewSecond();
             status_ = Q_HANDLED();
             break;
         }

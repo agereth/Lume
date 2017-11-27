@@ -7,9 +7,9 @@
 
 #pragma once
 
+#include <EventsHandlers.h>
 #include "lcd1200.h"
 #include "kl_time.h"
-#include "TimeSettings.h"
 
 class Interface_t {
 public:
