@@ -1,7 +1,7 @@
 /*
  * main.cpp
  *
- *  Created on: 20 февр. 2014 г.
+ *  Created on: 20 ГґГҐГўГ°. 2014 ГЈ.
  *      Author: g.kruglov
  */
 
@@ -31,7 +31,6 @@ void ITask();
 
 
 Interface_t Interface;
-
 
 #endif
 

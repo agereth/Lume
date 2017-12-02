@@ -15,6 +15,7 @@
 * for more details.
 *****************************************************************************/
 /*${.::lume_state_machine.cpp} .............................................*/
+
 #include <EventHandlers.h>
 #include "qpc.h"
 #include "lume_state_machine.h"
@@ -56,6 +57,7 @@ static QState Lume_state_machine_color_hour(Lume_state_machine * const me, QEvt 
 static QState Lume_state_machine_brightness_high(Lume_state_machine * const me, QEvt const * const e);
 static QState Lume_state_machine_threshold(Lume_state_machine * const me, QEvt const * const e);
 static QState Lume_state_machine_brightness_low(Lume_state_machine * const me, QEvt const * const e);
+
 
 #ifdef DESKTOP
 static QState Lume_state_machine_final(Lume_state_machine * const me, QEvt const * const e);
@@ -143,7 +145,7 @@ static QState Lume_state_machine_idle(Lume_state_machine * const me, QEvt const 
         /* ${SMs::Lume_state_machi~::SM::global::Lume::idle} */
         case Q_ENTRY_SIG: {
             //ShowMenuElements
-               Interface.Reset();
+                Interface.Reset();
                 Interface.DisplayDateTime();
                 Interface.DisplayNotTimeSettings(CurrentLum);
             status_ = Q_HANDLED();
@@ -212,6 +214,7 @@ static QState Lume_state_machine_Menu(Lume_state_machine * const me, QEvt const 
     }
     return status_;
 }
+
 /*${SMs::Lume_state_machi~::SM::global::Lume::Menu::change_time} ...........*/
 static QState Lume_state_machine_change_time(Lume_state_machine * const me, QEvt const * const e) {
     QState status_;
@@ -278,6 +281,7 @@ static QState Lume_state_machine_hours(Lume_state_machine * const me, QEvt const
     }
     return status_;
 }
+
 /*${SMs::Lume_state_machi~::SM::global::Lume::Menu::change_time::month} ....*/
 static QState Lume_state_machine_month(Lume_state_machine * const me, QEvt const * const e) {
     QState status_;
@@ -317,7 +321,7 @@ static QState Lume_state_machine_month(Lume_state_machine * const me, QEvt const
         case BTN_UP_SIG: {
             status_ = Q_TRAN(&Lume_state_machine_day);
             break;
-        }
+чё        }
         default: {
             status_ = Q_SUPER(&Lume_state_machine_change_time);
             break;
@@ -325,6 +329,7 @@ static QState Lume_state_machine_month(Lume_state_machine * const me, QEvt const
     }
     return status_;
 }
+
 /*${SMs::Lume_state_machi~::SM::global::Lume::Menu::change_time::minutes} ..*/
 static QState Lume_state_machine_minutes(Lume_state_machine * const me, QEvt const * const e) {
     QState status_;
@@ -360,6 +365,7 @@ static QState Lume_state_machine_minutes(Lume_state_machine * const me, QEvt con
             status_ = Q_TRAN(&Lume_state_machine_day);
             break;
         }
+
         /* ${SMs::Lume_state_machi~::SM::global::Lume::Menu::change_time::minutes::BTN_UP} */
         case BTN_UP_SIG: {
             status_ = Q_TRAN(&Lume_state_machine_hours);
@@ -372,6 +378,7 @@ static QState Lume_state_machine_minutes(Lume_state_machine * const me, QEvt con
     }
     return status_;
 }
+
 /*${SMs::Lume_state_machi~::SM::global::Lume::Menu::change_time::day} ......*/
 static QState Lume_state_machine_day(Lume_state_machine * const me, QEvt const * const e) {
     QState status_;
@@ -419,6 +426,7 @@ static QState Lume_state_machine_day(Lume_state_machine * const me, QEvt const *
     }
     return status_;
 }
+
 /*${SMs::Lume_state_machi~::SM::global::Lume::Menu::change_time::year} .....*/
 static QState Lume_state_machine_year(Lume_state_machine * const me, QEvt const * const e) {
     QState status_;
@@ -460,12 +468,13 @@ static QState Lume_state_machine_year(Lume_state_machine * const me, QEvt const 
             break;
         }
         default: {
-            status_ = Q_SUPER(&Lume_state_machine_change_time);
-            break;
+           status_ = Q_SUPER(&Lume_state_machine_change_time);
+           break;
         }
     }
     return status_;
 }
+
 /*${SMs::Lume_state_machi~::SM::global::Lume::Menu::color_minute} ..........*/
 static QState Lume_state_machine_color_minute(Lume_state_machine * const me, QEvt const * const e) {
     QState status_;
@@ -572,6 +581,7 @@ static QState Lume_state_machine_color_hour(Lume_state_machine * const me, QEvt 
     }
     return status_;
 }
+
 /*${SMs::Lume_state_machi~::SM::global::Lume::Menu::brightness_high} .......*/
 static QState Lume_state_machine_brightness_high(Lume_state_machine * const me, QEvt const * const e) {
     QState status_;
@@ -621,6 +631,7 @@ static QState Lume_state_machine_brightness_high(Lume_state_machine * const me, 
     }
     return status_;
 }
+
 /*${SMs::Lume_state_machi~::SM::global::Lume::Menu::threshold} .............*/
 static QState Lume_state_machine_threshold(Lume_state_machine * const me, QEvt const * const e) {
     QState status_;
@@ -661,6 +672,7 @@ static QState Lume_state_machine_threshold(Lume_state_machine * const me, QEvt c
         /* ${SMs::Lume_state_machi~::SM::global::Lume::Menu::threshold::BTN_UP} */
         case BTN_UP_SIG: {
             status_ = Q_TRAN(&Lume_state_machine_year);
+
             break;
         }
         default: {
@@ -670,6 +682,7 @@ static QState Lume_state_machine_threshold(Lume_state_machine * const me, QEvt c
     }
     return status_;
 }
+
 /*${SMs::Lume_state_machi~::SM::global::Lume::Menu::brightness_low} ........*/
 static QState Lume_state_machine_brightness_low(Lume_state_machine * const me, QEvt const * const e) {
     QState status_;
@@ -739,3 +752,4 @@ static QState Lume_state_machine_final(Lume_state_machine * const me, QEvt const
     return status_;
 }
 #endif /* def DESKTOP */
+

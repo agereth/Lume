@@ -211,7 +211,7 @@ exit/
               <data key="d6">
                 <y:ProxyAutoBoundsNode>
                   <y:Realizers active="0">
-                    <y:GroupNode>
+                  <y:GroupNode>
                       <y:Geometry height="569.1223871228403" width="1003.3335919386382" x="-5031.833422309343" y="-632.7366868815536"/>
                       <y:Fill color="#F5F5F5" transparent="false"/>
                       <y:BorderStyle color="#000000" type="line" width="1.0"/>
@@ -257,7 +257,7 @@ exit/
                       <y:NodeBounds considerNodeLabelSize="true"/>
                       <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
                       <y:BorderInsets bottom="27" bottomF="27.128793033025715" left="0" leftF="0.0" right="0" rightF="0.0" top="66" topF="66.11693268471856"/>
-                    </y:GroupNode>
+                   </y:GroupNode>
                   </y:Realizers>
                 </y:ProxyAutoBoundsNode>
               </data>
@@ -631,7 +631,7 @@ exit/
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="51.34375" x="-90.79828127885139" y="8.495932709361">BTN_UP<y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/>
-          </y:EdgeLabel>
+         </y:EdgeLabel>
           <y:StyleProperties>
             <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="CONNECTION_TYPE_MESSAGE_FLOW"/>
           </y:StyleProperties>
@@ -802,7 +802,7 @@ exit/
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="72.666015625" x="-220.20647257857763" y="-55.3506382272617">BTN_DOWN<y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/>
-          </y:EdgeLabel>
+         </y:EdgeLabel>
           <y:StyleProperties>
             <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="CONNECTION_TYPE_MESSAGE_FLOW"/>
           </y:StyleProperties>

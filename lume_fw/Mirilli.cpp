@@ -1,7 +1,7 @@
 /*
  * Mirilli.cpp
  *
- *  Created on: 30 сент. 2017 г.
+ *  Created on: 30 Г±ГҐГ­ГІ. 2017 ГЈ.
  *      Author: Kreyl
  */
 
@@ -78,7 +78,8 @@ void WakeMirilli() {
 
 void ResetColors(ColorHSV_t ClrH, ColorHSV_t ClrM) {
     ClrH.V = OFF_LUMINOCITY;
-       ClrM.V = OFF_LUMINOCITY;
+    ClrM.V = OFF_LUMINOCITY;
+
     for(int32_t i=0; i<12; i++) {
       SetTargetClrH(i, ClrH);
       SetTargetClrM(i, ClrM);

@@ -5,6 +5,7 @@
 
 #define Q_MAX_DEPTH 8
 
+
 typedef uint8_t QSignal;
 typedef uint16_t QState;
 
@@ -55,6 +56,7 @@ typedef struct
 #define QMSM_INIT(me, event) (QMsm_init(me, event))
 #define QMSM_DISPATCH(me, event) (QMsm_dispatch(me, event)) 
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -65,6 +67,7 @@ void QHsm_ctor(QHsm *const me, QStateHandler initial);
 
 void QMsm_init(QHsm *me, const QEvt *const event);
 QState QMsm_dispatch(QHsm *me, const QEvt *const event);
+
 
 #ifdef __cplusplus
 }
