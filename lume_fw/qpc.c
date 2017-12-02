@@ -1,65 +1,119 @@
-/* 22/08/2016 Framework now supports multiple parent objects for state machine*/
-/* 20/08/2016 "Light" framework version.                                      */
-/* Works only for one parent and no complex transitions                       */
-
 #include "qpc.h"
 
-#define DEBUGn                             /* n - neutralise, omit to enable */
-/* \brief QEP_reservedEvt_ definition.
-*/
-QEvt const QEP_reservedEvt_[] = {
-   { (QSignal)QEP_EMPTY_SIG_  },
-   { (QSignal)Q_ENTRY_SIG     },
-   { (QSignal)Q_EXIT_SIG      },
-   { (QSignal)Q_INIT_SIG      }
+#include <stddef.h>
+
+const QEvt standard_events[] = {
+    { (QSignal)(QEP_EMPTY_SIG_) },
+    { (QSignal)(Q_ENTRY_SIG) },
+    { (QSignal)(Q_EXIT_SIG) },
+    { (QSignal)(Q_INIT_SIG) },
 };
 
+QState QHsm_top(void *const me, const QEvt *const event)
+{
+    (void)(me);
+    (void)(event);
 
-QState QHsm_top(void const * const me, QEvt const * const e) {
-     (void)me; /* suppress the "unused parameter" compiler warning */
-     (void)e;  /* suppress the "unused parameter" compiler warning */
-     return (QState)Q_RET_IGNORED; /* the top state ignores all events */
+    return (QState)(Q_RET_IGNORED);
 }
 
+static void do_transition(QHsm *me)
+{
+    QStateHandler source = me->current_;
+    QStateHandler effective = me->effective_;
+    QStateHandler target = me->target_;
 
-void QHsm_ctor (QHsm * const me, QStateHandler initial) {
-  me->state.fun = Q_STATE_CAST(&QHsm_top);
-  me->temp.fun  = initial;
+    while (source != effective) {
+        source(me, &standard_events[Q_EXIT_SIG]);
+        source(me, &standard_events[QEP_EMPTY_SIG_]);
+        source = me->effective_;
+    }
+
+    if (source == target) {
+        source(me, &standard_events[Q_EXIT_SIG]);
+        target(me, &standard_events[Q_ENTRY_SIG]);
+
+        me->current_ = target;
+        me->effective_ = target;
+        me->target_ = NULL;
+        return;
+    }
+
+    QStateHandler path[Q_MAX_DEPTH];
+    ptrdiff_t top = 0;
+    ptrdiff_t lca = -1;
+
+    path[0] = target;
+
+    while (target != &QHsm_top) {
+        target(me, &standard_events[QEP_EMPTY_SIG_]);
+        target = me->effective_;
+        path[++top] = target;
+
+        if (target == source) {
+            lca = top;
+            break;
+        }
+    }
+
+    while (lca == -1) {
+        source(me, &standard_events[Q_EXIT_SIG]);
+        source(me, &standard_events[QEP_EMPTY_SIG_]);
+        source = me->effective_;
+
+        for (ptrdiff_t i = 0; i <= top; ++i) {
+            if (path[i] == source) {
+                lca = i;
+                break;
+            }
+        }
+    }
+
+    target = path[lca];
+
+    for (ptrdiff_t i = lca - 1; i >= 0; --i) {
+        target = path[i];
+        target(me, &standard_events[Q_ENTRY_SIG]);
+    }
+
+    me->current_ = target;
+    me->effective_ = target;
+    me->target_ = NULL;
 }
 
-void QMsm_init_(QHsm *me, QEvt const * const e){
-   (*me->temp.fun)(me, e);        /* execute the top-most initial transition */
-                                                         /* enter the target */
-   (void)(*me->temp.fun)(me , &QEP_reservedEvt_[Q_ENTRY_SIG]);
-   
-   me->state.fun = me->temp.fun; /* mark configuration as stable - MSM stuff */
+void QHsm_ctor(QHsm *const me, QStateHandler initial)
+{
+    me->current_ = initial;
+    me->effective_ = initial;
+    me->target_ = NULL;
 }
 
-QState QMsm_dispatch_(QHsm *me, QEvt const * const e) {
-   QStateHandler s = me->state.fun;                /* save the current state */
-   QStateHandler t;                             /* save state in transitions */
-   QState r = (*s)(me, e);                         /* call the event handler */
-   #ifdef DEBUG
-      //printf("dispatch: %u\n\r", r);
-   #endif
-   if (r == Q_RET_SUPER) {                           /* ask parent to handle */
-      do {
-          r = (*me->temp.fun)(me, e);                          /*pass event  */
-          #ifdef DEBUG
-          //   printf("return: %u\n\r", r);
-          #endif                 /* bubble event up until handled or ignored */   
-      } while (r == Q_RET_SUPER);
-   }
+void QMsm_init(QHsm *me, const QEvt *const event)
+{
+    me->current_(me, event);
 
-   if (r == Q_RET_TRAN) {                               /* transition taken? */
-      t = me->temp.fun;                                       /* save target */
-      (void)(*s)(me, &QEP_reservedEvt_[Q_EXIT_SIG]);      /* exit the source */
-      (void)(*t)(me, &QEP_reservedEvt_[Q_ENTRY_SIG]);          /*enter target*/
-      me->state.fun = t;                              /* finalize transition */
-   }
-   if (r == Q_RET_HANDLED) {
-      me->temp.fun = me->state.fun;      /* in case it was handled by parent */
-   }
-    return r; 
+    me->effective_ = &QHsm_top;
+    do_transition(me);
 }
 
+QState QMsm_dispatch(QHsm *me, const QEvt *const event)
+{
+    QState result = me->current_(me, event);
+
+    while (result == Q_RET_SUPER) {
+        result = me->effective_(me, event);
+    }
+
+    switch (result) {
+    case (QState)(Q_RET_TRAN):
+        do_transition(me);
+        break;
+    case (QState)(Q_RET_HANDLED):
+        me->effective_ = me->current_;
+        break;
+    default:
+        break;
+    }
+
+    return result;
+}
