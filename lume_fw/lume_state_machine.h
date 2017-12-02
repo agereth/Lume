@@ -23,22 +23,29 @@
 
     #include "qpc.h"    /* include own framework */
 
-   #define BUTTON_OFFSET 8
+    #define BUTTON_OFFSET 7
+
+
+ typedef struct LumeQEvt{
+     QEvt super;
+     void* Ptr;
+     int32_t Value;
+ } LumeQEvt;
 
     enum PlayerSignals {
-       TICK_SEC_SIG = Q_USER_SIG+1,
+TICK_SEC_SIG = Q_USER_SIG,
 
-       SHELL_COMMAND_SIG,
-       LUM_CHANGED_SIG,
-       BTN_UP_SIG,
-       BTN_DOWN_SIG,
-       BTN_PLUS_SIG,
-       BTN_MINUS_SIG,
-       TIMEOUT_SIG,
-	   BUTTON_PRESSED_SIG,
+SHELL_COMMAND_SIG,
+LUM_CHANGED_SIG,
+BTN_UP_SIG,
+BTN_DOWN_SIG,
+BTN_PLUS_SIG,
+BTN_MINUS_SIG,
+TIMEOUT_SIG,
+BUTTON_PRESSED_SIG,
 
-       LAST_USER_SIG
-      };
+LAST_USER_SIG
+};
 
     extern QHsm * const the_lume_state_machine; /* opaque pointer to the lume_state_machine HSM */
 
